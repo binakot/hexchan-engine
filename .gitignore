@@ -1,0 +1,12 @@
+.idea
+__pycache__
+
+/dev
+/dist
+/node_modules
+/python_modules
+
+images.json
+posts.json
+threads.json
+captchas.json

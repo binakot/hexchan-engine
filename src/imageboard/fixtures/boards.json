@@ -1,0 +1,97 @@
+[
+    {
+        "model": "imageboard.board",
+        "pk": 0,
+        "fields": {
+            "hid": "a",
+            "name": "Anime",
+            "url": "a",
+            "description": "Animu und Mango",
+            "rules": "Some rules",
+            "default_username": "Cirno",
+            "default_max_posts_num": 512,
+            "is_hidden": false,
+            "is_locked": false,
+            "is_deleted": false,
+            "last_thread_hid": 31,
+            "created_at": "2013-10-07 08:23:19Z",
+            "updated_at": "2013-10-07 08:23:19Z"
+        }
+    },
+    {
+        "model": "imageboard.board",
+        "pk": 1,
+        "fields": {
+            "hid": "b",
+            "name": "Bred/Random",
+            "url": "b",
+            "description": "A",
+            "rules": "No rules",
+            "default_username": "El Bitardio",
+            "default_max_posts_num": 512,
+            "is_hidden": false,
+            "is_locked": false,
+            "is_deleted": false,
+            "last_thread_hid": 31,
+            "created_at": "2013-10-07 08:23:19Z",
+            "updated_at": "2013-10-07 08:23:19Z"
+        }
+    },
+    {
+        "model": "imageboard.board",
+        "pk": 2,
+        "fields": {
+            "hid": "c",
+            "name": "Computers",
+            "url": "c",
+            "description": "Computrons und Los Devices",
+            "rules": "Some rules",
+            "default_username": "Lain",
+            "default_max_posts_num": 512,
+            "is_hidden": false,
+            "is_locked": false,
+            "is_deleted": false,
+            "last_thread_hid": 31,
+            "created_at": "2013-10-07 08:23:19Z",
+            "updated_at": "2013-10-07 08:23:19Z"
+        }
+    },
+    {
+        "model": "imageboard.board",
+        "pk": 3,
+        "fields": {
+            "hid": "vg",
+            "name": "Video Games",
+            "url": "a",
+            "description": "ALL THE VIDYA GAMEZ",
+            "rules": "Some rules",
+            "default_username": "Nomad",
+            "default_max_posts_num": 512,
+            "is_hidden": false,
+            "is_locked": false,
+            "is_deleted": false,
+            "last_thread_hid": 31,
+            "created_at": "2013-10-07 08:23:19Z",
+            "updated_at": "2013-10-07 08:23:19Z"
+        }
+    },            
+    {
+        "model": "imageboard.board",
+        "pk": 4,
+        "fields": {
+            "hid": "mc",
+            "name": "Midnight Channel",
+            "url": "mc",
+            "description": "Paranormal Psychology",
+            "rules": "Some rules",
+            "default_username": "Persona",
+            "default_max_posts_num": 512,
+            "is_hidden": true,
+            "is_locked": false,
+            "is_deleted": false,
+            "last_thread_hid": 31,
+            "created_at": "2013-10-07T08:23:19Z",
+            "updated_at": "2013-10-07T08:23:19Z"           
+        }
+    }    
+]  

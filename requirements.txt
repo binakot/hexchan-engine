@@ -1,0 +1,6 @@
+Django==2.1.*
+django-debug-toolbar==1.9.*
+Faker==0.8.*
+Pillow==4.3.*
+bleach==2.1.*
+Markdown==2.6.*
