@@ -1,5 +1,5 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
 def board_page(request, board_hid):
-    return HttpResponse('board_page {}'.format(board_hid))
+    return render(request, 'imageboard/board_page.html', {'board': board_hid})

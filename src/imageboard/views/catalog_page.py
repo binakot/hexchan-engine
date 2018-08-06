@@ -1,5 +1,5 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
 def catalog_page(request, board_hid):
-    return HttpResponse('catalog_page {}'.format(board_hid))
+    return render(request, 'imageboard/catalog_page.html', {'board': board_hid})

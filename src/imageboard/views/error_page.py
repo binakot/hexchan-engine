@@ -1,5 +1,5 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
 def error_page(request):
-    return HttpResponse('error_page')
+    return render(request, 'imageboard/error_page.html', {})
