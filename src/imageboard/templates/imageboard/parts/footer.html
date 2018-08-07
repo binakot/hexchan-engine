@@ -1,0 +1,20 @@
+<div class="footer">
+    <div class="footer__inner">
+        {% if board_pages %}
+            <div class="footer__paginator">
+                Pages:
+                {% for num in board_pages.paginator.page_range %}
+                    {% if num != board_pages.number %}
+                        <a
+                            class="footer__page"
+                            href="{% url 'board_page_num' board_hid=board.hid page_num=num %}"
+                        >{{ num }}</a>
+                    {% else %}
+                        <span class="footer__page footer__page--current">{{ num }}</span>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>

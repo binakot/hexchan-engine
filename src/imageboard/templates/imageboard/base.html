@@ -11,7 +11,24 @@
     <link rel="stylesheet" href="{% static 'imageboard/style.css' %}">
 </head>
 <body>
-{% block content %}
-{% endblock %}
+    {% block main %}
+        <div class="app" id="app">
+            <div class="app__header">
+                {% block header %}{% endblock%}
+            </div>
+
+            <div class="app__content js-content">
+                {% block content %}{% endblock%}
+            </div>
+
+            <div class="app__footer">
+                {% block footer %}{% endblock%}
+            </div>
+
+            {% if request.user.is_superuser %}
+                <a href="{% url 'admin:index' %}" class="app__admin">admin</a>
+            {% endif %}
+        </div>
+    {% endblock %}
 </body>
 </html>

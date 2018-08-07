@@ -1,5 +1,58 @@
 {% extends 'imageboard/base.html' %}
 
+{% block page_title %}
+    {{ config.SITE_NAME }} :: /{{ board.hid }}/ {{ board.name }} :: Каталог
+{% endblock %}
+
+{% block header %}
+    {% include 'imageboard/parts/header.html' %}
+{% endblock %}
+
 {% block content %}
-    catalog_page {{ board }}
+    <div class="catalog">
+        <div class="catalog__items">
+            {% for thread in threads %}
+                {% with op_post=thread.op  %}
+                    <a class="catalog-item" href="{% url 'thread_page' board_hid=thread.board.hid thread_hid=thread.hid %}">
+
+                        <div class="catalog-item__header">
+                            <span class="catalog-item__hid">
+                                0x{{ thread.hid }}
+                            </span>
+                        </div>
+
+                        <div class="catalog-item__image-wrap">
+                            {% with image=op_post.images.all|first  %}
+                                <img
+                                    class="catalog-item__image"
+                                    src="{{MEDIA_URL}}{{image.thumb_path}}"
+                                    alt="{{ image.original_name }}"
+                                />
+                            {% endwith %}
+                        </div>
+
+                        <div class="catalog-item__title">
+                            {{ op_post.title }}
+                        </div>
+
+                        <div class="catalog-item__text">
+                            {{ op_post.text }}
+                        </div>
+
+                        <div class="catalog-item__meta">
+                            <span class="catalog-item__meta-label">Создан:</span> {{ thread.created_at|date:config.DATE_TIME_FORMAT }}
+                            <br/>
+                            <span class="catalog-item__meta-label">Обновлен:</span> {{ thread.updated_at|date:config.DATE_TIME_FORMAT }}
+                            <br/>
+                            <span class="catalog-item__meta-label">Постов:</span> {{ thread.posts_count }}
+                        </div>
+                    </a>
+                {% endwith %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'imageboard/parts/footer.html' %}
 {% endblock %}

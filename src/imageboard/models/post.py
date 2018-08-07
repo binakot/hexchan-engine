@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 
-import gensokyo.config as config
+from gensokyo import config
 
 
 class Post(models.Model):

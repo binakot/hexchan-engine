@@ -1,0 +1,30 @@
+<header class="header">
+    <div class="header__inner">
+        <a class="header__logo" href="{% url 'start_page' %}">HEXCHAN.ORG</a>
+
+        <div class="header__board-selector">
+            <div class="board-selector">
+                <a href="{% url 'board_page' board_hid=board.hid %}" class="board-selector__button">
+                    /{{ board.hid }}/
+                </a>
+                <div class="board-selector__list">
+                    {% for a_board in boards %}
+                        {% if not a_board.is_hidden and not a_board.is_deleted %}
+                            <a
+                                class="board-selector__item"
+                                href="{% url 'board_page' board_hid=a_board.hid %}"
+                                {% if a_board == board %}
+                                    data-current
+                                {% endif %}
+                            >
+                                /{{ a_board.hid }}/ :: {{ a_board.name }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <a class="header__catalog-link" href="{% url 'catalog_page' board_hid=board.hid %}">Каталог тредов</a>
+    </div>
+</header>

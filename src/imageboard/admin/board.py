@@ -3,7 +3,7 @@ from django.db.models import Count
 from django.conf import settings
 
 from ..models import Board
-import gensokyo.config as config
+from gensokyo import config
 
 
 @admin.register(Board)

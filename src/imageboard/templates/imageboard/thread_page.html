@@ -1,5 +1,17 @@
-{% extends 'imageboard/base.html' %}
+{% extends "imageboard/base.html" %}
+
+{% block page_title %}
+    {{ config.SITE_NAME }} :: /{{ board.hid }}/ {{ board.name }} :: {{ thread.hid }}
+{% endblock %}
+
+{% block header %}
+    {% include 'imageboard/parts/header.html' %}
+{% endblock %}
 
 {% block content %}
-    thread_page {{ board }} {{ thread }}
+    {% include 'imageboard/parts/thread.html' with posts=thread.posts.all %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'imageboard/parts/footer.html' %}
 {% endblock %}

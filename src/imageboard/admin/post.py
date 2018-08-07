@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.conf import settings
 
 from ..models import Post, Image
-import gensokyo.config as config
+from gensokyo import config
 
 
 class ImageInlineAdmin(admin.TabularInline):

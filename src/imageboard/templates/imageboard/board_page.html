@@ -1,5 +1,25 @@
 {% extends 'imageboard/base.html' %}
 
+{% block page_title %}
+    {{ config.SITE_NAME }} :: /{{ board.hid }}/ {{ board.name }}
+{% endblock %}
+
+{% block header %}
+    {% include 'imageboard/parts/header.html' %}
+{% endblock %}
+
 {% block content %}
-    board_page {{ board }}
+    <div class="threads">
+        {% for thread in threads %}
+            {% include 'imageboard/parts/thread.html' with posts=thread.latest_posts %}
+
+            {% if not forloop.last %}
+                <div class="threads__thread-separator"></div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'imageboard/parts/footer.html' with board_pages=threads %}
 {% endblock %}

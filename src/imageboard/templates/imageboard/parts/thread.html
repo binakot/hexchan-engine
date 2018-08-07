@@ -1,0 +1,39 @@
+{% load num2hex %}
+
+{% if thread.is_deleted %}
+    <div class="thread thread--deleted" id="thread-{{ thread.id }}">
+        <div class="thread__deleted-label">
+            <span class="thread__hid" >
+                0x{{ thread.hid|num2hex }}
+            </span>
+            Тред  удален.
+        </div>
+    </div>
+{% else %}
+    <div class="thread" id="thread-{{ thread.id }}">
+        <div class="thread__op-post">
+            {% include 'imageboard/parts/post.html' with post=thread.op %}
+        </div>
+
+        {% if thread.posts.count > 0 %}
+            {% if thread.skipped %}
+                <div class="thread__skipped">
+                    Пропущено {{ thread.skipped }} пост(ов).
+                    <a href="{% url 'thread_page' board_hid=thread.board.hid thread_hid=thread.hid %}">Перейти к треду</a>
+                </div>
+            {% else %}
+                <div class="thread__op-separator"></div>
+            {% endif %}
+
+            <div class="thread__posts">
+                {% for post in posts %}
+                    {% include 'imageboard/parts/post.html' %}
+
+                    {% if not forloop.last %}
+                        <div class="thread__post-separator"></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
