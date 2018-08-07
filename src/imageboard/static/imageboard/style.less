@@ -11,7 +11,7 @@
 
 @accent-color: orangered;
 
-@separator-bg: #ccc;
+@separator-bg: #aaa;
 
 @field-color: #333;
 @field-bg: #fff;
@@ -361,8 +361,8 @@ a {
     height: 30px;
     width: 100%;
     padding: 5px 20px;
-    border-top: 1px solid @separator-bg;
-    border-bottom: 1px solid @separator-bg;
+    border-top: 1px dotted @separator-bg;
+    border-bottom: 1px dotted @separator-bg;
     text-align: center;
     font-size: 12px;
     font-style: italic;
@@ -373,13 +373,13 @@ a {
   &__op-separator {
     height: 1px;
     width: 100%;
-    border-top: 1px solid @separator-bg;
+    border-top: 1px dotted @separator-bg;
   }
 
   &__post-separator {
     height: 1px;
     width: 100%;
-    border-top: 1px solid @separator-bg;
+    border-top: 1px dotted @separator-bg;
   }
 
   &__deleted-label {
@@ -420,6 +420,7 @@ a {
     &--custom {
       font-weight: bold;
     }
+    margin-right: 10px;
   }
 
   &__title {
@@ -479,15 +480,19 @@ a {
     left: 0;
   }
 
+  &__text {
+    margin-bottom: -10px;
+  }
+
   // Rendered post elements:
 
   p {
-    margin: 0.5em 0;
+    margin: 10px 0;
   }
 
   blockquote {
     color: @ref-color;
-    margin: 0.5em 0;
+    margin: 10px 0;
   }
 
   a.ref {
