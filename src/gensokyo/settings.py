@@ -26,6 +26,7 @@ INSTALLED_APPS = [
 
     # Project apps
     'imageboard',
+    'assets',
 
     # Third party
     'debug_toolbar',

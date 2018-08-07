@@ -7,8 +7,14 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>{% block page_title %}Gensokyo Imageboard{% endblock %}</title>
+
+    <link rel="icon" href="{% static "imageboard/favicon.png" %}">
     <link rel="stylesheet" href="{% static 'imageboard/style.css' %}">
+
+    {# Lightbox #}
+    <link rel="stylesheet" href="{% static "assets/lightbox/css/lightbox.css" %}">
 </head>
 <body>
     {% block main %}
@@ -30,5 +36,13 @@
             {% endif %}
         </div>
     {% endblock %}
+
+    <div id="scripts">
+        <script defer src="{% static "assets/jquery/jquery.min.js" %}"></script>
+        <script defer src="{% static "assets/lightbox/js/lightbox.js" %}"></script>
+
+        <script defer src="{% static "imageboard/main.js" %}"></script>
+        {% block page_script %}{% endblock %}
+    </div>
 </body>
 </html>
