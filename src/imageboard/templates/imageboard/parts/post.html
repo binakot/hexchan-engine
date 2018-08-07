@@ -14,7 +14,7 @@
         </div>
     </div>
 {% else %}
-    <div class="post" id="post-{{ post.id }}">
+    <div class="post" id="post-{{ post.id }}" data-id="{{ post.id }}">
         <div class="post__anchor" id="0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}"></div>
 
         <div class="post__header">
@@ -38,11 +38,15 @@
 
             [<a class="post__reply-link" href="{% url 'thread_page' board_hid=board.hid thread_hid=thread.hid %}#0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}">Ответ</a>]
 
+            {% if post.is_op %}
+                <button class="post__button post__button--toggle js-toggle-thread" data-id="{{ thread.id }}" title="Скрыть тред">x</button>
+            {% else %}
+                <button class="post__button post__button--toggle js-toggle-post" data-id="{{ post.id }}" title="Скрыть пост">x</button>
+            {% endif %}
+
             {% if post.title %}
                 <div class="post__title">{{ post.title }}</div>
             {% endif %}
-
-
         </div>
 
         {% if post.images.count > 0 %}

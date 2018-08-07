@@ -10,7 +10,7 @@
         </div>
     </div>
 {% else %}
-    <div class="thread" id="thread-{{ thread.id }}">
+    <div class="thread" id="thread-{{ thread.id }}" data-id="{{ thread.id }}">
         <div class="thread__op-post">
             {% include 'imageboard/parts/post.html' with post=thread.op %}
         </div>

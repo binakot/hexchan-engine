@@ -1,4 +1,5 @@
 {% extends "imageboard/base.html" %}
+{% load static %}
 
 {% block page_title %}
     {{ config.SITE_NAME }} :: /{{ board.hid }}/ {{ board.name }} :: {{ thread.hid }}
@@ -14,4 +15,8 @@
 
 {% block footer %}
     {% include 'imageboard/parts/footer.html' %}
+{% endblock %}
+
+{% block page_script %}
+    <script defer src="{% static "imageboard/hider.js" %}"></script>
 {% endblock %}
