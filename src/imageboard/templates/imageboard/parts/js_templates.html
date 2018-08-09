@@ -1,0 +1,15 @@
+<script type="text/template" id="placeholder-item-template">
+    <div class="placeholder-item placeholder-item--<%= type %>" id="placeholder-<%= type %>-<%= id %>" data-id="<%= id %>">
+        <div class="placeholder-item__deleted-label">
+            <span class="placeholder-item__hid">
+                <%= hid %>
+            </span>
+            <span class="placeholder-item__text">
+                <%= label %>
+            </span>
+            <span class="placeholder-item__unhide-link js-toggle-<%= type %>" data-id="<%= id %>" data-hid="<%= hid %>" title="<%= id %>">
+                Показать
+            </span>
+        </div>
+    </div>
+</script>

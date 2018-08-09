@@ -1,6 +1,7 @@
 var LocalCollection = function(props) {
     var collection;
 
+
     function onStorageUpdate(ev){
         if (ev.key === props.key) {
             collection = JSON.parse(ev.newValue);
@@ -10,9 +11,11 @@ var LocalCollection = function(props) {
         }
     }
 
+
     function destroy() {
         window.removeEventListener('storage', onStorageUpdate);
     }
+
 
     function readCollection() {
         var collectionJSON = window.localStorage.getItem(props.key);
@@ -24,19 +27,23 @@ var LocalCollection = function(props) {
         }
     }
 
+
     function writeCollection() {
         var collectionJSON = JSON.stringify(collection);
         window.localStorage.setItem(props.key, collectionJSON);
     }
+
 
     function clearCollection() {
         collection = [];
         writeCollection();
     }
 
+
     function print() {
         console.log(collection);
     }
+
 
     function pushItem(item) {
         var itemIndex = collection.indexOf(item);
@@ -46,17 +53,20 @@ var LocalCollection = function(props) {
         writeCollection();
     }
 
-    function popItem(item) {
+
+    function removeItem(item) {
         var itemIndex = collection.indexOf(item);
         if (itemIndex !== -1) {
-            collection.pop(itemIndex);
+            collection.splice(itemIndex, 1);
         }
         writeCollection();
     }
 
+
     function checkItem(item) {
         return collection.indexOf(item) !== -1;
     }
+
 
     function toggleItem(item) {
         var itemIndex = collection.indexOf(item);
@@ -66,7 +76,7 @@ var LocalCollection = function(props) {
             status = true;
         }
         else {
-            collection.pop(itemIndex);
+            collection.splice(itemIndex, 1);
             status = false;
         }
         writeCollection();
@@ -80,7 +90,7 @@ var LocalCollection = function(props) {
     return {
         destroy: destroy,
         push: pushItem,
-        pop: popItem,
+        remove: removeItem,
         check: checkItem,
         toggle: toggleItem,
         print: print,
@@ -90,38 +100,77 @@ var LocalCollection = function(props) {
 
 
 var Hider = function(props) {
+    var hiddenClass = props.type + '--hidden';
+    var toggleSelector = '.js-toggle-' + props.type;
+    var multiSelector = '.' + props.type;
+
     var localCollection = new LocalCollection({
         key: props.storageKey,
         callback: function(collection){
-            console.log(props.storageKey, collection);
             applyLocalCollectionState();
         }
     });
 
+    var placeholderItemTemplate = _.template($('#placeholder-item-template').html());
+
+
+    function setItemState(itemId, itemHid, isHidden) {
+        var $item = $('#' + props.type + '-' + itemId);
+
+        if ($item.hasClass(hiddenClass) === isHidden) {
+            return;
+        }
+
+        $item.toggleClass(hiddenClass, isHidden);
+
+        var $placeholderItem;
+        if (isHidden) {
+            $placeholderItem = $(placeholderItemTemplate({
+                id: itemId,
+                hid: itemHid,
+                label: props.placeholderLabel,
+                type: props.type
+            }));
+            $placeholderItem.insertAfter($item);
+        }
+        else {
+            $placeholderItem = $('#placeholder-' + props.type + '-' + itemId);
+            $placeholderItem.remove();
+        }
+    }
+
+
     function applyLocalCollectionState() {
-        $(props.multiSelector).each(function(){
+        $(multiSelector).each(function(){
             var $item = $(this);
             var itemId = $item.attr('data-id');
+            var itemHid = $item.attr('data-hid');
             var isHidden = localCollection.check(itemId);
 
-            $item.toggleClass(props.hiddenClass, isHidden);
+            setItemState(itemId, itemHid, isHidden);
         });
     }
+
+
+    function onToggleClick(ev) {
+        var $toggler = $(ev.target);
+        var itemId = $toggler.attr('data-id');
+        var itemHid = $toggler.attr('data-hid');
+        var isHidden = localCollection.toggle(itemId);
+
+        setItemState(itemId, itemHid, isHidden);
+    }
+
 
     function destroy() {
         localCollection.destroy();
         $(document).off('.' + props.storageKey);
     }
 
+
     // Initialize
     applyLocalCollectionState();
-    $(document).on('click.' + props.storageKey, props.toggleSelector, function(ev){
-        var $item = $(ev.target).parents(props.multiSelector);
-        var itemId = $item.attr('data-id');
-        var isHidden = localCollection.toggle(itemId);
-
-        $item.toggleClass(props.hiddenClass, isHidden);
-    });
+    $(document).on('click.' + props.storageKey, toggleSelector, onToggleClick);
 
     return {
         destroy: destroy
@@ -130,16 +179,14 @@ var Hider = function(props) {
 
 
 var threadHider = new Hider({
+    type: 'thread',
     storageKey: 'hiddenThreads',
-    hiddenClass: 'thread--hidden',
-    toggleSelector: '.js-toggle-thread',
-    multiSelector: '.thread'
+    placeholderLabel: 'Тред скрыт.'
 });
 
 
 var postHider = new Hider({
-    storageKey: 'hiddenPostss',
-    hiddenClass: 'post--hidden',
-    toggleSelector: '.js-toggle-post',
-    multiSelector: '.post'
+    type: 'post',
+    storageKey: 'hiddenPosts',
+    placeholderLabel: 'Пост скрыт.'
 });

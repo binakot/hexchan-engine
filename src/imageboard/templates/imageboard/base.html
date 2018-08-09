@@ -37,7 +37,12 @@
         </div>
     {% endblock %}
 
+    <div id="templates">
+        {% block js_templates %}{% endblock %}
+    </div>
+
     <div id="scripts">
+        <script defer src="{% static "assets/underscore/underscore.js" %}"></script>
         <script defer src="{% static "assets/jquery/jquery.min.js" %}"></script>
         <script defer src="{% static "assets/lightbox/js/lightbox.js" %}"></script>
 

@@ -28,3 +28,7 @@
 {% block page_script %}
     <script defer src="{% static "imageboard/hider.js" %}"></script>
 {% endblock %}
+
+{% block js_templates %}
+    {% include 'imageboard/parts/js_templates.html' %}
+{% endblock %}

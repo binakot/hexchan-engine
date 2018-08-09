@@ -34,6 +34,22 @@
   box-shadow: 1px 2px 3px rgba(0,0,0, 0.3);
 }
 
+.hid {
+  height: 20px;
+  display: inline-block;
+  border: 1px solid;
+  line-height: 18px;
+  padding: 0 5px;
+  font-weight: bold;
+  border-radius: 3px;
+  margin-right: 10px;
+  color: inherit;
+  text-decoration: none;
+
+  width: 75px;
+  text-align: center;
+}
+
 
 // Fonts
 // =====================================================================================================================
@@ -310,14 +326,10 @@ a {
     }
   }
 }
-
 .board-selector:hover .board-selector__list {
   opacity: 1;
   visibility: visible;
 }
-
-
-
 
 
 .threads {
@@ -330,10 +342,10 @@ a {
   margin: 20px 0;
   border-radius: @block-border-radius;
   .item-shadow;
-  padding: 10px 0;
+  //padding: 10px 0;
 
   &--hidden {
-    opacity: 0.5;
+    display: none;
   }
 
   &--deleted {
@@ -349,16 +361,7 @@ a {
   }
 
   &__hid {
-    height: 20px;
-    display: inline-block;
-    border: 1px solid;
-    line-height: 18px;
-    padding: 0 5px;
-    font-weight: bold;
-    border-radius: 3px;
-    margin-right: 10px;
-    color: inherit;
-    text-decoration: none;
+    .hid;
   }
 
   &__skipped {
@@ -397,7 +400,7 @@ a {
   position: relative;
 
   &--hidden {
-    opacity: 0.5;
+    display: none;
   }
 
   &--deleted {
@@ -409,16 +412,7 @@ a {
   }
 
   &__hid {
-    height: 20px;
-    display: inline-block;
-    border: 1px solid;
-    line-height: 18px;
-    padding: 0 5px;
-    font-weight: bold;
-    border-radius: 3px;
-    margin-right: 10px;
-    color: inherit;
-    text-decoration: none;
+    .hid;
   }
 
   &__date {
@@ -572,14 +566,8 @@ a {
   font-size: 12px;
 
   &__hid {
-    height: 20px;
-    border: 1px solid;
-    //line-height: 18px;
-    padding: 0 5px;
-    font-weight: bold;
-    border-radius: 3px;
-    margin-right: 5px;
-    font-size: 14px;
+    .hid;
+    width: 48px;
   }
 
   &__image {
@@ -827,5 +815,36 @@ a {
 
 
 .paginator {
-
 }
+
+
+.placeholder-item {
+  padding: 10px 20px;
+  color: @disabled-color;
+
+  &--thread {
+    background: @main-bg;
+    margin: 20px 0;
+    border-radius: @block-border-radius;
+    .item-shadow;
+  }
+
+  &__deleted-label {}
+
+  &__hid {
+    .hid;
+  }
+
+  &__text {
+    margin-right: 10px;
+  }
+
+  &__unhide-link {
+    border-bottom: 1px dotted;
+    cursor: pointer;
+  }
+}
+
+
+
+
