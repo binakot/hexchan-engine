@@ -76,6 +76,15 @@
 //  font-style: italic;
 //  font-weight: bold;
 //}
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(../assets/MaterialIcons-Regular.woff) format('woff');
+}
 
 
 // Styles
@@ -103,6 +112,32 @@ body {
 
 a {
   color: @accent-color;
+}
+
+
+.icon {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  //font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
 }
 
 
@@ -409,6 +444,7 @@ a {
 
   &__header {
     margin-bottom: 10px;
+    position: relative;
   }
 
   &__hid {
@@ -423,6 +459,34 @@ a {
       font-weight: bold;
     }
     margin-right: 10px;
+  }
+
+  &__icons-and-buttons {
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  &__button {
+    display: inline-block;
+    background: #ccc;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    margin: 0 10px 0 0;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: @input-border-radius;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:hover {
+      background: #aaa;
+    }
   }
 
   &__title {

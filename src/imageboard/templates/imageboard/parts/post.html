@@ -38,17 +38,20 @@
 
             [<a class="post__reply-link" href="{% url 'thread_page' board_hid=board.hid thread_hid=thread.hid %}#0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}">Ответ</a>]
 
-            {% if post.is_op %}
-                <button
-                    class="post__button post__button--toggle js-toggle-thread"
-                    data-id="{{ thread.id }}" data-hid="0x{{ thread.hid|num2hex }}000" title="Скрыть тред"
-                >x</button>
-            {% else %}
-                <button
-                    class="post__button post__button--toggle js-toggle-post"
-                    data-id="{{ post.id }}" data-hid="0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}" title="Скрыть пост"
-                >x</button>
-            {% endif %}
+
+            <div class="post__icons-and-buttons">
+                {% if post.is_op %}
+                    <button
+                        class="post__button post__button--toggle icon js-toggle-thread"
+                        data-id="{{ thread.id }}" data-hid="0x{{ thread.hid|num2hex }}000" title="Скрыть тред"
+                    >close</button>
+                {% else %}
+                    <button
+                        class="post__button post__button--toggle icon js-toggle-post"
+                        data-id="{{ post.id }}" data-hid="0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}" title="Скрыть пост"
+                    >close</button>
+                {% endif %}
+            </div>
 
             {% if post.title %}
                 <div class="post__title">{{ post.title }}</div>
