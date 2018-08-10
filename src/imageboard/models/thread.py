@@ -19,8 +19,6 @@ class Thread(models.Model):
 
     max_posts_num = models.IntegerField()
 
-    last_post_hid = models.IntegerField(null=True)
-
     created_at = models.DateTimeField(auto_now_add=True, editable=False, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, editable=False, db_index=True)
 
