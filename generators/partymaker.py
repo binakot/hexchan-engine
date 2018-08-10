@@ -89,7 +89,7 @@ def make_thread(bnum, tnum):
         "model": "imageboard.thread",
         "pk": bnum * THREADS_NUM + tnum + 1,
         "fields": {
-            "hid": tnum,
+            "hid": tnum * POSTS_NUM,
             "board": bnum,
             "op": bnum * THREADS_NUM * POSTS_NUM + tnum * POSTS_NUM + 1,
             "is_sticky": fake.boolean(1),
@@ -126,7 +126,7 @@ def make_post(bnum, tnum, pnum):
         "model": "imageboard.post",
         "pk": bnum * THREADS_NUM * POSTS_NUM + tnum * POSTS_NUM + pnum + 1,
         "fields": {
-            "hid": pnum,
+            "hid": tnum * POSTS_NUM + pnum,
             "thread": bnum * THREADS_NUM + tnum + 1,
             "created_at": cur_date,
             "updated_at": cur_date,

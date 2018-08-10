@@ -1,25 +1,24 @@
-{% load num2hex %}
 {% load date_format %}
 {% load markup %}
 
 {% if post.is_deleted %}
     <div class="post post--deleted" id="post-{{ post.id }}">
-        <div class="post__anchor" id="0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}"></div>
+        <div class="post__anchor" id="{{ post.hid2hex }}"></div>
 
         <div class="post__deleted-label">
             <span class="post__hid" >
-                0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}
+                {{ post.hid2hex }}
             </span>
             Пост  удален.
         </div>
     </div>
 {% else %}
-    <div class="post" id="post-{{ post.id }}" data-id="{{ post.id }}" data-hid="0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}">
-        <div class="post__anchor" id="0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}"></div>
+    <div class="post" id="post-{{ post.id }}" data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}">
+        <div class="post__anchor" id="{{ post.hid2hex }}"></div>
 
         <div class="post__header">
-            <a class="post__hid" href="{% url 'thread_page' board_hid=board.hid thread_hid=thread.hid %}#0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}">
-                0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}
+            <a class="post__hid" href="{% url 'thread_page' board_hid=board.hid thread_hid=thread.hid %}{% if not post.is_op %}#{{ post.hid2hex }}{% endif %}">
+                {{ post.hid2hex }}
             </a>
 
             <span class="post__date">
@@ -36,7 +35,7 @@
                 {% endif %}
             </span>
 
-            [<a class="post__reply-link" href="{% url 'thread_page' board_hid=board.hid thread_hid=thread.hid %}#0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}">Ответ</a>]
+            [<a class="post__reply-link" href="{% url 'thread_page' board_hid=board.hid thread_hid=thread.hid %}{% if not post.is_op %}#{{ post.hid2hex }}{% endif %}">Ответ</a>]
 
 
             <div class="post__icons-and-buttons">
@@ -52,12 +51,12 @@
                 {% if post.is_op %}
                     <button
                         class="post__button post__button--toggle icon js-toggle-thread"
-                        data-id="{{ thread.id }}" data-hid="0x{{ thread.hid|num2hex }}000" title="Скрыть тред"
+                        data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="Скрыть тред"
                     >close</button>
                 {% else %}
                     <button
                         class="post__button post__button--toggle icon js-toggle-post"
-                        data-id="{{ post.id }}" data-hid="0x{{ thread.hid|num2hex }}{{ post.hid|num2hex }}" title="Скрыть пост"
+                        data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}" title="Скрыть пост"
                     >close</button>
                 {% endif %}
             </div>

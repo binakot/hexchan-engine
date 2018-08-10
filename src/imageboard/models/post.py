@@ -36,4 +36,4 @@ class Post(models.Model):
         indexes = []
 
     def hid2hex(self):
-        return config.POST_HID_FORMAT.format(hid=self.hid)
+        return config.POST_FULL_HID_FORMAT.format(hid=self.hid)

@@ -32,4 +32,4 @@ class Thread(models.Model):
         return self.posts.count()
 
     def hid2hex(self):
-        return config.THREAD_HID_FORMAT.format(hid=self.hid)
+        return config.THREAD_FULL_HID_FORMAT.format(hid=self.hid)

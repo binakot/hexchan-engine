@@ -1,16 +1,14 @@
-{% load num2hex %}
-
 {% if thread.is_deleted %}
     <div class="thread thread--deleted" id="thread-{{ thread.id }}">
         <div class="thread__deleted-label">
             <span class="thread__hid" >
-                0x{{ thread.hid|num2hex }}
+                {{ thread.hid2hex }}
             </span>
             Тред  удален.
         </div>
     </div>
 {% else %}
-    <div class="thread" id="thread-{{ thread.id }}" data-id="{{ thread.id }}" data-hid="0x{{ thread.hid|num2hex }}000">
+    <div class="thread" id="thread-{{ thread.id }}" data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}">
         <div class="thread__op-post">
             {% include 'imageboard/parts/post.html' with post=thread.op %}
         </div>

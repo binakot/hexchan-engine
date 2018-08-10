@@ -13,7 +13,7 @@
             "is_hidden": false,
             "is_locked": false,
             "is_deleted": false,
-            "last_thread_hid": 31,
+            "last_post_hid": 4095,
             "created_at": "2013-10-07 08:23:19Z",
             "updated_at": "2013-10-07 08:23:19Z"
         }
@@ -32,7 +32,7 @@
             "is_hidden": false,
             "is_locked": false,
             "is_deleted": false,
-            "last_thread_hid": 31,
+            "last_post_hid": 4095,
             "created_at": "2013-10-07 08:23:19Z",
             "updated_at": "2013-10-07 08:23:19Z"
         }
@@ -51,7 +51,7 @@
             "is_hidden": false,
             "is_locked": false,
             "is_deleted": false,
-            "last_thread_hid": 31,
+            "last_post_hid": 4095,
             "created_at": "2013-10-07 08:23:19Z",
             "updated_at": "2013-10-07 08:23:19Z"
         }
@@ -70,11 +70,11 @@
             "is_hidden": false,
             "is_locked": false,
             "is_deleted": false,
-            "last_thread_hid": 31,
+            "last_post_hid": 4095,
             "created_at": "2013-10-07 08:23:19Z",
             "updated_at": "2013-10-07 08:23:19Z"
         }
-    },            
+    },
     {
         "model": "imageboard.board",
         "pk": 4,
@@ -89,9 +89,9 @@
             "is_hidden": true,
             "is_locked": false,
             "is_deleted": false,
-            "last_thread_hid": 31,
+            "last_post_hid": 4095,
             "created_at": "2013-10-07T08:23:19Z",
-            "updated_at": "2013-10-07T08:23:19Z"           
+            "updated_at": "2013-10-07T08:23:19Z"
         }
-    }    
-]  
+    }
+]

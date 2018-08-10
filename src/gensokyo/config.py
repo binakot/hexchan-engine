@@ -19,12 +19,12 @@ FILE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif']
 FILE_MAX_SIZE = 1 * (1024 * 1024)  # 1 MiB
 FILE_MAX_NUM = 4
 
-THREAD_HID_FORMAT = '{hid:03x}'
-THREAD_HID_REGEX = '[0-9a-f]{3}'
-THREAD_FULL_HID_FORMAT = '0x{hid:03x}'
+THREAD_HID_FORMAT = '{hid:06x}'
+THREAD_HID_REGEX = '[0-9a-f]{6}'
+THREAD_FULL_HID_FORMAT = '0x{hid:06x}'
 
-POST_HID_FORMAT = '{hid:03x}'
-POST_HID_REGEX = '[0-9a-f]{3}'
-POST_FULL_HID_FORMAT = '0x{hid:03x}'
+POST_HID_FORMAT = '{hid:06x}'
+POST_HID_REGEX = '[0-9a-f]{6}'
+POST_FULL_HID_FORMAT = '0x{hid:06x}'
 
 IMAGE_HID_FORMAT = '0x{hid:08x}'

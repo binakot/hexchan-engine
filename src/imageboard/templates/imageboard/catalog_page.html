@@ -1,5 +1,4 @@
 {% extends 'imageboard/base.html' %}
-{% load num2hex %}
 
 {% block page_title %}
     {{ config.SITE_NAME }} :: /{{ board.hid }}/ {{ board.name }} :: Каталог
@@ -26,7 +25,7 @@
                         </div>
 
                         <div class="catalog-item__header">
-                            <span class="catalog-item__hid">0x{{ thread.hid|num2hex }}</span>
+                            <span class="catalog-item__hid">{{ thread.hid2hex }}</span>
                             <span class="catalog-item__title">
                                 {{ op_post.title }}
                             </span>

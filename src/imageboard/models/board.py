@@ -16,7 +16,7 @@ class Board(models.Model):
     is_locked = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
 
-    last_thread_hid = models.IntegerField(null=True)
+    last_post_hid = models.IntegerField(null=True)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
