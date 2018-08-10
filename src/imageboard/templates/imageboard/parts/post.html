@@ -40,6 +40,15 @@
 
 
             <div class="post__icons-and-buttons">
+
+                {% if post.is_op and thread.is_locked %}
+                    <i class="post__icon post__icon--sticky icon" title="Тред закрыт">lock</i>
+                {% endif %}
+
+                {% if post.is_op and thread.is_sticky %}
+                    <i class="post__icon post__icon--sticky icon" title="Тред закреплен">bookmark</i>
+                {% endif %}
+
                 {% if post.is_op %}
                     <button
                         class="post__button post__button--toggle icon js-toggle-thread"
