@@ -1,7 +1,7 @@
 from django import template
 from django.utils.safestring import mark_safe
 
-from imageboard.markup import parse
+from markup import parse
 
 
 register = template.Library()
