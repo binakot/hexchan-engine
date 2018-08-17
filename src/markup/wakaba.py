@@ -6,13 +6,18 @@ Version 3.0.9 was used.
 Synthax: http://wakaba.c3.cx/docs/docs.html#WakabaMark
 
 TODO: document regular expressions
+TODO: tests
+TODO: move ref expression to app config
+
+Missing features:
 TODO: code
 TODO: lists
 TODO: quotes
-TODO: refs
+TODO: strike
 """
 
 import re
+from typing import Callable, Union
 
 
 def make_url_tags(line: str) -> str:
@@ -96,3 +101,20 @@ def make_spoiler_tags(line: str) -> str:
     replacement_expression = r'<span class="spoiler">\2</span>'
 
     return search_expression.sub(replacement_expression, line)
+
+
+def make_ref_tags(line: str, get_url_by_hid: Callable[[str], Union[str, None]]) -> str:
+    """Find post refs and replace them with links to those posts."""
+
+    search_expression = re.compile(r'&gt;&gt;(0x[0-9a-f]{6})')
+
+    def replacement_function(matchobj):
+        hid = matchobj.group(1)
+        url = get_url_by_hid(hid)
+
+        if url is not None:
+            return '<a class="ref" href="{url}">&gt;&gt;{hid}</a>'.format(url=url, hid=hid)
+        else:
+            return '<span class="dead_ref">&gt;&gt;{hid}</span>'.format(hid=hid)
+
+    return search_expression.sub(replacement_function, line)
