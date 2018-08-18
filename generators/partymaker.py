@@ -96,7 +96,6 @@ def make_thread(bnum, tnum):
             "is_locked": fake.boolean(5),
             "is_deleted": fake.boolean(5),
             "max_posts_num": 512,
-            "last_post_hid": 127,
             "created_at": cur_date,
             "updated_at": cur_date,
         }
