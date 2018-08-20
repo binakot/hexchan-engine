@@ -139,3 +139,15 @@ def make_ref_tags(line: str, get_url_by_hid: Callable[[str], Union[str, None]]) 
             return '<span class="dead_ref">&gt;&gt;{hid}</span>'.format(hid=hid)
 
     return search_expression.sub(replacement_function, line)
+
+
+def make_all_inline_tags(text_line: str, get_url_by_hid: Callable[[str], Union[str, None]]) -> str:
+    """Make all inline tags, one after another."""
+    
+    text_line = make_url_tags(text_line)
+    text_line = make_strong_tags(text_line)
+    text_line = make_em_tags(text_line)
+    text_line = make_strike_tags(text_line)
+    text_line = make_spoiler_tags(text_line)
+    text_line = make_ref_tags(text_line, get_url_by_hid)
+    return text_line
