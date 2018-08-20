@@ -66,7 +66,7 @@ def make_strong_tags(line: str) -> str:
 
     search_expression = re.compile(
         r"""
-            (?<![\w*]) 
+            (?<![\w*_]) 
             (\*\*|__) 
             (?![<>\s\*_]) 
             ([^<>]+?) 
@@ -87,18 +87,39 @@ def make_spoiler_tags(line: str) -> str:
 
     search_expression = re.compile(
         r"""
-        (?<![\w*]) 
+        (?<![\w%]) 
         (%%) 
-        (?![<>\s\*_]) 
+        (?![<>\s%]) 
         ([^<>]+?) 
-        (?<![<>\s*_]) 
+        (?<![<>\s%]) 
         \1 
-        (?![\w*_])
+        (?![\w%])
         """,
         re.X
     )
 
     replacement_expression = r'<span class="spoiler">\2</span>'
+
+    return search_expression.sub(replacement_expression, line)
+
+
+def make_strike_tags(line: str) -> str:
+    """Find spoiler marks in string and replace them with <span class="spoiler"> tags."""
+
+    search_expression = re.compile(
+        r"""
+        (?<![\w-]) 
+        (--) 
+        (?![<>\s-]) 
+        ([^<>]+?) 
+        (?<![<>\s-]) 
+        \1 
+        (?![\w-])
+        """,
+        re.X
+    )
+
+    replacement_expression = r'<s>\2</s>'
 
     return search_expression.sub(replacement_expression, line)
 
