@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 from gensokyo import config
 
@@ -31,3 +32,12 @@ class Thread(models.Model):
 
     def hid2hex(self):
         return config.THREAD_FULL_HID_FORMAT.format(hid=self.hid)
+
+    def get_absolute_url(self):
+        thread_url = reverse(
+            'thread_page',
+            kwargs={'board_hid': self.board.hid, 'thread_hid': self.hid}
+        )
+
+        return thread_url
+

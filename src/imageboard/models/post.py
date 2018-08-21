@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 from gensokyo import config
 
@@ -37,3 +38,16 @@ class Post(models.Model):
 
     def hid2hex(self):
         return config.POST_FULL_HID_FORMAT.format(hid=self.hid)
+
+    def get_absolute_url(self):
+        thread_url = reverse(
+            'thread_page',
+            kwargs={'board_hid': self.thread.board.hid, 'thread_hid': self.thread.hid}
+        )
+
+        post_url = '{thread_url}#{post_hid}'.format(
+            thread_url=thread_url,
+            post_hid=self.hid2hex()
+        )
+
+        return post_url

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Board(models.Model):
@@ -26,3 +27,6 @@ class Board(models.Model):
 
     def threads_count(self):
         return self.threads.count()
+
+    def get_absolute_url(self):
+        return reverse('board_page', kwargs={'board_hid': self.hid})
