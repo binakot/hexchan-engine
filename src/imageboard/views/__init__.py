@@ -3,3 +3,4 @@ from .catalog_page import catalog_page
 from .error_page import error_page
 from .start_page import start_page
 from .thread_page import thread_page
+from .posting_view import posting_view

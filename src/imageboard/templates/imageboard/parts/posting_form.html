@@ -1,0 +1,31 @@
+<form action="{% url 'posting_view' %}" method="post" class="posting-form" enctype="multipart/form-data">
+    <div class="posting-form__inner">
+        {% csrf_token %}
+
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+        {% endfor %}
+
+        {% for field in form.visible_fields %}
+            <div class="posting-form__field">
+                {% if field.erros %}
+                    <div class="posting-form__field-errors">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+
+                {{ field.label_tag }} {{ field }}
+            </div>
+        {% endfor %}
+
+        <div class="posting-form__buttons">
+            <button type="submit" class="posting-form__submit">
+                {% if form_type == 'new_thread' %}
+                    Создать новый тред
+                {% elif form_type == 'new_post' %}
+                    Ответить в тред
+                {% endif %}
+            </button>
+        </div>
+    </div>
+</form>

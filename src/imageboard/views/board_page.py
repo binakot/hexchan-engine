@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 
 # App imports
 from imageboard.models import Board, Thread, Post, Image
+from imageboard.forms import PostingForm
 from gensokyo import config
 
 
@@ -51,8 +52,17 @@ def board_page(request, board_hid, page_num=1):
 
         thread.latest_posts = latest_posts_list
 
+    # Init thread creation form
+    form = PostingForm(
+        initial={
+            'form_type': 'new_thread',
+            'board_id': board.id
+        },
+    )
+
     # Return rendered template
     return render(request, 'imageboard/board_page.html', {
+        'form': form,
         'board': board,
         'boards': boards,
         'threads': paginated_threads,

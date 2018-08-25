@@ -7,10 +7,13 @@
 
 {% block header %}
     {% include 'imageboard/parts/header.html' %}
-    {% include 'imageboard/parts/board_header.html' %}
 {% endblock %}
 
 {% block content %}
+    {% include 'imageboard/parts/board_header.html' %}
+
+    {% include 'imageboard/parts/posting_form.html' with form_type='new_thread' %}
+
     <div class="threads">
         {% for thread in threads %}
             {% include 'imageboard/parts/thread.html' with posts=thread.latest_posts %}

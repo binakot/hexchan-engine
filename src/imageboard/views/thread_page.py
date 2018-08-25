@@ -4,6 +4,7 @@ from django.db.models import Prefetch
 
 # App imports
 from imageboard.models import Board, Thread, Post
+from imageboard.forms import PostingForm
 
 
 def thread_page(request, board_hid, thread_hid):
@@ -26,8 +27,18 @@ def thread_page(request, board_hid, thread_hid):
         .prefetch_related(*prefetch_args) \
         .get(board__hid=board_hid, hid=thread_hid, is_deleted=False)
 
+    # Init post creation form
+    form = PostingForm(
+        initial={
+            'form_type': 'new_post',
+            'board_id': board.id,
+            'thread_id': thread.id
+        },
+    )
+
     # Return rendered template
     return render(request, 'imageboard/thread_page.html', {
+        'form': form,
         'board': board,
         'boards': boards,
         'thread': thread,
