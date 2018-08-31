@@ -12,12 +12,10 @@ TODO: move ref expression to app config
 Missing features:
 TODO: code
 TODO: lists
-TODO: quotes
-TODO: strike
 """
 
 import re
-from typing import Callable, Union
+from typing import Callable, Union, List, Tuple
 
 
 def make_url_tags(line: str) -> str:
@@ -124,14 +122,16 @@ def make_strike_tags(line: str) -> str:
     return search_expression.sub(replacement_expression, line)
 
 
-def make_ref_tags(line: str, get_url_by_hid: Callable[[str], Union[str, None]]) -> str:
+def make_ref_tags(line: str, get_url_by_hid: Callable) -> str:
     """Find post refs and replace them with links to those posts."""
 
     search_expression = re.compile(r'&gt;&gt;(0x[0-9a-f]{6})')
 
+    found_refs = []
+
     def replacement_function(matchobj):
         hid = matchobj.group(1)
-        url = get_url_by_hid(hid)
+        url = get_url_by_hid(int(hid, 16))
 
         if url is not None:
             return '<a class="ref" href="{url}">&gt;&gt;{hid}</a>'.format(url=url, hid=hid)
@@ -141,13 +141,42 @@ def make_ref_tags(line: str, get_url_by_hid: Callable[[str], Union[str, None]]) 
     return search_expression.sub(replacement_function, line)
 
 
-def make_all_inline_tags(text_line: str, get_url_by_hid: Callable[[str], Union[str, None]]) -> str:
+def make_all_inline_tags(text_line: str) -> str:
     """Make all inline tags, one after another."""
-    
+
     text_line = make_url_tags(text_line)
     text_line = make_strong_tags(text_line)
     text_line = make_em_tags(text_line)
     text_line = make_strike_tags(text_line)
     text_line = make_spoiler_tags(text_line)
-    text_line = make_ref_tags(text_line, get_url_by_hid)
     return text_line
+
+
+def make_text_blocks(text: str) -> str:
+    """Make all text blocks with inline tags."""
+
+    html_lines = []
+    text_lines = re.split('\n', text)
+
+    for line in text_lines:
+        # Skip empty lines
+        if re.match(r'^\s*$', line):
+            continue
+
+        # Make quote tags
+        elif re.match(r'^&gt;', line):
+            html_line = '<blockquote>{line}</blockquote>'.format(
+                line=make_all_inline_tags(line)
+            )
+
+        # Make paragraphs for other cases
+        else:
+            html_line = '<p>{line}</p>'.format(
+                line=make_all_inline_tags(line)
+            )
+
+        if html_line:
+            html_lines.append(html_line)
+
+    return '\n'.join(html_lines)
+
