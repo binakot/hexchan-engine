@@ -45,7 +45,7 @@ class ThreadAdmin(admin.ModelAdmin):
     # List options
     # ==================================================================================================================
     list_display = ('id', 'admin_board_hid', 'admin_thread_hid',
-                    'posts_num', 'max_posts_num', 'admin_last_post_hid',
+                    'posts_num', 'max_posts_num',
                     'is_sticky', 'is_locked', 'is_deleted',
                     'created_at', 'updated_at',
                     )
@@ -78,7 +78,6 @@ class ThreadAdmin(admin.ModelAdmin):
         'created_at',
         'updated_at',
         'posts_num',
-        'admin_last_post_hid',
     )
 
     save_on_top = True
@@ -93,7 +92,7 @@ class ThreadAdmin(admin.ModelAdmin):
 
         ('Post number', {
             'fields': (
-                ('posts_num', 'max_posts_num', 'admin_last_post_hid',),
+                ('posts_num', 'max_posts_num',),
             ),
         }),
 
@@ -128,7 +127,3 @@ class ThreadAdmin(admin.ModelAdmin):
     def posts_num(self, obj):
         return obj.posts_num
     posts_num.short_description = 'Posts'
-
-    def admin_last_post_hid(self, obj):
-        return config.POST_HID_FORMAT.format(hid=obj.last_post_hid) if obj.last_post_hid else None
-    admin_last_post_hid.short_description = 'Last post HID'

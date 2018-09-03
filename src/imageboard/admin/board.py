@@ -14,7 +14,7 @@ class BoardAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'hid',
         'name', 'url', 'threads_num', 'default_username',
-        'default_max_posts_num', 'admin_last_thread_hid',
+        'default_max_posts_num', 'admin_last_post_hid',
         'is_hidden', 'is_locked', 'is_deleted',
         'created_at', 'updated_at',
     )
@@ -29,7 +29,7 @@ class BoardAdmin(admin.ModelAdmin):
         'id',
         'created_at',
         'updated_at',
-        'admin_last_thread_hid',
+        'admin_last_post_hid',
         'threads_num',
     )
 
@@ -43,7 +43,7 @@ class BoardAdmin(admin.ModelAdmin):
                 'name',
                 'url',
                 ('created_at', 'updated_at',),
-                ('threads_num', 'admin_last_thread_hid',),
+                ('threads_num', 'admin_last_post_hid',),
             ),
         }),
 
@@ -78,6 +78,6 @@ class BoardAdmin(admin.ModelAdmin):
         return obj.threads_num
     threads_num.short_description = 'Threads'
 
-    def admin_last_thread_hid(self, obj):
-        return config.THREAD_HID_FORMAT.format(hid=obj.last_thread_hid) if obj.last_thread_hid else None
-    admin_last_thread_hid.short_description = 'Last thread HID'
+    def admin_last_post_hid(self, obj):
+        return config.THREAD_HID_FORMAT.format(hid=obj.last_post_hid) if obj.last_post_hid else None
+    admin_last_post_hid.short_description = 'Last post HID'
