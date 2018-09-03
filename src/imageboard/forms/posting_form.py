@@ -23,19 +23,22 @@ class PostingForm(forms.Form):
         max_length=32, required=False, label='Автор'
     )
 
-    # email = forms.CharField(
-    #     max_length=32, required=False, label='Почта'
-    # )
+    email = forms.CharField(
+        max_length=32, required=False, label='Почта',
+        widget=forms.HiddenInput  # TODO: make visible, use email widget
+    )
 
     text = forms.CharField(
         max_length=2048, required=False, label='Текст',
         widget=forms.Textarea
     )
 
-    # password = forms.CharField(
-    #     max_length=16, required=False, label='Пароль'
-    # )
+    password = forms.CharField(
+        max_length=16, required=False, label='Пароль',
+        widget=forms.HiddenInput  # TODO: make visible
+    )
 
+    # TODO: captcha
     # captcha_id = forms.CharField(
     #     widget=forms.HiddenInput
     # )
