@@ -97,6 +97,17 @@
         </div>
 
         <div class="post__footer"></div>
+        {% if post.user_was_banned %}
+            <div class="post__admin-message">
+                Пользователь был забанен.
+            </div>
+        {% endif %}
+
+        {% if post.user_was_warned %}
+            <div class="post__admin-message">
+                Пользователь был предупрежден.
+            </div>
+        {% endif %}
 
         {% if request.user.is_superuser %}
             {% if post.is_op %}

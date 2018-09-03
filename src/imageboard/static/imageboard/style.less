@@ -27,6 +27,10 @@
 
 @ref-color: yellowgreen;
 
+@admin-color: firebrick;
+
+@error-color: red;
+
 
 // Mixins
 // =====================================================================================================================
@@ -214,7 +218,7 @@ a {
     position: fixed;
     top: 100px;
     right: 0;
-    background: @accent-color;
+    background: @admin-color;
     color: @button-color;
     z-index: 2;
     text-decoration: none;
@@ -463,7 +467,7 @@ a {
 
     &--admin {
       font-weight: bold;
-      color: @accent-color;
+      color: @admin-color;
 
       &:before {
         content: '###';
@@ -557,13 +561,19 @@ a {
     clear: both;
   }
 
+  &__admin-message {
+    margin-top: 20px;
+    color: @admin-color;
+    font-style: italic;
+  }
+
   &__deleted-label {}
 
   &__admin {
     position: absolute;
     right: -22px;
     top: 9px;
-    background: @accent-color;
+    background: @admin-color;
     color: @button-color;
     text-decoration: none;
     padding: 0 5px;
