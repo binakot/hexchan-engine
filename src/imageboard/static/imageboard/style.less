@@ -455,10 +455,24 @@ a {
   }
 
   &__author {
+    margin-right: 10px;
+
     &--custom {
       font-weight: bold;
     }
-    margin-right: 10px;
+
+    &--admin {
+      font-weight: bold;
+      color: @accent-color;
+
+      &:before {
+        content: '###';
+      }
+
+      &:after {
+        content: '###';
+      }
+    }
   }
 
   &__icons-and-buttons {
