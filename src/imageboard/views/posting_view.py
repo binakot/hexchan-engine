@@ -78,6 +78,7 @@ def posting_view(request):
 
             elif form_type == 'new_post':
                 post = create_post(request, board, thread, form.cleaned_data)
+                save_images(post, images)
 
             else:
                 return handle_error('unknow_form_type')
@@ -102,7 +103,7 @@ def posting_view(request):
 
     # Redirect to the new thread or post
     if form_type == 'new_post':
-        return redirect('thread_page', board_hid=board.hid, thread=thread.hid)
+        return redirect('thread_page', board_hid=board.hid, thread_hid=thread.hid)
     elif form_type == 'new_thread':
         return redirect('board_page', board_hid=board.hid)
     else:
