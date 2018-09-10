@@ -12,7 +12,11 @@
 {% block content %}
     {% include 'imageboard/parts/board_header.html' %}
 
-    {% include 'imageboard/parts/posting_form.html' with form_type='new_thread' %}
+    {% if board.is_locked %}
+        {% include 'imageboard/parts/lockdown.html' with type='board' %}
+    {% else %}
+        {% include 'imageboard/parts/posting_form.html' with form_type='new_thread' %}
+    {% endif %}
 
     <div class="threads">
         {% for thread in threads %}

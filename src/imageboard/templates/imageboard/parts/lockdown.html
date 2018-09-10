@@ -1,0 +1,7 @@
+<div class="lockdown lockdown--{{ type }}">
+    {% if type == 'thread' %}
+        Тред закрыт для новых постов.
+    {% elif type == 'board' %}
+        Доска закрыта для новых тредов и постов.
+    {% endif %}
+</div>

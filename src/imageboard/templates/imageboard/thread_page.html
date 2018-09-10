@@ -12,7 +12,13 @@
 {% block content %}
     {% include 'imageboard/parts/board_header.html' %}
 
-    {% include 'imageboard/parts/posting_form.html' with form_type='new_post' %}
+    {% if board.is_locked %}
+        {% include 'imageboard/parts/lockdown.html' with type='board' %}
+    {% elif thread.is_locked %}
+        {% include 'imageboard/parts/lockdown.html' with type='thread' %}
+    {% else %}
+        {% include 'imageboard/parts/posting_form.html' with form_type='new_post' %}
+    {% endif %}
 
     {% include 'imageboard/parts/thread.html' with posts=thread.posts.all %}
 {% endblock %}
