@@ -1,6 +1,6 @@
 # Django imports
 from django.shortcuts import render
-from django.db.models import Prefetch, Count
+from django.db.models import Prefetch, Count, Subquery, OuterRef
 from django.core.paginator import Paginator
 
 # App imports
@@ -13,11 +13,20 @@ def board_page(request, board_hid, page_num=1):
     boards = Board.objects.order_by('hid').all()
     board = boards.get(hid=board_hid, is_deleted=False)
 
+    # Queryset for latest posts
+    latest_posts_queryset = Post.objects\
+        .filter(thread=OuterRef('thread'), is_op=False)\
+        .order_by('-id')\
+        .values_list('id', flat=True)[:config.POSTS_PER_THREAD_PER_PAGE]
+
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
         Prefetch('op'),
         Prefetch('op__images'),
         Prefetch('op__replies', queryset=Post.objects.only('id', 'hid')),
+        Prefetch('posts', queryset=Post.objects.filter(id__in=Subquery(latest_posts_queryset)), to_attr='latest_posts'),
+        Prefetch('latest_posts__images'),
+        Prefetch('latest_posts__replies', queryset=Post.objects.only('id', 'hid')),
     ]
 
     # Threads queryset
@@ -26,7 +35,7 @@ def board_page(request, board_hid, page_num=1):
         .select_related('board')\
         .prefetch_related(*prefetch_args)\
         .annotate(posts_count=Count('posts'))\
-        .order_by('board', '-is_sticky', '-hid')
+        .order_by('board', '-is_sticky', '-hid')[:config.MAX_PAGES * config.THREADS_PER_PAGE]
 
     # Paginate threads
     paginator = Paginator(threads, config.THREADS_PER_PAGE)
@@ -38,16 +47,7 @@ def board_page(request, board_hid, page_num=1):
         skipped = thread.posts_count - (config.POSTS_PER_THREAD_PER_PAGE + 1)
         thread.skipped = max(skipped, 0)
 
-        # Get latest posts list
-        latest_posts = Post.objects\
-            .filter(thread=thread.id, is_op=False)\
-            .prefetch_related(
-                Prefetch('images'),
-                Prefetch('replies', queryset=Post.objects.only('id', 'hid')),
-            )\
-            .order_by('-id')[:config.POSTS_PER_THREAD_PER_PAGE]
-
-        latest_posts_list = list(latest_posts)
+        latest_posts_list = list(thread.latest_posts)
         latest_posts_list.reverse()
 
         thread.latest_posts = latest_posts_list

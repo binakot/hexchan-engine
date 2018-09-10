@@ -27,9 +27,6 @@ class Thread(models.Model):
         unique_together = ['board', 'hid']
         indexes = []
 
-    def posts_count(self):
-        return self.posts.count()
-
     def hid2hex(self):
         return config.THREAD_FULL_HID_FORMAT.format(hid=self.hid)
 
