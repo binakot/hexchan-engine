@@ -16,8 +16,10 @@
 <body>
 <div class="error-page">
     <div class="error-page__header">
-        <span class="error-page__code">{% block code %}{% endblock %}</span>
-        <span class="error-page__title">{% block title %}{% endblock %}</span>
+        {% block header %}
+            <span class="error-page__code">{% block code %}{% endblock %}</span>
+            <span class="error-page__title">{% block title %}{% endblock %}</span>
+        {% endblock %}
     </div>
 
     <div class="error-page__reason">

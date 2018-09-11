@@ -10,7 +10,6 @@ register_converter(converters.PostHidConverter, 'pid')
 
 urlpatterns = [
     path('', views.start_page, name='start_page'),
-    path('error/', views.error_page, name='error_page'),
     path('create/', views.posting_view, name='posting_view'),
     path('<str:board_hid>/', views.board_page, name='board_page'),
     path('<str:board_hid>/<int:page_num>/', views.board_page, name='board_page_num'),

@@ -1,13 +1,12 @@
 # Standard library imports
 # import logging
 import os
-from typing import Union, Tuple
 
 # Django imports
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.conf import settings
 from django.contrib.auth import get_user
-from django.db import transaction, IntegrityError
+from django.db import transaction, DatabaseError
 from django.db.models import F
 
 # Third party imports
@@ -18,161 +17,137 @@ import bleach
 from gensokyo import config
 from imageboard.models import Board, Thread, Post, Image
 from imageboard.forms import PostingForm
+from imageboard import exceptions
 
 
 def posting_view(request):
-    # Check request type
-    if not request.POST:
-        return handle_error('wrong_request_type')
+    try:
+        # Check request type
+        if not request.POST:
+            raise exceptions.BadRequestType
 
-    # Get form data
-    form = PostingForm(request.POST)
-    if not form.is_valid():
-        return handle_error('form_is_invalid', form.errors.as_data)
+        # Get form data
+        form = PostingForm(request.POST)
+        if not form.is_valid():
+            raise exceptions.FormValidationError(form.errors)
 
-    # Get form type
-    form_type = form.cleaned_data['form_type']
+        # Get form type
+        form_type = form.cleaned_data['form_type']
 
-    # Get and check board object
-    board_id = form.cleaned_data['board_id']
-    board, board_error = get_board(board_id)
-    if board_error:
-        return handle_error(board_error)
+        # Get and check board object
+        board_id = form.cleaned_data['board_id']
+        board = get_board(board_id)
 
-    #  If creating post in a thread - get and check that thread
-    if form_type == 'new_post':
-        thread_id = form.cleaned_data['thread_id']
-        thread, thread_error = get_thread(thread_id)
-        if thread_error:
-            return handle_error(thread_error)
-    else:
-        thread = None
+        #  If creating post in a thread - get and check that thread
+        if form_type == 'new_post':
+            # Get and check  thread
+            thread_id = form.cleaned_data['thread_id']
+            thread = get_thread(thread_id)
+        else:
+            thread = None
 
-    # # Check captcha
-    # captcha_error = check_captcha(request)
-    # if captcha_error:
-    #     return make_error_message(captcha_error)
+        # # Check captcha
+        # captcha_error = check_captcha(request)
+        # if captcha_error:
+        #     return make_error_message(captcha_error)
 
-    # Get list of uploaded image objects
-    images = request.FILES.getlist('images')
+        # Get list of uploaded image objects
+        images = request.FILES.getlist('images')
 
-    # Check message
-    message_error = check_message_content(cleaned_data=form.cleaned_data, images=images)
-    if message_error:
-        return handle_error(message_error)
+        # Check message
+        check_message_content(cleaned_data=form.cleaned_data, images=images)
+
+    except exceptions.ImageboardError as e:
+        return render(request, 'imageboard/posting_error_page.html', context={'exception': e}, status=403)
 
     # Create thread, op post, save images, bump board's thread counter
-    try:
-        with transaction.atomic():
-            # Bump board's post HID counter
-            board.last_post_hid = F('last_post_hid') + 1
-            board.save()
-            board.refresh_from_db()
+    # try:
+    with transaction.atomic():
+        # Bump board's post HID counter
+        board.last_post_hid = F('last_post_hid') + 1
+        board.save()
+        board.refresh_from_db()
 
-            if form_type == 'new_thread':
-                thread = create_thread(request, board)
-                post = create_post(request, board, thread, form.cleaned_data, is_op=True)
-                save_images(post, images)
-                thread.op = post
-                thread.save()
-
-            elif form_type == 'new_post':
-                post = create_post(request, board, thread, form.cleaned_data)
-                save_images(post, images)
-
-            else:
-                return handle_error('unknow_form_type')
-
-    # Handle database errors
-    except IntegrityError as integrity_error:
-        print(integrity_error)  # TODO LOGGING
-        return handle_error('database_is_broken')
-
-    # Handle file saving errors
-    except IOError as io_error:
-        print(io_error)  # TODO LOGGING
-        return handle_error('storage_is_broken')
-
-    # Handle missing boards
-    except Board.DoesNotExist:
-        return handle_error('board_not_found')
-
-    # Handle missing threads
-    except Thread.DoesNotExist:
-        return handle_error('thread_not_found')
+        if form_type == 'new_thread':
+            thread = create_thread(request, board)
+            post = create_post(request, board, thread, form.cleaned_data, is_op=True)
+            save_images(post, images)
+            thread.op = post
+            thread.save()
+        else:
+            post = create_post(request, board, thread, form.cleaned_data)
+            save_images(post, images)
+    #
+    # # Handle database errors
+    # except DatabaseError as database_error:
+    #     print(database_error)  # TODO LOGGING
+    #     return handle_error('database_is_broken')
+    #
+    # # Handle file saving errors
+    # except IOError as io_error:
+    #     print(io_error)  # TODO LOGGING
+    #     return handle_error('storage_is_broken')
 
     # Redirect to the new thread or post
     if form_type == 'new_post':
         return redirect('thread_page', board_hid=board.hid, thread_hid=thread.hid)
-    elif form_type == 'new_thread':
-        return redirect('board_page', board_hid=board.hid)
     else:
-        return handle_error('missing_parameter')
+        return redirect('board_page', board_hid=board.hid)
 
 
-def handle_error(message: str, data=None):
-    print('ERROR', message, data)
-    return redirect('error_page')
-
-
-def get_board(board_id: int) -> Tuple[Union[Board, None], Union[str, None]]:
+def get_board(board_id: int) -> Board:
     """Get valid Board model object."""
-
-    if board_id is None:
-        return None, 'missing_parameter'
-
-    board = Board.objects.get(id=board_id, is_deleted=False)
+    try:
+        board = Board.objects.get(id=board_id, is_deleted=False)
+    except Board.DoesNotExist:
+        raise exceptions.BoardNotFound
 
     # Check board status
     if board.is_locked:
-        return None, 'board_is_closed'
+        raise exceptions.BoardIsLocked
 
-    return board, None
+    return board
 
 
-def get_thread(thread_id: int) -> Tuple[Union[Thread, None], Union[str, None]]:
+def get_thread(thread_id: int) -> Thread:
     """Get valid Thread model object."""
-
-    if thread_id is None:
-        return None, 'missing_parameter'
-
-    thread = Thread.objects.get(id=thread_id, is_deleted=False)
+    try:
+        thread = Thread.objects.get(id=thread_id, is_deleted=False)
+    except Thread.DoesNotExist:
+        raise exceptions.ThreadNotFound
 
     # Check thread status
     if thread.is_locked:
-        return None, 'thread_is_closed'
+        raise exceptions.ThreadIsLocked
 
     # Check thread posts num
     if thread.posts.count() >= thread.max_posts_num:
-        return None, 'post_limit_is_reached'
+        raise exceptions.PostLimitWasReached
 
-    return thread, None
+    return thread
 
 
-def check_message_content(cleaned_data, images) -> Union[str, None]:
+def check_message_content(cleaned_data, images):
     # Check honeypot. Yes, the email field is a honeypot!
     if len(cleaned_data['email']) > 0:
-        return 'content_is_invalid'
+        raise exceptions.BadMessageContent('content is invalid')
 
     # Check if empty message
     if not cleaned_data['text'] and not images:
-        return 'empty_message'
+        raise exceptions.BadMessageContent('empty message')
 
     # Check number of files
     if len(images) > config.FILE_MAX_NUM:
-        return 'too_many_files'
+        raise exceptions.BadMessageContent('too many files')
 
     # Check file(s) for field 'file'
     for file_object in images:
         if file_object.size > config.FILE_MAX_SIZE:
-            return 'file_is_too_large'
+            raise exceptions.BadMessageContent('file is too large')
         if file_object.content_type not in config.FILE_MIME_TYPES:
-            return 'invalid_file_type'
+            raise exceptions.BadMessageContent('invalid file type')
 
     # TODO: remember to check password with regex when saving it
-
-    # If everything is OK return None
-    return None
 
 
 def get_client_ip(request) -> str:
