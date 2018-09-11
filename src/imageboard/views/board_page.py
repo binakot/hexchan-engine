@@ -2,16 +2,24 @@
 from django.shortcuts import render
 from django.db.models import Prefetch, Count, Subquery, OuterRef
 from django.core.paginator import Paginator
+from django.http import Http404
 
 # App imports
-from imageboard.models import Board, Thread, Post, Image
+from imageboard.models import Board, Thread, Post
 from imageboard.forms import PostingForm
+from imageboard.errors import codes
 from gensokyo import config
 
 
 def board_page(request, board_hid, page_num=1):
+    # Get boards
     boards = Board.objects.order_by('hid').all()
-    board = boards.get(hid=board_hid, is_deleted=False)
+
+    # Get current board
+    try:
+        board = boards.get(hid=board_hid, is_deleted=False)
+    except Board.DoesNotExist:
+        raise Http404(codes.BOARD_NOT_FOUND)
 
     # Queryset for latest posts
     latest_posts_queryset = Post.objects\

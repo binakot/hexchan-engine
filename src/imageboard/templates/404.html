@@ -1,0 +1,12 @@
+{% extends 'error_base.html' %}
+{% load error_string %}
+
+{% block code %}404{% endblock %}
+
+{% block title %}Page not found{% endblock %}
+
+{% block message %}
+    {% error_string exception %}
+    <br>
+    Путь: {{ request_path }}
+{% endblock %}

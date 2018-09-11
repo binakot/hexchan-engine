@@ -1,4 +1,4 @@
-SITE_NAME = 'HEXCHAN.ORG'
+SITE_NAME = 'Gensokyo Imageboard'
 
 DATE_TIME_FORMAT = 'd.m.Y в H:i:s'
 

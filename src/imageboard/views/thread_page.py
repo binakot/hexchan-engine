@@ -1,15 +1,23 @@
 # Django imports
 from django.shortcuts import render
 from django.db.models import Prefetch
+from django.http import Http404
 
 # App imports
 from imageboard.models import Board, Thread, Post
 from imageboard.forms import PostingForm
+from imageboard.errors import codes
 
 
 def thread_page(request, board_hid, thread_hid):
+    # Get boards
     boards = Board.objects.order_by('hid').all()
-    board = boards.get(hid=board_hid, is_deleted=False)
+
+    # Get current board
+    try:
+        board = boards.get(hid=board_hid, is_deleted=False)
+    except Board.DoesNotExist:
+        raise Http404(codes.BOARD_NOT_FOUND)
 
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
@@ -22,10 +30,13 @@ def thread_page(request, board_hid, thread_hid):
     ]
 
     # Thread queryset
-    thread = Thread.objects \
-        .select_related('board') \
-        .prefetch_related(*prefetch_args) \
-        .get(board__hid=board_hid, hid=thread_hid, is_deleted=False)
+    try:
+        thread = Thread.objects \
+            .select_related('board') \
+            .prefetch_related(*prefetch_args) \
+            .get(board__hid=board_hid, hid=thread_hid, is_deleted=False)
+    except Thread.DoesNotExist:
+        raise Http404(codes.THREAD_NOT_FOUND)
 
     # Init post creation form
     form = PostingForm(

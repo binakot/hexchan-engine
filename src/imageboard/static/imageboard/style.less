@@ -890,13 +890,40 @@ a {
 }
 
 .lockdown {
-  padding: 10px 20px;
+  padding: 20px;
   background: @main-bg;
-  color: @error-color;
+  color: @main-color;
   border-radius: @block-border-radius;
   border: 3px solid @error-color;
   .item-shadow;
   font-weight: bold;
   text-align: center;
   font-size: 20px;
+}
+
+
+.error-page {
+  width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: @block-border-radius;
+  background: @main-bg;
+  color: @main-color;
+  border: 3px solid @error-color;
+  .item-shadow;
+
+  &__header {
+    margin-bottom: 10px;
+  }
+
+  &__code {
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  &__title {
+    font-size: 20px;
+  }
+
+  &__reason {}
 }

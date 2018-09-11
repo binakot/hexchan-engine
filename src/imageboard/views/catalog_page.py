@@ -1,14 +1,22 @@
 # Django imports
 from django.shortcuts import render
 from django.db.models import Prefetch, Count
+from django.http import Http404
 
 # App imports
 from imageboard.models import Board, Thread
+from imageboard.errors import codes
 
 
 def catalog_page(request, board_hid):
+    # Get boards
     boards = Board.objects.order_by('hid').all()
-    board = boards.get(hid=board_hid, is_deleted=False)
+
+    # Get current board
+    try:
+        board = boards.get(hid=board_hid, is_deleted=False)
+    except Board.DoesNotExist:
+        raise Http404(codes.BOARD_NOT_FOUND)
 
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
