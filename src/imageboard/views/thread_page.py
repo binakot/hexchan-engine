@@ -6,7 +6,6 @@ from django.http import Http404
 # App imports
 from imageboard.models import Board, Thread, Post
 from imageboard.forms import PostingForm
-from imageboard.errors import codes
 
 
 def thread_page(request, board_hid, thread_hid):
@@ -17,7 +16,7 @@ def thread_page(request, board_hid, thread_hid):
     try:
         board = boards.get(hid=board_hid, is_deleted=False)
     except Board.DoesNotExist:
-        raise Http404(codes.BOARD_NOT_FOUND)
+        raise Http404('Board not found')
 
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
@@ -36,7 +35,7 @@ def thread_page(request, board_hid, thread_hid):
             .prefetch_related(*prefetch_args) \
             .get(board__hid=board_hid, hid=thread_hid, is_deleted=False)
     except Thread.DoesNotExist:
-        raise Http404(codes.THREAD_NOT_FOUND)
+        raise Http404('Thread not found')
 
     # Init post creation form
     form = PostingForm(

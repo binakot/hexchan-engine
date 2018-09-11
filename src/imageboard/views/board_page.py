@@ -7,7 +7,6 @@ from django.http import Http404
 # App imports
 from imageboard.models import Board, Thread, Post
 from imageboard.forms import PostingForm
-from imageboard.errors import codes
 from gensokyo import config
 
 
@@ -19,7 +18,7 @@ def board_page(request, board_hid, page_num=1):
     try:
         board = boards.get(hid=board_hid, is_deleted=False)
     except Board.DoesNotExist:
-        raise Http404(codes.BOARD_NOT_FOUND)
+        raise Http404('Board not found')
 
     # Queryset for latest posts
     latest_posts_queryset = Post.objects\

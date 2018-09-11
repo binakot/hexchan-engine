@@ -1,10 +1,9 @@
 {% extends 'error_base.html' %}
-{% load error_string %}
 
 {% block code %}403{% endblock %}
 
 {% block title %}Forbidden{% endblock %}
 
 {% block message %}
-    {% error_string exception %}
+    {{ exception }}
 {% endblock %}

@@ -5,7 +5,6 @@ from django.http import Http404
 
 # App imports
 from imageboard.models import Board, Thread
-from imageboard.errors import codes
 
 
 def catalog_page(request, board_hid):
@@ -16,7 +15,7 @@ def catalog_page(request, board_hid):
     try:
         board = boards.get(hid=board_hid, is_deleted=False)
     except Board.DoesNotExist:
-        raise Http404(codes.BOARD_NOT_FOUND)
+        raise Http404('Board not found')
 
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
