@@ -118,7 +118,15 @@ MEDIA_ROOT = str(BASE_DIR / '..' / 'dev' / 'upload')
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
+    },
+    'production': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': str(BASE_DIR / '..' / 'dev' / 'cache'),
+        'TIMEOUT': 60 * 60 * 24 * 30,  # 30 days in seconds
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    },
 }
 
 # Session

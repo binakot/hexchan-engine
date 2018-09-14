@@ -49,5 +49,9 @@
         <script defer src="{% static "imageboard/main.js" %}"></script>
         {% block page_script %}{% endblock %}
     </div>
+
+    <div id="metadata">
+        {% block metadata %}{% endblock %}
+    </div>
 </body>
 </html>

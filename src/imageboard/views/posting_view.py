@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib.auth import get_user
 from django.db import transaction, DatabaseError
 from django.db.models import F
+from django.views.decorators.csrf import csrf_exempt
 
 # Third party imports
 import PIL.Image
@@ -20,6 +21,7 @@ from imageboard.forms import PostingForm
 from imageboard import exceptions
 
 
+@csrf_exempt
 def posting_view(request):
     try:
         # Check request type
@@ -77,6 +79,7 @@ def posting_view(request):
         else:
             post = create_post(request, board, thread, form.cleaned_data)
             save_images(post, images)
+            thread.save()
     #
     # # Handle database errors
     # except DatabaseError as database_error:

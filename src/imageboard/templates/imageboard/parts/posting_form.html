@@ -1,6 +1,5 @@
 <form action="{% url 'posting_view' %}" method="post" class="posting-form" enctype="multipart/form-data">
     <div class="posting-form__inner">
-        {% csrf_token %}
 
         {% for hidden_field in form.hidden_fields %}
             {{ hidden_field }}

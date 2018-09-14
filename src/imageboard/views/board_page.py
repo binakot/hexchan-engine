@@ -1,8 +1,12 @@
+# Standard import
+import datetime
+
 # Django imports
-from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.db.models import Prefetch, Count, Subquery, OuterRef
 from django.core.paginator import Paginator
-from django.http import Http404
+from django.http import HttpResponse, Http404
+from django.core.cache import cache
 
 # App imports
 from imageboard.models import Board, Thread, Post
@@ -19,6 +23,14 @@ def board_page(request, board_hid, page_num=1):
         board = boards.get(hid=board_hid, is_deleted=False)
     except Board.DoesNotExist:
         raise Http404('Board not found')
+
+    # Get cached page if exists and return it
+    cache_key = 'board_page__{board_hid}__{page_num}'.format(board_hid=board_hid, page_num=page_num)
+    cache_record = cache.get(cache_key)
+    if cache_record is not None and not request.user.is_authenticated:
+        timestamp, rendered_template = cache_record
+        if board.updated_at == timestamp:
+            return HttpResponse(rendered_template)
 
     # Queryset for latest posts
     latest_posts_queryset = Post.objects\
@@ -67,11 +79,32 @@ def board_page(request, board_hid, page_num=1):
         },
     )
 
-    # Return rendered template
-    return render(request, 'imageboard/board_page.html', {
-        'form': form,
-        'board': board,
-        'boards': boards,
-        'threads': paginated_threads,
+    # Cache data
+    cache_data = {
+        'updated_at': board.updated_at,
+        'generated_at': datetime.datetime.now(),
+        'board': board.hid,
         'page': page_num,
-    })
+    }
+
+    # Render template
+    rendered_template = render_to_string(
+        'imageboard/board_page.html',
+        {
+            'form': form,
+            'board': board,
+            'boards': boards,
+            'threads': paginated_threads,
+            'page': page_num,
+            'cache_data': cache_data,
+        },
+        request
+    )
+
+    # Write page to cache
+    if not request.user.is_authenticated:
+        new_cache_record = (board.updated_at, rendered_template,)
+        cache.set(cache_key, new_cache_record)
+
+    # Return response
+    return HttpResponse(rendered_template)
