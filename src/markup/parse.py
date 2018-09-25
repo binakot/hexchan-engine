@@ -1,11 +1,15 @@
 import re
+from typing import Tuple, Union
 
 from django.urls import reverse
+
+from markup import wakaba
+from imageboard.models import Board, Thread, Post
 
 
 quote_re = re.compile(r'^&gt;.*')
 ref_re = re.compile(r'(&gt;&gt;0x[0-9a-f]{3}([0-9a-f]{3}))')
-# mini_ref_re = re.compile(r'(&gt;&gt;([0-9a-f]{3}))')
+mini_ref_re = re.compile(r'(&gt;&gt;([0-9a-f]{3}))')
 
 
 def parse(s, board_hid, thread_hid, post_hid):
@@ -53,3 +57,16 @@ def parse(s, board_hid, thread_hid, post_hid):
     }
 
     return html_string, metadata
+
+
+def parse_post_text(text: str, board: Board, thread: Thread) -> Tuple[str, dict]:
+    def make_url(hid):
+        try:
+            post = Post.objects.select(hid=hid, thread__board=Board)
+            return post.get_absolute_url()
+        except Post.DoesNotExist:
+            return None
+
+    parsed_text = wakaba.make_text_blocks(text)
+    parsed_text_with_refs = wakaba.make_ref_tags(parsed_text, make_url)
+

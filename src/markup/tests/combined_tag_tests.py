@@ -73,14 +73,3 @@ class NestedTagsTest(TestCase):
             wakaba.make_all_inline_tags('__nomad__ atata **huita**', self._get_url_by_hid),
             '<strong>nomad</strong> atata <strong>huita</strong>'
         )
-
-    def test_other_combined_tags(self):
-        self.assertEqual(
-            wakaba.make_all_inline_tags('**&gt;&gt;0x100500**', self._get_url_by_hid),
-            '<strong><a class="ref" href="http://example.com/#0x100500">&gt;&gt;0x100500</a></strong>'
-        )
-
-        self.assertNotEqual(
-            wakaba.make_all_inline_tags('--http://example.com--', self._get_url_by_hid),
-            '<s><a href="http://example.com" rel="nofollow">http://example.com</a></s>'
-        )
