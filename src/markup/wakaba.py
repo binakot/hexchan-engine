@@ -102,7 +102,7 @@ def make_spoiler_tags(line: str) -> str:
 
 
 def make_strike_tags(line: str) -> str:
-    """Find spoiler marks in string and replace them with <span class="spoiler"> tags."""
+    """Find strike marks in string and replace them with <s> tags."""
 
     search_expression = re.compile(
         r"""
