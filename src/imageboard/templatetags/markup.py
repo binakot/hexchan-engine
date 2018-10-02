@@ -1,14 +1,14 @@
 from django import template
 from django.utils.safestring import mark_safe
 
-from markup import parse
+from imageboard.wakabamark import parse_text
 
 
 register = template.Library()
 
 
 @register.simple_tag
-def markup(text, board_hid, thread_hid, post_hid):
+def markup(text, board, thread, post):
 
-    rendered_text, metadata = parse(text, board_hid, thread_hid, post_hid)
+    rendered_text = parse_text(text, board, thread, post)
     return mark_safe(rendered_text)
