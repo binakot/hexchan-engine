@@ -9,6 +9,8 @@
 {% endblock %}
 
 {% block content %}
+    {% include 'imageboard/parts/board_header.html' %}
+
     <div class="catalog">
         <div class="catalog__items">
             {% for thread in threads %}
@@ -48,6 +50,10 @@
 
 {% block footer %}
     {% include 'imageboard/parts/footer.html' %}
+{% endblock %}
+
+{% block page_style %}
+    <style>{{ board.custom_style }}</style>
 {% endblock %}
 
 {% block metadata %}

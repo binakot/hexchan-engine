@@ -12,6 +12,8 @@
 {% block content %}
     {% include 'imageboard/parts/board_header.html' %}
 
+    {% include 'imageboard/parts/rules.html' %}
+
     {% if board.is_locked %}
         {% include 'imageboard/parts/lockdown.html' with type='board' %}
     {% else %}
@@ -31,6 +33,10 @@
 
 {% block footer %}
     {% include 'imageboard/parts/footer.html' with board_pages=threads %}
+{% endblock %}
+
+{% block page_style %}
+    <style>{{ board.custom_style }}</style>
 {% endblock %}
 
 {% block page_script %}

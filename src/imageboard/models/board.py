@@ -10,6 +10,7 @@ class Board(models.Model):
     url = models.CharField(max_length=16)
     description = models.TextField(blank=True)
     rules = models.TextField(blank=True)
+    custom_style = models.TextField(blank=True)
     default_username = models.CharField(max_length=32)
     default_max_posts_num = models.IntegerField()
 

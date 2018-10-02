@@ -875,17 +875,14 @@ a {
     line-height: 40px;
     font-size: 40px;
     font-weight: bold;
-    margin-bottom: 10px;
   }
 
   &__description {
-    margin-bottom: 20px;
+    margin-top: 10px;
   }
 
-  &__rules {}
-
-  &__rules-header {
-    font-size: 20px;
+  p {
+    margin: 0;
   }
 }
 
@@ -948,3 +945,25 @@ a {
   }
 }
 
+
+.rules {
+  padding: 10px 20px;
+  background: @main-bg;
+  color: @main-color;
+  border-radius: @block-border-radius;
+  .item-shadow;
+
+  &__header {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  ul, ol {
+    padding: 0;
+    list-style-position: inside;
+  }
+}

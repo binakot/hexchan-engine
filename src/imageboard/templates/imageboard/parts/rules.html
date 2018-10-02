@@ -1,0 +1,6 @@
+{% load markdown %}
+
+<div class="rules">
+    <div class="rules__header">Правила доски</div>
+    {{ board.rules|markdown|safe }}
+</div>

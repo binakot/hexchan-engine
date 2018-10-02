@@ -49,7 +49,7 @@ class BoardAdmin(admin.ModelAdmin):
 
         ('About board', {
             'fields': (
-                ('description', 'rules',),
+                'description', 'rules', 'custom_style',
             ),
         }),
 

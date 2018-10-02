@@ -1,14 +1,11 @@
+{% load markdown %}
+
 <div class="board-header">
     <div class="board-header__title">
         {{ board.name }}
     </div>
 
     <div class="board-header__description">
-        {{ board.description }}
-    </div>
-
-    <div class="board-header__rules">
-        <div class="board-header__rules-header">Правила доски</div>
-        {{ board.rules }}
+        {{ board.description|markdown|safe }}
     </div>
 </div>
