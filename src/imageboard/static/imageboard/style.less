@@ -591,18 +591,18 @@ a {
   }
 
   &__text {
-    margin-bottom: -10px;
+    margin-bottom: -5px;
   }
 
   // Rendered post elements:
 
   p {
-    margin: 10px 0;
+    margin: 5px 0;
   }
 
   blockquote {
     color: @ref-color;
-    margin: 10px 0;
+    margin: 5px 0;
   }
 
   a.ref {
@@ -932,6 +932,19 @@ a {
   &__reason {}
 }
 
+
 .cache-data {
   display: none;
 }
+
+
+.spoiler {
+  cursor: pointer;
+  background: @main-color;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: transparent;
+  }
+}
+
