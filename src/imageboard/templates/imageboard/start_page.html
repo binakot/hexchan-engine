@@ -1,5 +1,28 @@
 {% extends 'imageboard/base.html' %}
+{% load static %}
+
+{% block page_title %}
+    {{ config.SITE_NAME }}
+{% endblock %}
+
+{% block header %}
+    {% include 'imageboard/parts/header.html' %}
+{% endblock %}
 
 {% block content %}
-    start_page
+    {% for board in boards %}
+        {% if not board.is_hidden and not board.is_deleted %}
+            {% include 'imageboard/parts/board_header.html' %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block page_style %}
+    <style>
+        {% for board in boards %}
+            {% if not board.is_hidden and not board.is_deleted %}
+                {{ board.custom_style }}
+            {% endif %}
+        {% endfor %}
+    </style>
 {% endblock %}

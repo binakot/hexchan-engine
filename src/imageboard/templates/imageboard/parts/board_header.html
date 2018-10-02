@@ -1,6 +1,6 @@
 {% load markdown %}
 
-<div class="board-header">
+<a class="board-header" href="{{ board.get_absolute_url }}" data-hid="{{ board.hid }}">
     <div class="board-header__title">
         {{ board.name }}
     </div>
@@ -8,4 +8,4 @@
     <div class="board-header__description">
         {{ board.description|markdown|safe }}
     </div>
-</div>
+</a>
