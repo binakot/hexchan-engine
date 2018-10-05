@@ -19,6 +19,7 @@ from gensokyo import config
 from imageboard.models import Board, Thread, Post, Image
 from imageboard.forms import PostingForm
 from imageboard import exceptions
+from imageboard.wakabamark import extract_refs
 
 
 @csrf_exempt
@@ -73,12 +74,14 @@ def posting_view(request):
         if form_type == 'new_thread':
             thread = create_thread(request, board)
             post = create_post(request, board, thread, form.cleaned_data, is_op=True)
-            save_images(post, images)
+            create_images(post, images)
+            create_refs(request, board, thread, post)
             thread.op = post
             thread.save()
         else:
             post = create_post(request, board, thread, form.cleaned_data)
-            save_images(post, images)
+            create_images(post, images)
+            create_refs(request, board, thread, post)
             thread.save()
     #
     # # Handle database errors
@@ -163,7 +166,7 @@ def get_client_ip(request) -> str:
     return ip
 
 
-def save_images(post: Post, images) -> None:
+def create_images(post: Post, images) -> None:
     """Save all images in request."""
     for image_file in images:
         # Load image with PIL library
@@ -236,3 +239,9 @@ def create_post(request, board: Board, thread: Thread, cleaned_data: dict, is_op
     )
     post.save()
     return post
+
+
+def create_refs(request, board, thread, post):
+    ref_ids = extract_refs(post.text)
+    ref_posts = Post.objects.filter(thread__board=board, hid__in=ref_ids)
+    post.post_set.add(*ref_posts)

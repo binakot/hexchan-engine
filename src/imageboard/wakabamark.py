@@ -144,12 +144,14 @@ def make_all_inline_tags(text_line: str, make_url=None) -> str:
 def parse_text(text: str, board, thread, post) -> str:
     """Make all text blocks with inline tags."""
 
+    refs_dict = {ref.hid: ref for ref in post.refs}
+
     def make_url(hid: str) -> str:
-        try:
-            hid_int = int(hid, 16)
-            referenced_post = Post.objects.get(hid=hid_int, thread__board=board)
+        hid_int = int(hid, 16)
+        referenced_post = refs_dict.get(hid_int)
+        if referenced_post:
             return referenced_post.get_absolute_url()
-        except Post.DoesNotExist:
+        else:
             return None
 
     html_lines = []

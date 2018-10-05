@@ -45,9 +45,12 @@ class Post(models.Model):
             kwargs={'board_hid': self.thread.board.hid, 'thread_hid': self.thread.hid}
         )
 
-        post_url = '{thread_url}#{post_hid}'.format(
-            thread_url=thread_url,
-            post_hid=self.hid2hex()
-        )
+        if self.is_op:
+            post_url = '{thread_url}#{post_hid}'.format(
+                thread_url=thread_url,
+                post_hid=self.hid2hex()
+            )
+        else:
+            post_url = thread_url
 
         return post_url

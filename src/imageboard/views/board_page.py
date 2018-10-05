@@ -38,14 +38,21 @@ def board_page(request, board_hid, page_num=1):
         .order_by('-id')\
         .values_list('id', flat=True)[:config.POSTS_PER_THREAD_PER_PAGE]
 
+    # Refs and replies queryset
+    refs_and_replies_queryset = Post.objects\
+        .select_related('thread', 'thread__board')\
+        .only('is_op', 'hid', 'thread__hid', 'thread__board__hid')
+
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
         Prefetch('op'),
         Prefetch('op__images'),
-        Prefetch('op__replies', queryset=Post.objects.only('id', 'hid')),
+        Prefetch('op__replies', queryset=Post.objects.select_related('thread', 'thread__board')),
+        Prefetch('op__post_set', queryset=Post.objects.select_related('thread', 'thread__board'), to_attr='refs'),
         Prefetch('posts', queryset=Post.objects.filter(id__in=Subquery(latest_posts_queryset)), to_attr='latest_posts'),
         Prefetch('latest_posts__images'),
-        Prefetch('latest_posts__replies', queryset=Post.objects.only('id', 'hid')),
+        Prefetch('latest_posts__replies', queryset=refs_and_replies_queryset),
+        Prefetch('latest_posts__post_set', queryset=refs_and_replies_queryset, to_attr='refs'),
     ]
 
     # Threads queryset

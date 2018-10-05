@@ -96,7 +96,18 @@
             {% markup text=post.text board=board thread=thread post=post %}
         </div>
 
-        <div class="post__footer"></div>
+        {% if post.replies.all %}
+            <div class="post__replies">
+                Ответы:
+                {% for reply in post.replies.all %}
+                    <a
+                        class="post__reply"
+                        href="{% url 'thread_page' board_hid=board.hid thread_hid=reply.thread.hid %}{% if not reply.is_op %}#{{ reply.hid2hex }}{% endif %}"
+                    >{{ reply.hid2hex }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
         {% if post.user_was_banned %}
             <div class="post__admin-message">
                 Пользователь был забанен.
@@ -108,6 +119,9 @@
                 Пользователь был предупрежден.
             </div>
         {% endif %}
+
+        <div class="post__footer"></div>
+
 
         {% if request.user.is_superuser %}
             {% if post.is_op %}

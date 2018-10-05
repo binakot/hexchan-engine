@@ -36,14 +36,21 @@ def thread_page(request, board_hid, thread_hid):
         if thread.updated_at == timestamp:
             return HttpResponse(rendered_template)
 
+    # Refs and replies queryset
+    refs_and_replies_queryset = Post.objects\
+        .select_related('thread', 'thread__board')\
+        .only('is_op', 'hid', 'thread__hid', 'thread__board__hid')
+
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
         Prefetch('op'),
         Prefetch('op__images'),
-        Prefetch('op__replies', queryset=Post.objects.only('id', 'hid')),
+        Prefetch('op__replies', queryset=refs_and_replies_queryset),
+        Prefetch('op__post_set', queryset=refs_and_replies_queryset, to_attr='refs'),
         Prefetch('posts', queryset=Post.objects.filter(is_op=False)),
         Prefetch('posts__images'),
-        Prefetch('posts__replies', queryset=Post.objects.only('id', 'hid')),
+        Prefetch('posts__replies', queryset=refs_and_replies_queryset),
+        Prefetch('posts__post_set', queryset=refs_and_replies_queryset, to_attr='refs'),
     ]
 
     # Prefetch stuff for the thread
