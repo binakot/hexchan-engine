@@ -28,7 +28,7 @@ class Post(models.Model):
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, editable=False)
 
-    replies = models.ManyToManyField('self', editable=False, db_index=True, symmetrical=False)
+    refs = models.ManyToManyField('self', editable=False, db_index=True, symmetrical=False)
 
     ip_address = models.CharField(max_length=16, editable=False, db_index=True)
 
@@ -45,12 +45,9 @@ class Post(models.Model):
             kwargs={'board_hid': self.thread.board.hid, 'thread_hid': self.thread.hid}
         )
 
-        if self.is_op:
-            post_url = '{thread_url}#{post_hid}'.format(
-                thread_url=thread_url,
-                post_hid=self.hid2hex()
-            )
-        else:
-            post_url = thread_url
+        post_url = '{thread_url}#{post_hid}'.format(
+            thread_url=thread_url,
+            post_hid=self.hid2hex()
+        )
 
         return post_url

@@ -96,10 +96,10 @@
             {% markup text=post.text board=board thread=thread post=post %}
         </div>
 
-        {% if post.replies.all %}
+        {% if post.replies %}
             <div class="post__replies">
                 Ответы:
-                {% for reply in post.replies.all %}
+                {% for reply in post.replies %}
                     <a
                         class="post__reply"
                         href="{% url 'thread_page' board_hid=board.hid thread_hid=reply.thread.hid %}{% if not reply.is_op %}#{{ reply.hid2hex }}{% endif %}"

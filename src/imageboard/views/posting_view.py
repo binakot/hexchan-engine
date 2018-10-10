@@ -244,4 +244,4 @@ def create_post(request, board: Board, thread: Thread, cleaned_data: dict, is_op
 def create_refs(request, board, thread, post):
     ref_ids = extract_refs(post.text)
     ref_posts = Post.objects.filter(thread__board=board, hid__in=ref_ids)
-    post.post_set.add(*ref_posts)
+    post.refs.add(*ref_posts)

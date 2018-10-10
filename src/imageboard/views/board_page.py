@@ -49,8 +49,8 @@ def board_page(request, board_hid, page_num=1):
             Q(id__in=Subquery(latest_posts_queryset)) | Q(is_op=True))
         ),
         Prefetch('posts__images'),
-        Prefetch('posts__replies', queryset=refs_and_replies_queryset),
-        Prefetch('posts__post_set', queryset=refs_and_replies_queryset, to_attr='refs'),
+        Prefetch('posts__refs', queryset=refs_and_replies_queryset),
+        Prefetch('posts__post_set', queryset=refs_and_replies_queryset, to_attr='replies'),
     ]
 
     # Threads queryset

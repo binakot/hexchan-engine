@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import random
 import shutil
+import bleach
 
 # Third party imports
 import faker
@@ -17,7 +18,7 @@ fake = faker.Faker('la')
 # ==============================================================================
 BOARDS_NUM = 5
 THREADS_NUM = 32
-POSTS_NUM = 128
+POSTS_NUM = 64
 IMAGE_NUM_CHOICES = [
     (0.3, 0),
     (0.7, 1),
@@ -80,6 +81,7 @@ def load_json_from_file(path):
 def reset_dirs():
     pass
 
+
 # Generators
 # ==============================================================================
 def make_thread(bnum, tnum):
@@ -109,6 +111,7 @@ def make_post(bnum, tnum, pnum):
     has_name = fake.boolean(10)
     is_op = (pnum == 0)
 
+    # Generate different types of message
     text_random_value = random.randint(1, 10)
     if text_random_value <= 2:
         text = "\n\n".join(fake.paragraphs(nb=5))
@@ -120,6 +123,28 @@ def make_post(bnum, tnum, pnum):
         text = fake.sentence(nb_words=10, variable_nb_words=True)
     else:
         text = ""
+
+    # Generate different types of refs
+    num_of_refs = random.choices([0, 1, 2, 3], weights=[4, 3, 2, 1], k=1)[0]
+    refs = []
+    for num in range(num_of_refs):
+        ref_random_id = random.randint(
+            (bnum * THREADS_NUM * POSTS_NUM + tnum * POSTS_NUM + 1),
+            (bnum * THREADS_NUM * POSTS_NUM + tnum * POSTS_NUM + pnum + 1) - 1,
+        )
+
+        ref_random_hid = ref_random_id - bnum * THREADS_NUM * POSTS_NUM - 1
+
+        refs.append(ref_random_id)
+
+        text = '>>0x{hid:06x}\n>{new_text}\n{text}'.format(
+            hid=ref_random_hid,
+            new_text=fake.sentence(nb_words=10, variable_nb_words=True),
+            text=text
+        )
+
+    # Clear text with bleach
+    text = bleach.clean(text)
 
     post = {
         "model": "imageboard.post",
@@ -141,6 +166,7 @@ def make_post(bnum, tnum, pnum):
             "ip_address": fake.ipv4(),
             "created_by": None,
             "is_deleted": 0 if is_op else fake.boolean(5),
+            "refs": refs,
         }
     }
 
@@ -200,6 +226,7 @@ if __name__ == '__main__':
     threads = []
     posts = []
     images = []
+    replies_table = {}
 
     # Image id counter
     inum = 0
