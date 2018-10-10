@@ -73,11 +73,6 @@ def board_page(request, board_hid, page_num=1):
         skipped = thread.posts_count - (config.POSTS_PER_THREAD_PER_PAGE + 1)
         thread.skipped = max(skipped, 0)
 
-        latest_posts_list = list(thread.latest_posts)
-        latest_posts_list.reverse()
-
-        thread.latest_posts = latest_posts_list
-
     # Init thread creation form
     form = PostingForm(
         initial={
