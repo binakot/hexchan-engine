@@ -54,6 +54,14 @@
   text-align: center;
 }
 
+.clearfix {
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
+
 
 // Fonts
 // =====================================================================================================================
@@ -451,6 +459,10 @@ a {
     position: relative;
   }
 
+  &__body {
+    .clearfix;
+  }
+
   &__hid {
     .hid;
   }
@@ -562,7 +574,7 @@ a {
   }
 
   &__admin-message {
-    margin-top: 20px;
+    margin: 10px 0;
     color: @admin-color;
     font-style: italic;
   }
@@ -591,13 +603,13 @@ a {
   }
 
   &__text {
-    margin-bottom: -5px;
+    margin: 10px 0;
   }
 
   &__replies {
     font-size: 12px;
     font-style: italic;
-    margin-top: 20px;
+    margin: 10px 0;
   }
 
   // Rendered post elements:

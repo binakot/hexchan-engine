@@ -68,57 +68,60 @@
             {% endif %}
         </div>
 
-        {% if post.images.count > 0 %}
-            <div class="post__images {% if post.images.count > 1 %}post__images--multiple{% endif %}">
-                {% for image in post.images.all %}
-                    <a
-                        class="post__image-wrap"
-                        href="{{MEDIA_URL}}{{image.path}}"
-                        target="_blank"
-                        data-lightbox="{{ post.id }}"
-                        data-alt="{{ image.original_name }}"
-                        data-title="{{ image.original_name }} :: {{ image.width }}x{{ image.height }} :: {{ image.size|filesizeformat }}"
-                    >
-                        <img
-                            class="post__image"
-                            src="{{MEDIA_URL}}{{image.thumb_path}}"
-                            alt="{{ image.original_name }}"
-                            width="{{ image.thumb_width }}"
-                            height="{{ image.thumb_height }}"
-                            title="{{ image.original_name }} :: {{ image.width }}x{{ image.height }} :: {{ image.size|filesizeformat }}"
-                        />
-                    </a>
-                {% endfor %}
-            </div>
-        {% endif %}
 
-        <div class="post__text">
-            {% markup text=post.text board=board thread=thread post=post %}
+        <div class="post__body">
+            {% if post.images.count > 0 %}
+                <div class="post__images {% if post.images.count > 1 %}post__images--multiple{% endif %}">
+                    {% for image in post.images.all %}
+                        <a
+                            class="post__image-wrap"
+                            href="{{MEDIA_URL}}{{image.path}}"
+                            target="_blank"
+                            data-lightbox="{{ post.id }}"
+                            data-alt="{{ image.original_name }}"
+                            data-title="{{ image.original_name }} :: {{ image.width }}x{{ image.height }} :: {{ image.size|filesizeformat }}"
+                        >
+                            <img
+                                class="post__image"
+                                src="{{MEDIA_URL}}{{image.thumb_path}}"
+                                alt="{{ image.original_name }}"
+                                width="{{ image.thumb_width }}"
+                                height="{{ image.thumb_height }}"
+                                title="{{ image.original_name }} :: {{ image.width }}x{{ image.height }} :: {{ image.size|filesizeformat }}"
+                            />
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="post__text">
+                {% markup text=post.text board=board thread=thread post=post %}
+            </div>
+
+            {% if post.replies %}
+                <div class="post__replies">
+                    Ответы:
+                    {% for reply in post.replies %}
+                        <a
+                            class="post__reply"
+                            href="{{ reply.get_absolute_url }}"
+                        >{{ reply.hid2hex }}</a>{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if post.user_was_banned %}
+                <div class="post__admin-message">
+                    Пользователь был забанен.
+                </div>
+            {% endif %}
+
+            {% if post.user_was_warned %}
+                <div class="post__admin-message">
+                    Пользователь был предупрежден.
+                </div>
+            {% endif %}
         </div>
-
-        {% if post.replies %}
-            <div class="post__replies">
-                Ответы:
-                {% for reply in post.replies %}
-                    <a
-                        class="post__reply"
-                        href="{{ reply.get_absolute_url }}"
-                    >{{ reply.hid2hex }}</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        {% if post.user_was_banned %}
-            <div class="post__admin-message">
-                Пользователь был забанен.
-            </div>
-        {% endif %}
-
-        {% if post.user_was_warned %}
-            <div class="post__admin-message">
-                Пользователь был предупрежден.
-            </div>
-        {% endif %}
 
         <div class="post__footer"></div>
 
