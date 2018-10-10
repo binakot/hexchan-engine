@@ -17,7 +17,7 @@
         <div class="post__anchor" id="{{ post.hid2hex }}"></div>
 
         <div class="post__header">
-            <a class="post__hid" href="{% url 'thread_page' board_hid=board.hid thread_hid=thread.hid %}{% if not post.is_op %}#{{ post.hid2hex }}{% endif %}">
+            <a class="post__hid" href="{{ post.get_absolute_url }}">
                 {{ post.hid2hex }}
             </a>
 
@@ -37,7 +37,7 @@
                 {% endif %}
             </span>
 
-            [<a class="post__reply-link" href="{% url 'thread_page' board_hid=board.hid thread_hid=thread.hid %}{% if not post.is_op %}#{{ post.hid2hex }}{% endif %}">Ответ</a>]
+            [<a class="post__reply-link" href="{{ post.get_absolute_url }}">Ответ</a>]
 
 
             <div class="post__icons-and-buttons">
@@ -102,7 +102,7 @@
                 {% for reply in post.replies %}
                     <a
                         class="post__reply"
-                        href="{% url 'thread_page' board_hid=board.hid thread_hid=reply.thread.hid %}{% if not reply.is_op %}#{{ reply.hid2hex }}{% endif %}"
+                        href="{{ reply.get_absolute_url }}"
                     >{{ reply.hid2hex }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </div>
