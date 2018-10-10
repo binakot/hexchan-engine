@@ -22,7 +22,7 @@
         {% include 'imageboard/parts/posting_form.html' with form_type='new_post' %}
     {% endif %}
 
-    {% include 'imageboard/parts/thread.html' with posts=thread.posts.all %}
+    {% include 'imageboard/parts/thread.html' with posts=thread.other_posts %}
 {% endblock %}
 
 {% block footer %}

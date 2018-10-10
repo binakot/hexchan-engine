@@ -3,7 +3,7 @@ import datetime
 
 # Django imports
 from django.template.loader import render_to_string
-from django.db.models import Prefetch, Count, Subquery, OuterRef
+from django.db.models import Prefetch, Count, Subquery, OuterRef, Q
 from django.core.paginator import Paginator
 from django.http import HttpResponse, Http404
 from django.core.cache import cache
@@ -45,14 +45,12 @@ def board_page(request, board_hid, page_num=1):
 
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
-        Prefetch('op'),
-        Prefetch('op__images'),
-        Prefetch('op__replies', queryset=Post.objects.select_related('thread', 'thread__board')),
-        Prefetch('op__post_set', queryset=Post.objects.select_related('thread', 'thread__board'), to_attr='refs'),
-        Prefetch('posts', queryset=Post.objects.filter(id__in=Subquery(latest_posts_queryset)), to_attr='latest_posts'),
-        Prefetch('latest_posts__images'),
-        Prefetch('latest_posts__replies', queryset=refs_and_replies_queryset),
-        Prefetch('latest_posts__post_set', queryset=refs_and_replies_queryset, to_attr='refs'),
+        Prefetch('posts', queryset=Post.objects.filter(
+            Q(id__in=Subquery(latest_posts_queryset)) | Q(is_op=True))
+        ),
+        Prefetch('posts__images'),
+        Prefetch('posts__replies', queryset=refs_and_replies_queryset),
+        Prefetch('posts__post_set', queryset=refs_and_replies_queryset, to_attr='refs'),
     ]
 
     # Threads queryset
@@ -72,6 +70,13 @@ def board_page(request, board_hid, page_num=1):
         # Count skipped posts
         skipped = thread.posts_count - (config.POSTS_PER_THREAD_PER_PAGE + 1)
         thread.skipped = max(skipped, 0)
+
+        thread.latest_posts = []
+        for post in thread.posts.all():
+            if post.is_op:
+                thread.op = post
+            else:
+                thread.latest_posts.append(post)
 
     # Init thread creation form
     form = PostingForm(

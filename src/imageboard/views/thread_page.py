@@ -43,11 +43,7 @@ def thread_page(request, board_hid, thread_hid):
 
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
-        Prefetch('op'),
-        Prefetch('op__images'),
-        Prefetch('op__replies', queryset=refs_and_replies_queryset),
-        Prefetch('op__post_set', queryset=refs_and_replies_queryset, to_attr='refs'),
-        Prefetch('posts', queryset=Post.objects.filter(is_op=False)),
+        Prefetch('posts'),
         Prefetch('posts__images'),
         Prefetch('posts__replies', queryset=refs_and_replies_queryset),
         Prefetch('posts__post_set', queryset=refs_and_replies_queryset, to_attr='refs'),
@@ -58,6 +54,11 @@ def thread_page(request, board_hid, thread_hid):
         .select_related('board')\
         .prefetch_related(*prefetch_args) \
         .get(board__hid=board_hid, hid=thread_hid, is_deleted=False)
+
+    # Add extra data
+    all_posts = thread.posts.all()
+    thread.op = all_posts[0]
+    thread.other_posts = all_posts[1:]
 
     # Init post creation form
     form = PostingForm(
