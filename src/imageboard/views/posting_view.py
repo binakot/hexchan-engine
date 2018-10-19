@@ -26,7 +26,11 @@ from captcha import exceptions as c_ex
 
 @csrf_exempt
 def posting_view(request):
+    response = None
+
     try:
+        # Check messsage contents and DB objects
+
         # Check request type
         if not request.POST:
             raise i_ex.BadRequestType
@@ -38,9 +42,6 @@ def posting_view(request):
 
         # Check captcha
         check_captcha_for_request(request, form)
-
-        # Set new captcha
-        set_captcha(request)
 
         # Get form type
         form_type = form.cleaned_data['form_type']
@@ -64,44 +65,41 @@ def posting_view(request):
         check_message_content(cleaned_data=form.cleaned_data, images=images)
 
     except (i_ex.ImageboardError, c_ex.CaptchaError) as e:
-        return render(request, 'imageboard/posting_error_page.html', context={'exception': e}, status=403)
+        # Render error page if something went wrong
+        response = render(request, 'imageboard/posting_error_page.html', context={'exception': e}, status=403)
 
-    # Create thread, op post, save images, bump board's thread counter
-    # try:
-    with transaction.atomic():
-        # Bump board's post HID counter
-        board.last_post_hid = F('last_post_hid') + 1
-        board.save()
-        board.refresh_from_db()
-
-        if form_type == 'new_thread':
-            thread = create_thread(request, board)
-            post = create_post(request, board, thread, form.cleaned_data, is_op=True)
-            create_images(post, images)
-            create_refs(request, board, thread, post)
-            thread.op = post
-            thread.save()
-        else:
-            post = create_post(request, board, thread, form.cleaned_data)
-            create_images(post, images)
-            create_refs(request, board, thread, post)
-            thread.save()
-    #
-    # # Handle database errors
-    # except DatabaseError as database_error:
-    #     print(database_error)  # TODO LOGGING
-    #     return handle_error('database_is_broken')
-    #
-    # # Handle file saving errors
-    # except IOError as io_error:
-    #     print(io_error)  # TODO LOGGING
-    #     return handle_error('storage_is_broken')
-
-    # Redirect to the new thread or post
-    if form_type == 'new_post':
-        return redirect('thread_page', board_hid=board.hid, thread_hid=thread.hid)
     else:
-        return redirect('board_page', board_hid=board.hid)
+        # Create thread, op post, save images, bump board's thread counter
+        with transaction.atomic():
+            # Bump board's post HID counter
+            board.last_post_hid = F('last_post_hid') + 1
+            board.save()
+            board.refresh_from_db()
+
+            if form_type == 'new_thread':
+                thread = create_thread(request, board)
+                post = create_post(request, board, thread, form.cleaned_data, is_op=True)
+                create_images(post, images)
+                create_refs(request, board, thread, post)
+                thread.op = post
+                thread.save()
+            else:
+                post = create_post(request, board, thread, form.cleaned_data)
+                create_images(post, images)
+                create_refs(request, board, thread, post)
+                thread.save()
+
+        # Redirect to the new thread or post
+        if form_type == 'new_post':
+            response = redirect('thread_page', board_hid=board.hid, thread_hid=thread.hid)
+        else:
+            response = redirect('board_page', board_hid=board.hid)
+
+    finally:
+        # Set new captcha on both failures and successes
+        set_captcha(request)
+
+    return response
 
 
 def get_board(board_id: int) -> Board:
@@ -255,7 +253,7 @@ def check_captcha_for_request(request, form):
     captcha_public_id = captcha_data.get('challenge')
     captcha_solution = captcha_data.get('solution')
 
-    if request.user.is_authenticated or captcha_solution == 'МЯТА':
+    if request.user.is_authenticated or captcha_solution == 'МЯТА':  # TODO: NO MAGICK ALLOWED
         pass
     else:
         check_captcha(request, captcha_public_id, captcha_solution)
