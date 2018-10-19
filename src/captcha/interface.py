@@ -63,6 +63,6 @@ def check_captcha(request, public_id, solution):
     if public_id != captcha.public_id:
         raise exceptions.CaptchaHasExpired
 
-    # Check user response value
-    if solution != captcha.solution:
+    # Check user response value (case insensitive)
+    if solution.lower() != captcha.solution.lower():
         raise exceptions.CaptchaIsInvalid
