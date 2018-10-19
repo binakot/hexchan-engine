@@ -18,8 +18,10 @@ import bleach
 from gensokyo import config
 from imageboard.models import Board, Thread, Post, Image
 from imageboard.forms import PostingForm
-from imageboard import exceptions
+from imageboard import exceptions as i_ex
 from imageboard.wakabamark import extract_refs
+from captcha.interface import check_captcha, set_captcha
+from captcha import exceptions as c_ex
 
 
 @csrf_exempt
@@ -27,12 +29,18 @@ def posting_view(request):
     try:
         # Check request type
         if not request.POST:
-            raise exceptions.BadRequestType
+            raise i_ex.BadRequestType
 
         # Get form data
         form = PostingForm(request.POST)
         if not form.is_valid():
-            raise exceptions.FormValidationError(form.errors)
+            raise i_ex.FormValidationError(form.errors)
+
+        # Check captcha
+        check_captcha_for_request(request, form)
+
+        # Set new captcha
+        set_captcha(request)
 
         # Get form type
         form_type = form.cleaned_data['form_type']
@@ -49,18 +57,13 @@ def posting_view(request):
         else:
             thread = None
 
-        # # Check captcha
-        # captcha_error = check_captcha(request)
-        # if captcha_error:
-        #     return make_error_message(captcha_error)
-
         # Get list of uploaded image objects
         images = request.FILES.getlist('images')
 
         # Check message
         check_message_content(cleaned_data=form.cleaned_data, images=images)
 
-    except exceptions.ImageboardError as e:
+    except (i_ex.ImageboardError, c_ex.CaptchaError) as e:
         return render(request, 'imageboard/posting_error_page.html', context={'exception': e}, status=403)
 
     # Create thread, op post, save images, bump board's thread counter
@@ -106,11 +109,11 @@ def get_board(board_id: int) -> Board:
     try:
         board = Board.objects.get(id=board_id, is_deleted=False)
     except Board.DoesNotExist:
-        raise exceptions.BoardNotFound
+        raise i_ex.BoardNotFound
 
     # Check board status
     if board.is_locked:
-        raise exceptions.BoardIsLocked
+        raise i_ex.BoardIsLocked
 
     return board
 
@@ -120,15 +123,15 @@ def get_thread(thread_id: int) -> Thread:
     try:
         thread = Thread.objects.get(id=thread_id, is_deleted=False)
     except Thread.DoesNotExist:
-        raise exceptions.ThreadNotFound
+        raise i_ex.ThreadNotFound
 
     # Check thread status
     if thread.is_locked:
-        raise exceptions.ThreadIsLocked
+        raise i_ex.ThreadIsLocked
 
     # Check thread posts num
     if thread.posts.count() >= thread.max_posts_num:
-        raise exceptions.PostLimitWasReached
+        raise i_ex.PostLimitWasReached
 
     return thread
 
@@ -136,22 +139,22 @@ def get_thread(thread_id: int) -> Thread:
 def check_message_content(cleaned_data, images):
     # Check honeypot. Yes, the email field is a honeypot!
     if len(cleaned_data['email']) > 0:
-        raise exceptions.BadMessageContent('content is invalid')
+        raise i_ex.BadMessageContent('content is invalid')
 
     # Check if empty message
     if not cleaned_data['text'] and not images:
-        raise exceptions.BadMessageContent('empty message')
+        raise i_ex.BadMessageContent('empty message')
 
     # Check number of files
     if len(images) > config.FILE_MAX_NUM:
-        raise exceptions.BadMessageContent('too many files')
+        raise i_ex.BadMessageContent('too many files')
 
     # Check file(s) for field 'file'
     for file_object in images:
         if file_object.size > config.FILE_MAX_SIZE:
-            raise exceptions.BadMessageContent('file is too large')
+            raise i_ex.BadMessageContent('file is too large')
         if file_object.content_type not in config.FILE_MIME_TYPES:
-            raise exceptions.BadMessageContent('invalid file type')
+            raise i_ex.BadMessageContent('invalid file type')
 
     # TODO: remember to check password with regex when saving it
 
@@ -245,3 +248,14 @@ def create_refs(request, board, thread, post):
     ref_ids = extract_refs(post.text)
     ref_posts = Post.objects.filter(thread__board=board, hid__in=ref_ids)
     post.refs.add(*ref_posts)
+
+
+def check_captcha_for_request(request, form):
+    captcha_data = form.cleaned_data['captcha']
+    captcha_public_id = captcha_data.get('challenge')
+    captcha_solution = captcha_data.get('solution')
+
+    if request.user.is_authenticated or captcha_solution == 'МЯТА':
+        pass
+    else:
+        check_captcha(request, captcha_public_id, captcha_solution)

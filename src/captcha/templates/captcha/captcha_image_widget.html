@@ -1,0 +1,10 @@
+<span class="captcha-image-widget">
+    <img
+        class="captcha-image-widget__image"
+        src="{{ widget.image }}"
+        alt="Captcha code"
+        width="200"
+        height="50"
+    />
+    {% include "django/forms/widgets/hidden.html" %}
+</span>

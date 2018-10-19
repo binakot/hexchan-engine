@@ -1,6 +1,7 @@
 from django import forms
 
 from gensokyo import config
+from captcha.widget import CaptchaField
 
 
 class PostingForm(forms.Form):
@@ -42,14 +43,9 @@ class PostingForm(forms.Form):
         widget=forms.HiddenInput  # TODO: make visible
     )
 
-    # TODO: captcha
-    # captcha_id = forms.CharField(
-    #     widget=forms.HiddenInput
-    # )
-
-    # captcha_response = forms.CharField(
-    #     max_length=8, required=True, label='Капча'
-    # )
+    captcha = CaptchaField(
+        label='Капча', required=True
+    )
 
     images = forms.FileField(
         required=False, label='Картинки',
