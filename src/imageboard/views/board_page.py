@@ -26,12 +26,13 @@ def board_page(request, board_hid, page_num=1):
         raise Http404('Board not found')
 
     # Get cached page if exists and return it
-    cache_key = 'board_page__{board_hid}__{page_num}'.format(board_hid=board_hid, page_num=page_num)
-    cache_record = cache.get(cache_key)
-    if cache_record is not None and not request.user.is_authenticated:
-        timestamp, rendered_template = cache_record
-        if board.updated_at == timestamp:
-            return HttpResponse(rendered_template)
+    if config.CACHE_ENABLED:
+        cache_key = 'board_page__{board_hid}__{page_num}'.format(board_hid=board_hid, page_num=page_num)
+        cache_record = cache.get(cache_key)
+        if cache_record is not None and not request.user.is_authenticated:
+            timestamp, rendered_template = cache_record
+            if board.updated_at == timestamp:
+                return HttpResponse(rendered_template)
 
     # Queryset for latest posts
     latest_posts_queryset = Post.objects\
@@ -100,7 +101,7 @@ def board_page(request, board_hid, page_num=1):
         'generated_at': datetime.datetime.now(),
         'board': board.hid,
         'page': page_num,
-    }
+    } if config.CACHE_ENABLED else None
 
     # Render template
     rendered_template = render_to_string(
@@ -117,7 +118,7 @@ def board_page(request, board_hid, page_num=1):
     )
 
     # Write page to cache
-    if not request.user.is_authenticated:
+    if config.CACHE_ENABLED and not request.user.is_authenticated:
         new_cache_record = (board.updated_at, rendered_template,)
         cache.set(cache_key, new_cache_record)
 

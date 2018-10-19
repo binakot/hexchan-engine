@@ -11,6 +11,7 @@ from django.core.cache import cache
 from imageboard.models import Board, Thread, Post
 from imageboard.forms import PostingForm
 from captcha.interface import get_captcha
+from gensokyo import config
 
 
 def thread_page(request, board_hid, thread_hid):
@@ -30,12 +31,13 @@ def thread_page(request, board_hid, thread_hid):
         raise Http404('Thread not found')
 
     # Get cached page if exists and return it
-    cache_key = 'thread_page__{board_hid}__{thread_hid}'.format(board_hid=board_hid, thread_hid=thread_hid)
-    cache_record = cache.get(cache_key)
-    if cache_record is not None and not request.user.is_authenticated:
-        timestamp, rendered_template = cache_record
-        if thread.updated_at == timestamp:
-            return HttpResponse(rendered_template)
+    if config.CACHE_ENABLED:
+        cache_key = 'thread_page__{board_hid}__{thread_hid}'.format(board_hid=board_hid, thread_hid=thread_hid)
+        cache_record = cache.get(cache_key)
+        if cache_record is not None and not request.user.is_authenticated:
+            timestamp, rendered_template = cache_record
+            if thread.updated_at == timestamp:
+                return HttpResponse(rendered_template)
 
     # Refs and replies queryset
     refs_and_replies_queryset = Post.objects\
@@ -83,7 +85,7 @@ def thread_page(request, board_hid, thread_hid):
         'generated_at': datetime.datetime.now(),
         'board': board,
         'thread': thread,
-    }
+    } if config.CACHE_ENABLED else None
 
     # Render template
     rendered_template = render_to_string(
@@ -99,7 +101,7 @@ def thread_page(request, board_hid, thread_hid):
     )
 
     # Write page to cache
-    if not request.user.is_authenticated:
+    if config.CACHE_ENABLED and not request.user.is_authenticated:
         new_cache_record = (thread.updated_at, rendered_template,)
         cache.set(cache_key, new_cache_record)
 

@@ -9,6 +9,7 @@ from django.core.cache import cache
 
 # App imports
 from imageboard.models import Board, Thread
+from gensokyo import config
 
 
 def catalog_page(request, board_hid):
@@ -22,12 +23,13 @@ def catalog_page(request, board_hid):
         raise Http404('Board not found')
 
     # Get cached page if exists and return it
-    cache_key = 'catalog_page__{board_hid}'.format(board_hid=board_hid)
-    cache_record = cache.get(cache_key)
-    if cache_record is not None and not request.user.is_authenticated:
-        timestamp, rendered_template = cache_record
-        if board.updated_at == timestamp:
-            return HttpResponse(rendered_template)
+    if config.CACHE_ENABLED:
+        cache_key = 'catalog_page__{board_hid}'.format(board_hid=board_hid)
+        cache_record = cache.get(cache_key)
+        if cache_record is not None and not request.user.is_authenticated:
+            timestamp, rendered_template = cache_record
+            if board.updated_at == timestamp:
+                return HttpResponse(rendered_template)
 
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
@@ -48,7 +50,7 @@ def catalog_page(request, board_hid):
         'updated_at': board.updated_at,
         'generated_at': datetime.datetime.now(),
         'board': board,
-    }
+    } if config.CACHE_ENABLED else None
 
     # Render template
     rendered_template = render_to_string(
@@ -63,7 +65,7 @@ def catalog_page(request, board_hid):
     )
 
     # Write page to cache
-    if not request.user.is_authenticated:
+    if config.CACHE_ENABLED and not request.user.is_authenticated:
         new_cache_record = (board.updated_at, rendered_template,)
         cache.set(cache_key, new_cache_record)
 

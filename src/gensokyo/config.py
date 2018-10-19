@@ -6,7 +6,8 @@ POSTS_PER_THREAD_PER_PAGE = 5
 THREADS_PER_PAGE = 10
 MAX_PAGES = 10
 
-CAPTCHA_ENABLED = False
+# CAPTCHA_ENABLED = False
+CACHE_ENABLED = False
 
 IMAGE_DIR = 'images'
 IMAGE_EXTENSION = {'image/jpeg': 'jpg', 'image/png': 'png', 'image/gif': 'gif'}

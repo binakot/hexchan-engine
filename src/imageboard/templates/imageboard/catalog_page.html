@@ -57,8 +57,10 @@
 {% endblock %}
 
 {% block metadata %}
-    <div class="cache-data">
-        Page generated at {{ cache_data.generated_at|date:config.DATE_TIME_FORMAT }}.
-        Board {{ cache_data.board.hid }} updated at {{ cache_data.updated_at|date:config.DATE_TIME_FORMAT }}.
-    </div>
+    {% if cache_data %}
+        <div class="cache-data">
+            Page generated at {{ cache_data.generated_at|date:config.DATE_TIME_FORMAT }}.
+            Board {{ cache_data.board.hid }} updated at {{ cache_data.updated_at|date:config.DATE_TIME_FORMAT }}.
+        </div>
+    {% endif %}
 {% endblock %}
