@@ -29,7 +29,7 @@
 
             <span class="post__author {% if post.author %}post__author--custom{% endif %} {% if post.created_by %}post__author--admin{% endif %}">
                 {% if post.created_by %}
-                     {{ post.created_by.first_name }} {{ post.created_by.last_name }}
+                     {{ post.created_by }}
                 {% elif post.author %}
                      {{ post.author }}
                 {% else %}
