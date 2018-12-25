@@ -2,10 +2,6 @@ SITE_NAME = 'Gensokyo Imageboard'
 
 DATE_TIME_FORMAT = 'd.m.Y в H:i:s'
 
-POSTS_PER_THREAD_PER_PAGE = 5
-THREADS_PER_PAGE = 10
-MAX_PAGES = 10
-
 # CAPTCHA_ENABLED = False
 CACHE_ENABLED = False
 

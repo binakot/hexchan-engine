@@ -53,6 +53,12 @@ class BoardAdmin(admin.ModelAdmin):
             ),
         }),
 
+        ('Parameters', {
+            'fields': (
+                'posts_per_thread_per_page', 'threads_per_page', 'max_threads_num',
+            )
+        }),
+
         ('Defaults', {
             'fields': (
                 'default_username',

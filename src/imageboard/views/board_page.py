@@ -38,7 +38,7 @@ def board_page(request, board_hid, page_num=1):
     latest_posts_queryset = Post.objects\
         .filter(thread=OuterRef('thread'), is_op=False)\
         .order_by('-id')\
-        .values_list('id', flat=True)[:config.POSTS_PER_THREAD_PER_PAGE]
+        .values_list('id', flat=True)[:board.posts_per_thread_per_page]
 
     # Refs and replies queryset
     refs_and_replies_queryset = Post.objects\
@@ -61,16 +61,16 @@ def board_page(request, board_hid, page_num=1):
         .select_related('board')\
         .prefetch_related(*prefetch_args)\
         .annotate(posts_count=Count('posts'))\
-        .order_by('board', '-is_sticky', '-hid')[:config.MAX_PAGES * config.THREADS_PER_PAGE]
+        .order_by('board', '-is_sticky', '-hid')[:board.max_threads_num]
 
     # Paginate threads
-    paginator = Paginator(threads, config.THREADS_PER_PAGE)
+    paginator = Paginator(threads, board.threads_per_page)
     paginated_threads = paginator.get_page(page_num)
 
     # Add extra data
     for thread in paginated_threads:
         # Count skipped posts
-        skipped = thread.posts_count - (config.POSTS_PER_THREAD_PER_PAGE + 1)
+        skipped = thread.posts_count - (board.posts_per_thread_per_page + 1)
         thread.skipped = max(skipped, 0)
 
         thread.latest_posts = []

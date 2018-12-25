@@ -43,7 +43,7 @@ def catalog_page(request, board_hid):
         .select_related('board') \
         .prefetch_related(*prefetch_args) \
         .annotate(posts_count=Count('posts'))\
-        .order_by('board', '-is_sticky', '-hid')
+        .order_by('board', '-is_sticky', '-hid')[:board.max_threads_num]
 
     # Cache data
     cache_data = {

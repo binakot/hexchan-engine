@@ -14,6 +14,10 @@ class Board(models.Model):
     default_username = models.CharField(max_length=32)
     default_max_posts_num = models.IntegerField()
 
+    posts_per_thread_per_page = models.IntegerField(default=5)
+    threads_per_page = models.IntegerField(default=10)
+    max_threads_num = models.IntegerField(default=100)
+
     is_hidden = models.BooleanField(default=False)
     is_locked = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)

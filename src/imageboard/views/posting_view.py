@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.conf import settings
 from django.contrib.auth import get_user
 from django.db import transaction, DatabaseError
-from django.db.models import F
+from django.db.models import F, Subquery
 from django.views.decorators.csrf import csrf_exempt
 
 # Third party imports
@@ -72,7 +72,7 @@ def posting_view(request):
         # Create thread, op post, save images, bump board's thread counter
         with transaction.atomic():
             # Bump board's post HID counter
-            board.last_post_hid = F('last_post_hid') + 1
+            board.last_post_hid = (F('last_post_hid') + 1) if board.last_post_hid is not None else 0
             board.save()
             board.refresh_from_db()
 
@@ -83,6 +83,7 @@ def posting_view(request):
                 create_refs(request, board, thread, post)
                 thread.op = post
                 thread.save()
+                flush_old_threads(request, board)
             else:
                 post = create_post(request, board, thread, form.cleaned_data)
                 create_images(post, images)
@@ -262,3 +263,15 @@ def check_captcha_for_request(request, form):
         pass
     else:
         check_captcha(request, captcha_public_id, captcha_solution)
+
+
+def flush_old_threads(request, board):
+    if board.threads.count() > board.max_threads_num:
+        old_threads = Thread.objects \
+            .filter(board=board, is_deleted=False) \
+            .order_by('board', '-is_sticky', '-hid')[board.max_threads_num:]
+
+        for thread in old_threads:
+            thread.is_locked = True
+            thread.is_deleted = True
+            thread.save()
