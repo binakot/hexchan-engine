@@ -1,4 +1,6 @@
 {% extends 'imageboard/base.html' %}
+{% load date_format %}
+{% load markup %}
 
 {% block page_title %}
     {{ config.SITE_NAME }} :: /{{ board.hid }}/ {{ board.name }} :: Каталог
@@ -18,11 +20,18 @@
                     <a class="catalog-item" href="{% url 'thread_page' board_hid=thread.board.hid thread_hid=thread.hid %}">
                         <div class="catalog-item__image-wrap">
                             {% with image=op_post.images.all|first  %}
-                                <div
-                                    class="catalog-item__image"
-                                    style="background-image: url('{{MEDIA_URL}}{{image.thumb_path}}')"
-                                >
-                                </div>
+                                {% if image %}
+                                    <div
+                                        class="catalog-item__image"
+                                        style="background-image: url('{{MEDIA_URL}}{{image.thumb_path}}')"
+                                    ></div>
+                                {% else %}
+                                    <div class="catalog-item__image catalog-item__image--empty">
+                                        No image
+                                        <br/>
+                                        available
+                                    </div>
+                                {% endif %}
                             {% endwith %}
                         </div>
 
@@ -32,7 +41,7 @@
                                 {{ op_post.title }}
                             </span>
                             <span class="catalog-item__text">
-                                {{ op_post.text }}
+                                {% markup text=op_post.text board=board thread=thread post=op_post make_refs=False %}
                             </span>
                         </div>
 

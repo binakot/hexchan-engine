@@ -702,6 +702,13 @@ a {
     background-size: cover;
     background-color: #ccc;
     border-radius:  @block-border-radius 0 0 @block-border-radius;
+
+    &--empty {
+      text-align: center;
+      color: @disabled-color;
+      font-weight: bold;
+      padding: 5px;
+    }
   }
 
   &__title {
@@ -722,6 +729,13 @@ a {
 
   &__meta-label {
     font-weight: bold;
+  }
+
+  &__text {
+    p, blockquote {
+      display: inline;
+      margin: 0;
+    }
   }
 }
 
