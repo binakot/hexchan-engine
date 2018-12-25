@@ -87,6 +87,11 @@ def posting_view(request):
                 post = create_post(request, board, thread, form.cleaned_data)
                 create_images(post, images)
                 create_refs(request, board, thread, post)
+
+                # Close thread if post limit is reached
+                if thread.posts.count() >= thread.max_posts_num:
+                    thread.is_locked = True
+
                 thread.save()
 
         # Redirect to the new thread or post
