@@ -29,6 +29,8 @@
             {% endif %}
         {% endfor %}
     </div>
+
+    <div class="popup-container js-popup-container"></div>
 {% endblock %}
 
 {% block footer %}
@@ -41,6 +43,7 @@
 
 {% block page_script %}
     <script defer src="{% static "imageboard/hider.js" %}"></script>
+    <script defer src="{% static "imageboard/ref_popup.js" %}"></script>
 {% endblock %}
 
 {% block js_templates %}

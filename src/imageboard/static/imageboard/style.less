@@ -125,6 +125,12 @@ body {
 
 a {
   color: @accent-color;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  }
 }
 
 
@@ -1008,4 +1014,21 @@ a {
   &__image {
     display: block;
   }
+}
+
+.popup-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.ref-popup {
+  background: @main-bg;
+  color: @main-color;
+  border-radius: @block-border-radius;
+  .item-shadow;
+  width: 960px;
+  box-shadow: inset 0 0 0 1px @main-color, 2px 2px 10px rgba(0,0,0, 0.5);
+  position: absolute;
 }

@@ -122,7 +122,7 @@ def make_ref_tags(line: str, make_url: Callable) -> str:
         url = make_url(hid)
 
         if url is not None:
-            return '<a class="ref" href="{url}">&gt;&gt;{hid}</a>'.format(url=url, hid=hid)
+            return '<a class="ref js-ref" href="{url}">&gt;&gt;{hid}</a>'.format(url=url, hid=hid)
         else:
             return '<span class="dead_ref">&gt;&gt;{hid}</span>'.format(hid=hid)
 

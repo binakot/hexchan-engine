@@ -15,4 +15,5 @@ urlpatterns = [
     path('<str:board_hid>/<int:page_num>/', views.board_page, name='board_page_num'),
     path('<str:board_hid>/catalog/', views.catalog_page, name='catalog_page'),
     path('<str:board_hid>/<tid:thread_hid>/', views.thread_page, name='thread_page'),
+    path('<str:board_hid>/<tid:thread_hid>/<pid:post_hid>/', views.post_popup, name='post_popup'),
 ]

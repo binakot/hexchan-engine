@@ -26,3 +26,5 @@ POST_HID_REGEX = '0x[0-9a-f]{6}'
 POST_FULL_HID_FORMAT = '0x{hid:06x}'
 
 IMAGE_HID_FORMAT = '0x{hid:08x}'
+
+CACHE_POST_POPUP = 60 * 10  # 10 min
