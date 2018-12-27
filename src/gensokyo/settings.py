@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'imageboard',
     'assets',
     'captcha',
+    'client_errors',
 
     # Third party
     'debug_toolbar',
@@ -140,15 +141,7 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'server_format': {
-            'format': '{levelname} -- {asctime} -- {message}',
-            'style': '{',
-        },
-        # 'client_format': {
-        #     'format': '',
-        #     'style': '{',
-        # },
-        'security_format': {
+        'base': {
             'format': '{levelname} -- {asctime} -- {message}',
             'style': '{',
         },
@@ -158,19 +151,19 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': str(STORAGE_DIR / 'log' / 'server_errors.log'),
-            'formatter': 'server_format',
+            'formatter': 'base',
         },
-        # 'client_errors': {
-        #     'level': 'ERROR',
-        #     'class': 'logging.FileHandler',
-        #     'filename': str(STORAGE_DIR / 'log' / 'client_errors.log'),
-        #     'formatter': 'client_format',
-        # },
+        'client_errors': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': str(STORAGE_DIR / 'log' / 'client_errors.log'),
+            'formatter': 'base',
+        },
         'security_errors': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': str(STORAGE_DIR / 'log' / 'security_errors.log'),
-            'formatter': 'security_format',
+            'formatter': 'base',
         },
         'null': {
             'class': 'logging.NullHandler',
@@ -186,5 +179,9 @@ LOGGING = {
             'handlers': ['security_errors'],
             'propagate': True,
         },
+        'client_errors': {
+            'handlers': ['client_errors'],
+            'propagate': True,
+        }
     },
 }
