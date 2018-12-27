@@ -13,7 +13,7 @@
             {% include 'imageboard/parts/post.html' with post=thread.op %}
         </div>
 
-        {% if thread.posts.count > 0 %}
+        {% if thread.posts.count > 1 %}
             {% if thread.skipped %}
                 <div class="thread__skipped">
                     Пропущено {{ thread.skipped }} пост(ов).
