@@ -4,6 +4,7 @@ from pathlib import Path
 # Paths
 SETTINGS_PATH = Path(__file__).resolve()
 BASE_DIR = SETTINGS_PATH.parents[1]
+STORAGE_DIR = BASE_DIR / '..' / 'dev'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'cl-x4wji(%=&43=*tla3+n-)vr4220%(_tiwh&@^(=dyw*=r2x'
@@ -79,7 +80,7 @@ WSGI_APPLICATION = 'gensokyo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / '..' / 'dev' / 'db.sqlite3'),
+        'NAME': str(STORAGE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -108,11 +109,11 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = '/static/'
-STATIC_ROOT = str(BASE_DIR / '..' / 'dev' / 'static')
+STATIC_ROOT = str(STORAGE_DIR / 'static')
 
 # Uploads
 MEDIA_URL = '/media/'
-MEDIA_ROOT = str(BASE_DIR / '..' / 'dev' / 'upload')
+MEDIA_ROOT = str(STORAGE_DIR / 'upload')
 
 # Cache
 CACHES = {
@@ -121,7 +122,7 @@ CACHES = {
     },
     'production': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': str(BASE_DIR / '..' / 'dev' / 'cache'),
+        'LOCATION': str(STORAGE_DIR / 'cache'),
         'TIMEOUT': 60 * 60 * 24 * 30,  # 30 days in seconds
         'OPTIONS': {
             'MAX_ENTRIES': 1000
@@ -131,5 +132,59 @@ CACHES = {
 
 # Session
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'
-SESSION_FILE_PATH = str(BASE_DIR / '..' / 'dev' / 'session')
+SESSION_FILE_PATH = str(STORAGE_DIR / 'session')
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'server_format': {
+            'format': '{levelname} -- {asctime} -- {message}',
+            'style': '{',
+        },
+        # 'client_format': {
+        #     'format': '',
+        #     'style': '{',
+        # },
+        'security_format': {
+            'format': '{levelname} -- {asctime} -- {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'server_errors': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': str(STORAGE_DIR / 'log' / 'server_errors.log'),
+            'formatter': 'server_format',
+        },
+        # 'client_errors': {
+        #     'level': 'ERROR',
+        #     'class': 'logging.FileHandler',
+        #     'filename': str(STORAGE_DIR / 'log' / 'client_errors.log'),
+        #     'formatter': 'client_format',
+        # },
+        'security_errors': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': str(STORAGE_DIR / 'log' / 'security_errors.log'),
+            'formatter': 'security_format',
+        },
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['server_errors'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.security.*': {
+            'handlers': ['security_errors'],
+            'propagate': True,
+        },
+    },
+}
