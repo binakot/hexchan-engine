@@ -24,12 +24,7 @@ window.onerror = function (msg, url, line, column, error) {
         if (xhr.readyState !== 4) return;
 
         if (xhr.status !== 200) {
-            console.error(
-                'Error occured when sending client error to the server: '
-                + xhr.status
-                + ' -- '
-                + xhr.statusText
-            );
+            console.error('Error occured when sending client error to the server:', xhr.status, xhr.statusText);
         }
     };
 
