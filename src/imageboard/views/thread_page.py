@@ -10,7 +10,6 @@ from django.core.cache import cache
 # App imports
 from imageboard.models import Board, Thread, Post
 from imageboard.forms import PostingForm
-from captcha.interface import get_captcha
 from gensokyo import config
 
 
@@ -63,19 +62,12 @@ def thread_page(request, board_hid, thread_hid):
     thread.op = all_posts[0]
     thread.other_posts = all_posts[1:]
 
-    # Get captcha for current session
-    captcha = get_captcha(request)
-
     # Init post creation form
     form = PostingForm(
         initial={
             'form_type': 'new_post',
             'board_id': board.id,
             'thread_id': thread.id,
-            'captcha': {
-                'challenge': captcha,
-                'solution': None,
-            },
         },
     )
 

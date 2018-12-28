@@ -42,8 +42,10 @@
 {% endblock %}
 
 {% block page_script %}
-    <script defer src="{% static "imageboard/hider.js" %}"></script>
-    <script defer src="{% static "imageboard/ref_popup.js" %}"></script>
+    <script src="{% static "imageboard/hider.js" %}"></script>
+    <script src="{% static "imageboard/ref_popup.js" %}"></script>
+
+    <script src="{% static "captcha/captcha.js" %}"></script>
 {% endblock %}
 
 {% block js_templates %}

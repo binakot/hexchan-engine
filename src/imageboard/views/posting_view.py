@@ -256,7 +256,7 @@ def create_refs(request, board, thread, post):
 
 def check_captcha_for_request(request, form):
     captcha_data = form.cleaned_data['captcha']
-    captcha_public_id = captcha_data.get('challenge')
+    captcha_public_id = captcha_data.get('public_id')
     captcha_solution = captcha_data.get('solution')
 
     if request.user.is_authenticated or captcha_solution == 'МЯТА':  # TODO: NO MAGICK ALLOWED

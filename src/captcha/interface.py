@@ -20,7 +20,7 @@ def set_captcha(request):
     request.session['captcha_id'] = captcha.id
     request.session['captcha_expires'] = captcha_expires
 
-    return captcha, captcha_expires
+    return captcha
 
 
 def get_captcha(request, do_force_update=False):
@@ -34,7 +34,7 @@ def get_captcha(request, do_force_update=False):
         captcha_expires is None or
         datetime.datetime.fromtimestamp(captcha_expires) < datetime.datetime.now()
     ):
-        captcha, captcha_expires = set_captcha(request)
+        captcha = set_captcha(request)
     # ...or else get captcha object from DB by session-stored ID
     else:
         try:

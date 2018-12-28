@@ -1,0 +1,15 @@
+<span class="captcha-widget">
+    <img
+        class="captcha-widget__image js-captcha-image"
+        {# src="{{ widget.image }}" #}
+        alt="Captcha code"
+        width="200"
+        height="50"
+    />
+
+    {% for subwidget in widget.subwidgets %}
+        {% include subwidget.template_name with widget=subwidget %}
+    {% endfor %}
+
+    <button class="captcha-widget__button js-captcha-refresh icon" type="button">refresh</button>
+</span>
