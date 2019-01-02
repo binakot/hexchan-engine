@@ -128,10 +128,13 @@ def make_post(bnum, tnum, pnum):
     num_of_refs = random.choices([0, 1, 2, 3], weights=[4, 3, 2, 1], k=1)[0]
     refs = []
     for num in range(num_of_refs):
-        ref_random_id = random.randint(
-            (bnum * THREADS_NUM * POSTS_NUM + tnum * POSTS_NUM + 1),
-            (bnum * THREADS_NUM * POSTS_NUM + tnum * POSTS_NUM + pnum + 1) - 1,
-        )
+        try:
+            ref_random_id = random.randint(
+                (bnum * THREADS_NUM * POSTS_NUM + tnum * POSTS_NUM + 1),
+                (bnum * THREADS_NUM * POSTS_NUM + tnum * POSTS_NUM + pnum + 1) - 1,
+            )
+        except ValueError as err:
+            continue
 
         ref_random_hid = ref_random_id - bnum * THREADS_NUM * POSTS_NUM - 1
 
