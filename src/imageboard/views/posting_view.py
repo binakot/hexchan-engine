@@ -18,6 +18,7 @@ import bleach
 from gensokyo import config
 from imageboard.models import Board, Thread, Post, Image
 from imageboard.forms import PostingForm
+from imageboard.views.parts import push_to_session_list
 from imageboard import exceptions as i_ex
 from imageboard.wakabamark import extract_refs
 from captcha.interface import check_captcha, set_captcha
@@ -84,6 +85,8 @@ def posting_view(request):
                 thread.op = post
                 thread.save()
                 flush_old_threads(request, board)
+                push_to_session_list(request, 'user_posts', post.id)
+                push_to_session_list(request, 'user_threads', thread.id)
             else:
                 post = create_post(request, board, thread, form.cleaned_data)
                 create_images(post, images)
@@ -94,6 +97,7 @@ def posting_view(request):
                     thread.is_locked = True
 
                 thread.save()
+                push_to_session_list(request, 'user_posts', post.id)
 
         # Redirect to the new thread or post
         if form_type == 'new_post':

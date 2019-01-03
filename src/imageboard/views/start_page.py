@@ -1,16 +1,29 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 
 from imageboard.models import Board, Thread, Post
+from imageboard.views.parts import set_session_data_as_cookie
 
 
 def start_page(request):
+    # Create response object
+    response = HttpResponse()
+
+    # Send some user session data as cookies
+    set_session_data_as_cookie(request, response, 'user_threads')
+    set_session_data_as_cookie(request, response, 'user_posts')
+
     # Get boards
     boards = Board.objects.order_by('hid').filter(is_deleted=False, is_hidden=False)
 
-    return render(
-        request,
+    rendered_template = render_to_string(
         'imageboard/start_page.html',
         {
             'boards': boards,
-        }
+        },
+        request
     )
+
+    response.write(rendered_template)
+    return response

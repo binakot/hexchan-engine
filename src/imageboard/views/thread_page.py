@@ -11,9 +11,17 @@ from django.core.cache import cache
 from imageboard.models import Board, Thread, Post
 from imageboard.forms import PostingForm
 from gensokyo import config
+from imageboard.views.parts import set_session_data_as_cookie
 
 
 def thread_page(request, board_hid, thread_hid):
+    # Create response object
+    response = HttpResponse()
+
+    # Send some user session data as cookies
+    set_session_data_as_cookie(request, response, 'user_threads')
+    set_session_data_as_cookie(request, response, 'user_posts')
+
     # Get boards
     boards = Board.objects.order_by('hid').all()
 
@@ -36,7 +44,8 @@ def thread_page(request, board_hid, thread_hid):
         if cache_record is not None and not request.user.is_authenticated:
             timestamp, rendered_template = cache_record
             if thread.updated_at == timestamp:
-                return HttpResponse(rendered_template)
+                response.write(rendered_template)
+                return response
 
     # Refs and replies queryset
     refs_and_replies_queryset = Post.objects\
@@ -98,4 +107,5 @@ def thread_page(request, board_hid, thread_hid):
         cache.set(cache_key, new_cache_record)
 
     # Return response
-    return HttpResponse(rendered_template)
+    response.write(rendered_template)
+    return response

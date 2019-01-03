@@ -460,6 +460,16 @@ a {
     color: @disabled-color;
   }
 
+  &[data-user="true"] {
+    border-left: 2px solid @accent-color;
+    padding-left: 18px;
+  }
+
+  &[data-to-user="true"] {
+    border-left: 2px dotted @accent-color;
+    padding-left: 18px;
+  }
+
   &__header {
     margin-bottom: 10px;
     position: relative;

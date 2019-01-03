@@ -1,5 +1,5 @@
 {% if thread.is_deleted %}
-    <div class="thread thread--deleted" id="thread-{{ thread.id }}">
+    <div class="thread thread--deleted js-thread" id="thread-{{ thread.id }}" data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}">
         <div class="thread__deleted-label">
             <span class="thread__hid" >
                 {{ thread.hid2hex }}
@@ -8,7 +8,7 @@
         </div>
     </div>
 {% else %}
-    <div class="thread" id="thread-{{ thread.id }}" data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}">
+    <div class="thread js-thread" id="thread-{{ thread.id }}" data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}">
         <div class="thread__op-post">
             {% include 'imageboard/parts/post.html' with post=thread.op %}
         </div>

@@ -10,11 +10,19 @@ from django.core.cache import cache
 
 # App imports
 from imageboard.models import Board, Thread, Post
+from imageboard.views.parts import set_session_data_as_cookie
 from imageboard.forms import PostingForm
 from gensokyo import config
 
 
 def board_page(request, board_hid, page_num=1):
+    # Create response object
+    response = HttpResponse()
+
+    # Send some user session data as cookies
+    set_session_data_as_cookie(request, response, 'user_threads')
+    set_session_data_as_cookie(request, response, 'user_posts')
+
     # Get boards
     boards = Board.objects.order_by('hid').all()
 
@@ -31,7 +39,8 @@ def board_page(request, board_hid, page_num=1):
         if cache_record is not None and not request.user.is_authenticated:
             timestamp, rendered_template = cache_record
             if board.updated_at == timestamp:
-                return HttpResponse(rendered_template)
+                response.write(rendered_template)
+                return response
 
     # Queryset for latest posts
     latest_posts_queryset = Post.objects\
@@ -115,4 +124,5 @@ def board_page(request, board_hid, page_num=1):
         cache.set(cache_key, new_cache_record)
 
     # Return response
-    return HttpResponse(rendered_template)
+    response.write(rendered_template)
+    return response

@@ -63,6 +63,22 @@ var LocalCollection = function(props) {
     }
 
 
+    function concatLists(list) {
+        if (Array.isArray(list)) {
+            list.forEach(function(item) {
+                var itemIndex = collection.indexOf(item);
+                if (itemIndex === -1) {
+                    collection.push(item);
+                }
+            });
+            writeCollection();
+        } else {
+            throw 'Can only concat arrays';
+        }
+
+    }
+
+
     function checkItem(item) {
         return collection.indexOf(item) !== -1;
     }
@@ -94,6 +110,7 @@ var LocalCollection = function(props) {
         check: checkItem,
         toggle: toggleItem,
         print: print,
-        clear: clearCollection
+        clear: clearCollection,
+        concat: concatLists
     };
 };

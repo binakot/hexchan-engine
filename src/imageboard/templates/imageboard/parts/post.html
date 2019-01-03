@@ -2,7 +2,7 @@
 {% load markup %}
 
 {% if post.is_deleted %}
-    <div class="post post--deleted js-post" id="post-{{ post.id }}">
+    <div class="post post--deleted js-post" id="post-{{ post.id }}" data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}">
         <div class="post__anchor" id="{{ post.hid2hex }}"></div>
 
         <div class="post__deleted-label">

@@ -9,10 +9,18 @@ from django.core.cache import cache
 
 # App imports
 from imageboard.models import Board, Thread
+from imageboard.views.parts import set_session_data_as_cookie
 from gensokyo import config
 
 
 def catalog_page(request, board_hid):
+    # Create response object
+    response = HttpResponse()
+
+    # Send some user session data as cookies
+    set_session_data_as_cookie(request, response, 'user_threads')
+    set_session_data_as_cookie(request, response, 'user_posts')
+
     # Get boards
     boards = Board.objects.order_by('hid').all()
 
@@ -29,7 +37,8 @@ def catalog_page(request, board_hid):
         if cache_record is not None and not request.user.is_authenticated:
             timestamp, rendered_template = cache_record
             if board.updated_at == timestamp:
-                return HttpResponse(rendered_template)
+                response.write(rendered_template)
+                return response
 
     # Combine prefetch args, also prefetch required images
     prefetch_args = [
@@ -70,4 +79,5 @@ def catalog_page(request, board_hid):
         cache.set(cache_key, new_cache_record)
 
     # Return response
-    return HttpResponse(rendered_template)
+    response.write(rendered_template)
+    return response
