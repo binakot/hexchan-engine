@@ -13,7 +13,7 @@ window.onerror = function (msg, url, line, column, error) {
     var xhr = new XMLHttpRequest();
 
     // Open async request
-    xhr.open('POST', '/clientErrors', true);
+    xhr.open('POST', '/clientErrors/', true);
 
     // Set headers
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
