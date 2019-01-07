@@ -134,7 +134,8 @@ CACHES = {
 # Session
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 SESSION_FILE_PATH = str(STORAGE_DIR / 'session')
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 days in seconds
 
 # Logging
 LOGGING = {
