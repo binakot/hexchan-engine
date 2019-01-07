@@ -1,6 +1,6 @@
 # Standard library imports
-# import logging
 import os
+import hashlib
 
 # Django imports
 from django.shortcuts import redirect, render
@@ -187,6 +187,11 @@ def create_images(post: Post, images) -> None:
         thumbnail_pil_object = image_pil_object.copy()
         thumbnail_pil_object.thumbnail(config.IMAGE_THUMB_SIZE)
 
+        # Calculate checksum
+        checksum = hashlib.md5()
+        for chunk in image_file.chunks(config.IMAGE_CHUNK_SIZE):
+            checksum.update(chunk)
+
         # Create Django image object
         image = Image(
             post=post,
@@ -196,6 +201,8 @@ def create_images(post: Post, images) -> None:
             size=image_file.size,
             width=image_pil_object.width,
             height=image_pil_object.height,
+
+            checksum=checksum.hexdigest(),
 
             thumb_width=thumbnail_pil_object.width,
             thumb_height=thumbnail_pil_object.height,
