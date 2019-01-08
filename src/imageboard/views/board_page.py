@@ -1,18 +1,14 @@
-# Standard import
-import datetime
-
 # Django imports
 from django.template.loader import render_to_string
 from django.db.models import Prefetch, Count, Subquery, OuterRef, Q
 from django.core.paginator import Paginator
-from django.http import HttpResponse, Http404
-from django.core.cache import cache
+from django.http import HttpResponse
 
 # App imports
-from imageboard.models import Board, Thread, Post
-from imageboard.views.parts import set_session_data_as_cookie
+from imageboard.models import Thread, Post
+from imageboard.views import parts
+from imageboard.views.parts import CacheInterface
 from imageboard.forms import PostingForm
-from gensokyo import config
 
 
 def board_page(request, board_hid, page_num=1):
@@ -20,27 +16,26 @@ def board_page(request, board_hid, page_num=1):
     response = HttpResponse()
 
     # Send some user session data as cookies
-    set_session_data_as_cookie(request, response, 'user_threads')
-    set_session_data_as_cookie(request, response, 'user_posts')
+    parts.set_session_data_as_cookie(request, response, 'user_threads')
+    parts.set_session_data_as_cookie(request, response, 'user_posts')
 
     # Get boards
-    boards = Board.objects.order_by('hid').all()
+    boards = parts.get_boards()
 
     # Get current board
-    try:
-        board = boards.get(hid=board_hid, is_deleted=False)
-    except Board.DoesNotExist:
-        raise Http404('Board not found')
+    board = parts.get_board(board_hid)
+
+    # Create cache interface
+    cache_interface = CacheInterface(
+        key='board_page__{board_hid}__{page_num}'.format(board_hid=board_hid, page_num=page_num),
+        obj=board
+    )
 
     # Get cached page if exists and return it
-    if config.CACHE_ENABLED:
-        cache_key = 'board_page__{board_hid}__{page_num}'.format(board_hid=board_hid, page_num=page_num)
-        cache_record = cache.get(cache_key)
-        if cache_record is not None and not request.user.is_authenticated:
-            timestamp, rendered_template = cache_record
-            if board.updated_at == timestamp:
-                response.write(rendered_template)
-                return response
+    cached_template = cache_interface.get_cached_template()
+    if cached_template:
+        response.write(cached_template)
+        return response
 
     # Queryset for latest posts
     latest_posts_queryset = Post.objects\
@@ -97,12 +92,7 @@ def board_page(request, board_hid, page_num=1):
     )
 
     # Cache data
-    cache_data = {
-        'updated_at': board.updated_at,
-        'generated_at': datetime.datetime.now(),
-        'board': board.hid,
-        'page': page_num,
-    } if config.CACHE_ENABLED else None
+    cache_data = cache_interface.make_cache_info(board=board, page=page_num)
 
     # Render template
     rendered_template = render_to_string(
@@ -119,9 +109,7 @@ def board_page(request, board_hid, page_num=1):
     )
 
     # Write page to cache
-    if config.CACHE_ENABLED and not request.user.is_authenticated:
-        new_cache_record = (board.updated_at, rendered_template,)
-        cache.set(cache_key, new_cache_record)
+    cache_interface.write_template_to_cache(rendered_template)
 
     # Return response
     response.write(rendered_template)

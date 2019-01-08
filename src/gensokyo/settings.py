@@ -121,14 +121,14 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     },
-    'production': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': str(STORAGE_DIR / 'cache'),
-        'TIMEOUT': 60 * 60 * 24 * 30,  # 30 days in seconds
-        'OPTIONS': {
-            'MAX_ENTRIES': 1000
-        }
-    },
+    # 'default': {
+    #     'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+    #     'LOCATION': str(STORAGE_DIR / 'cache'),
+    #     'TIMEOUT': 60 * 60,  # 1 hour
+    #     'OPTIONS': {
+    #         'MAX_ENTRIES': 10000
+    #     }
+    # },
 }
 
 # Session
@@ -136,6 +136,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 SESSION_FILE_PATH = str(STORAGE_DIR / 'session')
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 days in seconds
+
 
 # Logging
 LOGGING = {

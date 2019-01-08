@@ -1,17 +1,13 @@
-# Standard import
-import datetime
-
 # Django imports
 from django.template.loader import render_to_string
 from django.db.models import Prefetch
-from django.http import HttpResponse, Http404
-from django.core.cache import cache
+from django.http import HttpResponse
 
 # App imports
-from imageboard.models import Board, Thread, Post
+from imageboard.models import Thread, Post
 from imageboard.forms import PostingForm
-from gensokyo import config
-from imageboard.views.parts import set_session_data_as_cookie
+from imageboard.views import parts
+from imageboard.views.parts import CacheInterface
 
 
 def thread_page(request, board_hid, thread_hid):
@@ -19,33 +15,29 @@ def thread_page(request, board_hid, thread_hid):
     response = HttpResponse()
 
     # Send some user session data as cookies
-    set_session_data_as_cookie(request, response, 'user_threads')
-    set_session_data_as_cookie(request, response, 'user_posts')
+    parts.set_session_data_as_cookie(request, response, 'user_threads')
+    parts.set_session_data_as_cookie(request, response, 'user_posts')
 
     # Get boards
-    boards = Board.objects.order_by('hid').all()
+    boards = parts.get_boards()
 
     # Get current board
-    try:
-        board = boards.get(hid=board_hid, is_deleted=False)
-    except Board.DoesNotExist:
-        raise Http404('Board not found')
+    board = parts.get_board(board_hid)
 
     # Thread queryset
-    try:
-        thread = Thread.objects.get(board__hid=board_hid, hid=thread_hid, is_deleted=False)
-    except Thread.DoesNotExist:
-        raise Http404('Thread not found')
+    thread = parts.get_thread(board_hid, thread_hid)
+
+    # Create cache interface
+    cache_interface = CacheInterface(
+        key='thread_page__{board_hid}__{thread_hid}'.format(board_hid=board_hid, thread_hid=thread_hid),
+        obj=thread
+    )
 
     # Get cached page if exists and return it
-    if config.CACHE_ENABLED:
-        cache_key = 'thread_page__{board_hid}__{thread_hid}'.format(board_hid=board_hid, thread_hid=thread_hid)
-        cache_record = cache.get(cache_key)
-        if cache_record is not None and not request.user.is_authenticated:
-            timestamp, rendered_template = cache_record
-            if thread.updated_at == timestamp:
-                response.write(rendered_template)
-                return response
+    cached_template = cache_interface.get_cached_template()
+    if cached_template:
+        response.write(cached_template)
+        return response
 
     # Refs and replies queryset
     refs_and_replies_queryset = Post.objects\
@@ -81,12 +73,7 @@ def thread_page(request, board_hid, thread_hid):
     )
 
     # Cache data
-    cache_data = {
-        'updated_at': thread.updated_at,
-        'generated_at': datetime.datetime.now(),
-        'board': board,
-        'thread': thread,
-    } if config.CACHE_ENABLED else None
+    cache_data = cache_interface.make_cache_info(board=board, thread=thread)
 
     # Render template
     rendered_template = render_to_string(
@@ -102,9 +89,7 @@ def thread_page(request, board_hid, thread_hid):
     )
 
     # Write page to cache
-    if config.CACHE_ENABLED and not request.user.is_authenticated:
-        new_cache_record = (thread.updated_at, rendered_template,)
-        cache.set(cache_key, new_cache_record)
+    cache_interface.write_template_to_cache(rendered_template)
 
     # Return response
     response.write(rendered_template)

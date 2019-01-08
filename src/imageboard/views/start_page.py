@@ -1,11 +1,15 @@
-from django.shortcuts import render
+# Django imports
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.views.decorators.cache import cache_page
 
-from imageboard.models import Board, Thread, Post
+# App imports
+from gensokyo import config
+from imageboard.models import Board
 from imageboard.views.parts import set_session_data_as_cookie
 
 
+@cache_page(config.CACHE_START_PAGE)
 def start_page(request):
     # Create response object
     response = HttpResponse()
