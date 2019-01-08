@@ -11,7 +11,7 @@ def set_captcha(request):
     if captcha_count == 0:
         raise exceptions.CaptchaDbIsEmpty
 
-    random_id = random.randint(0, (captcha_count - 1))
+    random_id = random.randint(1, captcha_count)
     captcha = Captcha.objects.get(pk=random_id)
 
     # TODO: Move delta to the config

@@ -106,7 +106,7 @@ if __name__ == '__main__':
     module_dir = os.path.dirname(os.path.abspath(__file__))
     fixture_filename = os.path.join(module_dir, '..', 'src', 'captcha', 'fixtures', 'captchas.json')
     captchas = []
-    for n in range(0, NUM_OF_CAPTCHAS):
+    for n in range(1, NUM_OF_CAPTCHAS + 1):
         image, solution = make_captcha()
 
         bytes_virtual_file = io.BytesIO()
