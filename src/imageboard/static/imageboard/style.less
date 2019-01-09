@@ -125,12 +125,11 @@ body {
 
 a {
   color: @accent-color;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 2px;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-  }
+  //&:hover {
+  //  background: rgba(0, 0, 0, 0.1);
+  //  border-radius: 2px;
+  //  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  //}
 }
 
 
@@ -630,6 +629,14 @@ a {
     margin: 10px 0;
   }
 
+  &__reply {
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
+  }
+
   // Rendered post elements:
   p {
     margin: 5px 0;
@@ -642,6 +649,11 @@ a {
   }
 
   a.ref {
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
   }
 }
 
