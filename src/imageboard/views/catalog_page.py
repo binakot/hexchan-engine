@@ -39,6 +39,7 @@ def catalog_page(request, board_hid):
     prefetch_args = [
         Prefetch('op'),
         Prefetch('op__images'),
+        Prefetch('op__created_by'),
     ]
 
     # Threads queryset

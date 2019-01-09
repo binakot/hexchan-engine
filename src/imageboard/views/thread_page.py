@@ -50,6 +50,7 @@ def thread_page(request, board_hid, thread_hid):
         Prefetch('posts__images'),
         Prefetch('posts__refs', queryset=refs_and_replies_queryset),
         Prefetch('posts__post_set', queryset=refs_and_replies_queryset, to_attr='replies'),
+        Prefetch('posts__created_by'),
     ]
 
     # Prefetch stuff for the thread

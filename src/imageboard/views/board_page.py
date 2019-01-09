@@ -56,6 +56,7 @@ def board_page(request, board_hid, page_num=1):
         Prefetch('posts__images'),
         Prefetch('posts__refs', queryset=refs_and_replies_queryset),
         Prefetch('posts__post_set', queryset=refs_and_replies_queryset, to_attr='replies'),
+        Prefetch('posts__created_by'),
     ]
 
     # Threads queryset
