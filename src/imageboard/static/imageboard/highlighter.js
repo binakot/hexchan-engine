@@ -1,6 +1,6 @@
 var Highlighter = function(props) {
     var localCollection = new LocalCollection({
-        key: props.storageKey,
+        key: props.storageKey
     });
 
     function init() {
@@ -16,6 +16,9 @@ var Highlighter = function(props) {
             elementId = element.getAttribute('data-id');
             if (localCollection.check(elementId)) {
                 element.setAttribute('data-user', true);
+                if (props.title) {
+                    element.setAttribute('title', props.title);
+                }
             }
         }
     }
@@ -45,11 +48,13 @@ document.cookie.split('; ').forEach(function (cookieKeyValue) {
 var userThreadsHighlighter = new Highlighter({
     cookieData: cookieData['user_threads'],
     storageKey: 'userThreads',
-    selector: '.js-thread'
+    selector: '.js-thread-hid',
+    // title: 'Мой тред'
 });
 
 var userPostsHighlighter = new Highlighter({
     cookieData: cookieData['user_posts'],
     storageKey: 'userPosts',
-    selector: '.js-post'
+    selector: '.js-post-hid',
+    // title: 'Мой пост'
 });

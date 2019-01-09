@@ -1,7 +1,7 @@
 {% if thread.is_deleted %}
     <div class="thread thread--deleted js-thread" id="thread-{{ thread.id }}" data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}">
         <div class="thread__deleted-label">
-            <span class="thread__hid" >
+            <span class="thread__hid js-thread-hid" data-id="{{ thread.id }}" >
                 {{ thread.hid2hex }}
             </span>
             Тред  удален.

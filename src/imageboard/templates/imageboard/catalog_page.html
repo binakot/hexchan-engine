@@ -1,4 +1,5 @@
 {% extends 'imageboard/base.html' %}
+{% load static %}
 {% load date_format %}
 {% load markup %}
 
@@ -17,7 +18,7 @@
         <div class="catalog__items">
             {% for thread in threads %}
                 {% with op_post=thread.op  %}
-                    <a class="catalog-item" href="{% url 'thread_page' board_hid=thread.board.hid thread_hid=thread.hid %}">
+                    <a class="catalog-item js-thread" href="{% url 'thread_page' board_hid=thread.board.hid thread_hid=thread.hid %}" data-id="{{ thread.id }}">
                         <div class="catalog-item__image-wrap">
                             {% with image=op_post.images.all|first  %}
                                 {% if image %}
@@ -36,7 +37,7 @@
                         </div>
 
                         <div class="catalog-item__header">
-                            <span class="catalog-item__hid">{{ thread.hid2hex }}</span>
+                            <span class="catalog-item__hid js-thread-hid" data-id="{{ thread.id }}">{{ thread.hid2hex }}</span>
                             <span class="catalog-item__title">
                                 {{ op_post.title }}
                             </span>
@@ -63,6 +64,11 @@
 
 {% block page_style %}
     <style>{{ board.custom_style }}</style>
+{% endblock %}
+
+{% block page_script %}
+    <script src="{% static "imageboard/hider.js" %}"></script>
+    <script src="{% static "imageboard/highlighter.js" %}"></script>
 {% endblock %}
 
 {% block metadata %}
