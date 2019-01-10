@@ -98,6 +98,7 @@ def posting_view(request):
 
                 thread.save()
                 push_to_session_list(request, 'user_posts', post.id)
+                push_to_session_list(request, 'user_thread_replies', thread.id)
 
         # Redirect to the new thread or post
         if form_type == 'new_post':

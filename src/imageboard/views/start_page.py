@@ -17,6 +17,7 @@ def start_page(request):
     # Send some user session data as cookies
     set_session_data_as_cookie(request, response, 'user_threads')
     set_session_data_as_cookie(request, response, 'user_posts')
+    set_session_data_as_cookie(request, response, 'user_thread_replies')
 
     # Get boards
     boards = Board.objects.order_by('hid').filter(is_deleted=False, is_hidden=False)

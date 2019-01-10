@@ -18,6 +18,7 @@ def board_page(request, board_hid, page_num=1):
     # Send some user session data as cookies
     parts.set_session_data_as_cookie(request, response, 'user_threads')
     parts.set_session_data_as_cookie(request, response, 'user_posts')
+    parts.set_session_data_as_cookie(request, response, 'user_thread_replies')
 
     # Get boards
     boards = parts.get_boards()
