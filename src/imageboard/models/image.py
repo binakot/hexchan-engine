@@ -18,7 +18,7 @@ class Image(models.Model):
     is_spoiler = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False, db_index=True)
 
-    checksum = models.CharField(max_length=16, editable=False, blank=True)
+    checksum = models.CharField(max_length=32, editable=False, blank=True)
 
     thumb_width = models.IntegerField(editable=False)
     thumb_height = models.IntegerField(editable=False)
