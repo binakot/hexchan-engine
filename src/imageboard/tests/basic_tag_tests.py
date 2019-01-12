@@ -49,7 +49,7 @@ class WakabaBasicTagsTest(TestCase):
         )
         self.assertEqual(
             wakabamark.make_ref_tags('&gt;&gt;0x100500', self._get_url_by_hid),
-            '<a class="ref" href="http://example.com/#0x100500">&gt;&gt;0x100500</a>'
+            '<a class="ref js-ref" href="http://example.com/#0x100500">&gt;&gt;0x100500</a>'
         )
         self.assertEqual(
             wakabamark.make_ref_tags('&gt;&gt;0x100500', self._get_url_by_hid_empty),
