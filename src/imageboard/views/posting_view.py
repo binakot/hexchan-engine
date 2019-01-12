@@ -29,9 +29,8 @@ from captcha import exceptions as c_ex
 def posting_view(request):
     response = None
 
+    # Check messsage contents and DB objects
     try:
-        # Check messsage contents and DB objects
-
         # Check request type
         if not request.POST:
             raise i_ex.BadRequestType
@@ -100,11 +99,9 @@ def posting_view(request):
                 push_to_session_list(request, 'user_posts', post.id)
                 push_to_session_list(request, 'user_thread_replies', thread.id)
 
-        # Redirect to the new thread or post
-        if form_type == 'new_post':
-            response = redirect('thread_page', board_hid=board.hid, thread_hid=thread.hid)
-        else:
-            response = redirect('board_page', board_hid=board.hid)
+        # Redirect to the current thread
+        # TODO: make a form checkbox for selecting destination - board or thread
+        response = redirect('thread_page', board_hid=board.hid, thread_hid=thread.hid)
 
     finally:
         # Set new captcha on both failures and successes
