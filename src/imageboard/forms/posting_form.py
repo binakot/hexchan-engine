@@ -60,7 +60,7 @@ class PostingForm(forms.Form):
         cleaned_data = super().clean()
 
         # Check form type
-        form_type = cleaned_data['form_type']
+        form_type = cleaned_data.get('form_type')
         if form_type not in ['new_thread', 'new_post']:
             raise forms.ValidationError('Incorrect form type', code='invalid')
 
