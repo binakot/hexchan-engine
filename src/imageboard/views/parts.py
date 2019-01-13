@@ -5,10 +5,11 @@ from typing import List
 # Django imports
 from django.http import Http404
 from django.core.cache import cache
+from django.db.models import Prefetch
 
 # App imports
 from gensokyo import config
-from imageboard.models import Board, Thread
+from imageboard.models import Board, Thread, Post
 
 
 def get_session_list(request, session_key: str, limit=16) -> List[int]:
@@ -78,3 +79,29 @@ class CacheInterface:
             }
             cache_data.update(kwargs)
             return cache_data
+
+
+def prefetch_relations(base_name, relations=None):
+    if not relations:
+        return []
+
+    result = []
+
+    # Refs and replies queryset
+    refs_and_replies_queryset = Post.objects\
+        .select_related('thread', 'thread__board')\
+        .only('is_op', 'hid', 'thread__hid', 'thread__board__hid')
+
+    if 'images' in relations:
+        result.append(Prefetch('{}__images'.format(base_name)))
+
+    if 'refs' in relations:
+        result.append(Prefetch('{}__refs'.format(base_name), queryset=refs_and_replies_queryset))
+
+    if 'replies' in relations:
+        result.append(Prefetch('{}__post_set'.format(base_name), queryset=refs_and_replies_queryset, to_attr='replies'))
+
+    if 'created_by' in relations:
+        result.append(Prefetch('{}__created_by'.format(base_name)))
+
+    return result
