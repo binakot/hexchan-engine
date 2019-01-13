@@ -67,7 +67,7 @@ def board_page(request, board_hid, page_num=1):
         .select_related('board')\
         .prefetch_related(*prefetch_args)\
         .annotate(posts_count=Count('posts'))\
-        .order_by('board', '-is_sticky', '-hid')[:board.max_threads_num]
+        .order_by('-is_sticky', '-updated_at')[:board.max_threads_num]
 
     # Paginate threads
     paginator = Paginator(threads, board.threads_per_page)
