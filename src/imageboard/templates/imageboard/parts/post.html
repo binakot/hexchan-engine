@@ -69,7 +69,7 @@
         </div>
 
 
-        <div class="post__body">
+        <div class="post__body {% if post.images.count == 1 %}post__body--flexible{% endif %}">
             {% if post.images.count > 0 %}
                 <div class="post__images {% if post.images.count > 1 %}post__images--multiple{% endif %}">
                     {% for image in post.images.all %}
@@ -94,9 +94,21 @@
                 </div>
             {% endif %}
 
-            <div class="post__text">
-                {% markup text=post.text board=board thread=thread post=post %}
-            </div>
+            {% if post.text %}
+                <div class="post__text">
+                    {% markup text=post.text board=board thread=thread post=post %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="post__footer">
+            {% if post.user_was_banned %}
+                <div class="post__admin-message">Пользователь был забанен.</div>
+            {% endif %}
+
+            {% if post.user_was_warned %}
+                <div class="post__admin-message">Пользователь был предупрежден.</div>
+            {% endif %}
 
             {% if post.replies %}
                 <div class="post__replies">
@@ -109,21 +121,7 @@
                     {% endfor %}
                 </div>
             {% endif %}
-
-            {% if post.user_was_banned %}
-                <div class="post__admin-message">
-                    Пользователь был забанен.
-                </div>
-            {% endif %}
-
-            {% if post.user_was_warned %}
-                <div class="post__admin-message">
-                    Пользователь был предупрежден.
-                </div>
-            {% endif %}
         </div>
-
-        <div class="post__footer"></div>
 
 
         {% if not is_popup and request.user.is_superuser %}
