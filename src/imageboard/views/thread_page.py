@@ -31,7 +31,8 @@ def thread_page(request, board_hid, thread_hid):
     # Create cache interface
     cache_interface = CacheInterface(
         key='thread_page__{board_hid}__{thread_hid}'.format(board_hid=board_hid, thread_hid=thread_hid),
-        obj=thread
+        obj=thread,
+        is_admin=request.user.is_authenticated
     )
 
     # Get cached page if exists and return it

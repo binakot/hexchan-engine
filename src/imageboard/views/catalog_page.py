@@ -27,7 +27,8 @@ def catalog_page(request, board_hid):
     # Create cache interface
     cache_interface = CacheInterface(
         key='catalog_page__{board_hid}'.format(board_hid=board_hid),
-        obj=board
+        obj=board,
+        is_admin=request.user.is_authenticated
     )
 
     # Get cached page if exists and return it

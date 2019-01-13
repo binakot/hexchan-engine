@@ -29,7 +29,8 @@ def board_page(request, board_hid, page_num=1):
     # Create cache interface
     cache_interface = CacheInterface(
         key='board_page__{board_hid}__{page_num}'.format(board_hid=board_hid, page_num=page_num),
-        obj=board
+        obj=board,
+        is_admin=request.user.is_authenticated
     )
 
     # Get cached page if exists and return it

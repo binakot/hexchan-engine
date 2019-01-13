@@ -49,13 +49,14 @@ def get_thread(board_hid: str, thread_hid: str):
 
 
 class CacheInterface:
-    def __init__(self, key, obj):
+    def __init__(self, key: str, obj, is_admin: bool):
         self.key = key
         self.obj = obj
+        self.is_admin = is_admin
 
     def get_cached_template(self):
         """Get cached page if exists and return it."""
-        if config.CACHE_ENABLED:
+        if config.CACHE_ENABLED and not self.is_admin:
             cache_record = cache.get(self.key)
             if cache_record is not None:
                 timestamp, rendered_template = cache_record
@@ -64,13 +65,13 @@ class CacheInterface:
 
     def write_template_to_cache(self, rendered_template: str):
         """Write page to cache."""
-        if config.CACHE_ENABLED:
+        if config.CACHE_ENABLED and not self.is_admin:
             new_cache_record = (self.obj.updated_at, rendered_template,)
             cache.set(self.key, new_cache_record)
 
     def make_cache_info(self, **kwargs):
         """Make cache info for use in template."""
-        if config.CACHE_ENABLED:
+        if config.CACHE_ENABLED and not self.is_admin:
             cache_data = {
                 'updated_at': self.obj.updated_at,
                 'generated_at': datetime.datetime.now(),
