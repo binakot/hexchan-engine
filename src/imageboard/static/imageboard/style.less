@@ -151,11 +151,6 @@ body {
 
 a {
   color: @accent-color;
-  //&:hover {
-  //  background: rgba(0, 0, 0, 0.1);
-  //  border-radius: 2px;
-  //  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-  //}
 }
 
 
@@ -205,53 +200,9 @@ a {
     }
   }
 
-  //&__sidebar {
-  //  width: 1280px;
-  //  position: fixed;
-  //  padding: 20px 0;
-  //}
-
-  &__content {
-    &--with-form {
-      padding-top: 235px;
-    }
-
-    //padding-right: 320px;
-  }
+  &__content {}
 
   &__footer {}
-
-  &__sidebars {
-    position: fixed;
-    top: 0;
-    //background: gold;
-    margin: 0 auto;
-    width: 960px;
-    height: 100%;
-    //opacity: 0.5;
-    z-index: -1;
-  }
-
-  &__sidebar {
-    position: absolute;
-    width: 200px;
-    bottom: 60px;
-    top: 60px;
-    background: @main-bg;
-    border-radius: @block-border-radius;
-    padding: 20px;
-    .item-shadow;
-
-    &--left {
-      left: -220px;
-      //background: orangered;
-    }
-
-    &--right {
-      right: -220px;
-      //background: yellowgreen;
-    }
-  }
 
   &__admin {
     position: fixed;
@@ -508,6 +459,8 @@ a {
     position: relative;
   }
 
+  &__header-inner {}
+
   &__body {
     margin-top: 10px;
 
@@ -544,11 +497,11 @@ a {
       color: @admin-color;
 
       &:before {
-        content: '###';
+        content: '★';
       }
 
       &:after {
-        content: '###';
+        content: '★';
       }
     }
   }
@@ -827,6 +780,13 @@ a {
     font-weight: bold;
   }
 
+  &__meta-separator {
+    &:after {
+      content: ' / '
+    }
+
+  }
+
   &__text {
     p, blockquote {
       display: inline;
@@ -866,6 +826,7 @@ a {
     height: 20px;
     line-height: 16px;
     padding: 2px 10px 2px 0;
+    flex: 0 0 auto;
   }
 
   input, textarea {
@@ -1158,4 +1119,159 @@ a {
   width: 960px;
   box-shadow: inset 0 0 0 1px @main-color, 2px 2px 10px rgba(0,0,0, 0.5);
   position: absolute;
+}
+
+
+@media screen and (max-width: 960px) {
+  html {
+    height: 100%;
+    width: 100%;
+  }
+
+  body {
+    height: 100%;
+    width: 100%;
+    min-width: initial;
+    font-size: 12px;
+    font-family: 'Roboto', 'sans-serif';
+    //background: @page-bg;
+  }
+
+  .app {
+    width: 100%;
+  }
+
+  .header {
+    &__logo {
+      font-size: 0;
+      padding: 0;
+      width: 50px;
+      background-position: 50% 50%;
+    }
+
+    &__inner {
+      width: 100%;
+    }
+  }
+
+  .footer {
+    &__inner {
+      width: 100%;
+    }
+  }
+
+  .board-header {
+    border-radius: 0;
+    margin: 0 0 10px;
+    padding: 10px;
+  }
+
+  .rules {
+    border-radius: 0;
+    margin: 10px 0;
+    padding: 10px;
+  }
+
+  .thread {
+    border-radius: 0;
+    //margin: 10px 0;
+  }
+
+  .post {
+    padding: 10px;
+
+    &__hid {
+      padding: 0;
+      width: 65px;
+      margin-right: 0;
+    }
+
+    &__header-inner {
+    }
+
+    &__author {
+      margin-right: 0;
+    }
+
+    &__image {
+      //width: 100px;
+      margin-bottom: 10px;
+      max-width: 100px;
+      width: auto;
+      height: auto;
+    }
+
+    &__body {
+      display: block;
+    }
+
+    &__images {
+      max-width: 100%;
+      flex-wrap: wrap;
+    }
+
+    &__image-wrap {
+      margin-right: 10px;
+    }
+  }
+
+  .posting-form {
+    border-radius: 0;
+    padding: 10px;
+    margin: 10px 0;
+
+    label {
+      width: 60px;
+    }
+  }
+
+  .captcha-widget {
+    flex-wrap: wrap;
+
+    &__image {
+    }
+  }
+
+  .ref-popup {
+    width: 100%;
+  }
+
+  .catalog-item {
+    border-radius: 0;
+    padding-right: 10px;
+
+    &__hid {
+      margin-right: 0;
+      padding: 0;
+      width: 65px;
+    }
+
+    &__meta {
+      font-size: 11px;
+    }
+
+    &__meta-label {
+      display: none;
+    }
+  }
+
+  .placeholder-item {
+    padding: 10px;
+    color: @disabled-color;
+    border-radius: 0;
+
+    &--thread {
+      border-radius: 0;
+    }
+
+    &__hid {
+      margin-right: 0;
+      padding: 0;
+      width: 65px;
+    }
+
+    &__text {
+      margin-right: 0;
+    }
+  }
 }

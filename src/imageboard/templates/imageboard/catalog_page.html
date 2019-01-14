@@ -46,11 +46,22 @@
                             </span>
                         </div>
 
+                        {% spaceless %}
                         <div class="catalog-item__meta">
-                            <span class="catalog-item__meta-label">Создан:</span> {{ thread.created_at|date:config.DATE_TIME_FORMAT }}
-                            <span class="catalog-item__meta-label">Обновлен:</span> {{ thread.updated_at|date:config.DATE_TIME_FORMAT }}
-                            <span class="catalog-item__meta-label">Постов:</span> {{ thread.posts_count }}
+                            <span class="catalog-item__meta-label">Создан: </span>
+                            <span class="catalog-item__meta-value">{{ thread.created_at|date:config.DATE_TIME_FORMAT }}</span>
+
+                            <span class="catalog-item__meta-separator"></span>
+
+                            <span class="catalog-item__meta-label">Обновлен: </span>
+                            <span class="catalog-item__meta-value">{{ thread.updated_at|date:config.DATE_TIME_FORMAT }}</span>
+
+                            <span class="catalog-item__meta-separator"></span>
+
+                            <span class="catalog-item__meta-label">Постов: </span>
+                            <span class="catalog-item__meta-value">{{ thread.posts_count }}</span>
                         </div>
+                        {% endspaceless %}
                     </a>
                 {% endwith %}
             {% endfor %}

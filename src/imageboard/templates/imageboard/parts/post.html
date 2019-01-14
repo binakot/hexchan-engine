@@ -17,25 +17,27 @@
         <div class="post__anchor" id="{{ post.hid2hex }}"></div>
 
         <div class="post__header">
-            <a class="post__hid js-post-hid" data-id="{{ post.id }}" >{{ post.hid2hex }}</a>
+            <div class="post__header-inner">
+                <a class="post__hid js-post-hid" data-id="{{ post.id }}" >{{ post.hid2hex }}</a>
 
-            <span class="post__date">
-                {{ post.created_at|date:config.DATE_TIME_FORMAT }}
-            </span>
+                <span class="post__date">
+                    {{ post.created_at|date:config.DATE_TIME_FORMAT }}
+                </span>
 
-            от
+                от
 
-            <span class="post__author {% if post.author %}post__author--custom{% endif %} {% if post.created_by %}post__author--admin{% endif %}">
-                {% if post.created_by %}
-                     {{ post.created_by }}
-                {% elif post.author %}
-                     {{ post.author }}
-                {% else %}
-                    {{ board.default_username }}
-                {% endif %}
-            </span>
+                <span class="post__author {% if post.author %}post__author--custom{% endif %} {% if post.created_by %}post__author--admin{% endif %}">
+                    {% if post.created_by %}
+                         {{ post.created_by }}
+                    {% elif post.author %}
+                         {{ post.author }}
+                    {% else %}
+                        {{ board.default_username }}
+                    {% endif %}
+                </span>
 
-            [<a class="post__reply-link" href="{{ post.get_absolute_url }}">Ответ</a>]
+                [<a class="post__reply-link" href="{{ post.get_absolute_url }}">Ответ</a>]
+            </div>
 
 
             <div class="post__icons-and-buttons">
