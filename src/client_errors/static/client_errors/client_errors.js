@@ -1,13 +1,6 @@
 window.onerror = function (msg, url, line, column, error) {
     // Get CSRF token
-    var csrfToken;
-    var csrfTokenElement = document.querySelector("[name=csrfmiddlewaretoken]");
-    if (csrfTokenElement) {
-        csrfToken = csrfTokenElement.value;
-    } else {
-        // 'False' result here means 'propagate error to other handlers'
-        return false;
-    }
+    var csrfToken = Cookies.get('csrftoken');
 
     // Create new XHR
     var xhr = new XMLHttpRequest();
