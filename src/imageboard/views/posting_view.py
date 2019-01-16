@@ -182,7 +182,8 @@ def create_images(post: Post, images) -> None:
         image_pil_object = PIL.Image.open(image_file)
 
         # Create thumbnail with PIL library
-        thumbnail_pil_object = image_pil_object.copy()
+        # Convert image to RGBA format when needed (for example, if image has indexed pallette 8bit per pixel mode)
+        thumbnail_pil_object = image_pil_object.convert('RGBA')
         thumbnail_pil_object.thumbnail(config.IMAGE_THUMB_SIZE)
 
         # Calculate checksum
