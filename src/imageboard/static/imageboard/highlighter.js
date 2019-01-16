@@ -16,9 +16,6 @@ var Highlighter = function(props) {
             elementId = element.getAttribute('data-id');
             if (localCollection.check(elementId)) {
                 element.setAttribute('data-user', true);
-                if (props.title) {
-                    element.setAttribute('title', props.title);
-                }
             }
         }
     }
@@ -34,27 +31,20 @@ var Highlighter = function(props) {
 };
 
 
-// Parse cookies
-var cookieData = {};
-document.cookie.split('; ').forEach(function (cookieKeyValue) {
-    var keyValueArray = cookieKeyValue.split('=');
-    try {
-        cookieData[keyValueArray[0]] = keyValueArray[1].split('#');
-    } catch (err) {
-        cookieData[keyValueArray[0]] = [];
-    }
-});
+function getCookieArray(key) {
+    var cookieStr = Cookies.get(key);
+    return cookieStr ? cookieStr.split('#') : [];
+}
+
 
 var userThreadsHighlighter = new Highlighter({
-    cookieData: cookieData['user_threads'],
+    cookieData: getCookieArray('user_threads'),
     storageKey: 'userThreads',
-    selector: '.js-thread-hid',
-    // title: 'Мой тред'
+    selector: '.js-thread-hid'
 });
 
 var userPostsHighlighter = new Highlighter({
-    cookieData: cookieData['user_posts'],
+    cookieData: getCookieArray('user_posts'),
     storageKey: 'userPosts',
-    selector: '.js-post-hid',
-    // title: 'Мой пост'
+    selector: '.js-post-hid'
 });
