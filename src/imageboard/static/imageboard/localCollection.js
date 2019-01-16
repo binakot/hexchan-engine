@@ -4,7 +4,7 @@ var LocalCollection = function(props) {
 
     function onStorageUpdate(ev){
         if (ev.key === props.key) {
-            collection = JSON.parse(ev.newValue);
+            readCollection();
             if (typeof props.callback === 'function') {
                 props.callback(collection);
             }
@@ -19,10 +19,14 @@ var LocalCollection = function(props) {
 
     function readCollection() {
         var collectionJSON = window.localStorage.getItem(props.key);
-        if (collectionJSON) {
+
+        try {
             collection = JSON.parse(collectionJSON);
+        } catch (e) {
+            collection = [];
         }
-        else {
+
+        if (!Array.isArray(collection)) {
             collection = [];
         }
     }
