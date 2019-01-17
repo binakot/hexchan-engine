@@ -78,6 +78,3 @@ var RefPopup = function(props) {
         destroy: destroy,
     };
 };
-
-
-var refPopup = new RefPopup();

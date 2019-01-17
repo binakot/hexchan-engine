@@ -37,6 +37,7 @@
     {% endblock %}
 
     <div id="templates">
+        {% include 'imageboard/parts/js_templates.html' %}
         {% block js_templates %}{% endblock %}
     </div>
 
@@ -47,8 +48,13 @@
         <script src="{% static "assets/js.cookie.js" %}"></script>
 
         <script src="{% static "client_errors/client_errors.js" %}"></script>
+        <script src="{% static "captcha/captcha.js" %}"></script>
 
         <script src="{% static "imageboard/localCollection.js" %}"></script>
+        <script src="{% static "imageboard/hider.js" %}"></script>
+        <script src="{% static "imageboard/ref_popup.js" %}"></script>
+        <script src="{% static "imageboard/highlighter.js" %}"></script>
+
         <script src="{% static "imageboard/main.js" %}"></script>
 
         {% block page_script %}{% endblock %}

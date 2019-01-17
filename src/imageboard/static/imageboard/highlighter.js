@@ -29,22 +29,3 @@ var Highlighter = function(props) {
         destroy: destroy
     };
 };
-
-
-function getCookieArray(key) {
-    var cookieStr = Cookies.get(key);
-    return cookieStr ? cookieStr.split('#') : [];
-}
-
-
-var userThreadsHighlighter = new Highlighter({
-    cookieData: getCookieArray('user_threads'),
-    storageKey: 'userThreads',
-    selector: '.js-thread-hid'
-});
-
-var userPostsHighlighter = new Highlighter({
-    cookieData: getCookieArray('user_posts'),
-    storageKey: 'userPosts',
-    selector: '.js-post-hid'
-});

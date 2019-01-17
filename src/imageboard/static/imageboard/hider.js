@@ -10,7 +10,11 @@ var Hider = function(props) {
         }
     });
 
-    var placeholderItemTemplate = _.template($('#placeholder-item-template').html());
+    var placeholderItem = document.querySelector('#placeholder-item-template');
+    if (!placeholderItem) {
+        throw 'Placeholder template not found';
+    }
+    var placeholderItemTemplate = _.template(placeholderItem.innerHTML);
 
 
     function setItemState(itemId, itemHid, isHidden) {
@@ -75,17 +79,3 @@ var Hider = function(props) {
         destroy: destroy
     };
 };
-
-
-var threadHider = new Hider({
-    type: 'thread',
-    storageKey: 'hiddenThreads',
-    placeholderLabel: 'Тред скрыт.'
-});
-
-
-var postHider = new Hider({
-    type: 'post',
-    storageKey: 'hiddenPosts',
-    placeholderLabel: 'Пост скрыт.'
-});
