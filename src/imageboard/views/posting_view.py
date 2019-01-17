@@ -15,7 +15,7 @@ import PIL.Image
 import bleach
 
 # App imports
-from gensokyo import config
+from hexchan import config
 from imageboard.models import Board, Thread, Post, Image
 from imageboard.forms import PostingForm
 from imageboard.views.parts import push_to_session_list

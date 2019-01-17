@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 
-from gensokyo import config
+from hexchan import config
 
 
 class Thread(models.Model):

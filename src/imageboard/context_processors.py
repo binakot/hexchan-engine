@@ -1,5 +1,5 @@
-import gensokyo.config
+import hexchan.config
 
 
 def config(request):
-    return {'config': gensokyo.config.__dict__}
+    return {'config': hexchan.config.__dict__}

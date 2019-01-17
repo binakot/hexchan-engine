@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page
 
 # App imports
-from gensokyo import config
+from hexchan import config
 from imageboard.models import Board
 from imageboard.views.parts import set_session_data_as_cookie
 

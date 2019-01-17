@@ -8,7 +8,7 @@ from django.core.cache import cache
 from django.db.models import Prefetch
 
 # App imports
-from gensokyo import config
+from hexchan import config
 from imageboard.models import Board, Thread, Post
 
 

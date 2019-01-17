@@ -6,7 +6,7 @@ from django.views.decorators.cache import cache_page
 
 # App imports
 from imageboard.models import Board, Post
-from gensokyo import config
+from hexchan import config
 
 
 @cache_page(config.CACHE_POST_POPUP)

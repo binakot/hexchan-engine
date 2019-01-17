@@ -50,7 +50,7 @@ MIDDLEWARE = [
 ]
 
 # URLs
-ROOT_URLCONF = 'gensokyo.urls'
+ROOT_URLCONF = 'hexchan.urls'
 
 # Templates
 TEMPLATES = [
@@ -75,7 +75,7 @@ TEMPLATES = [
 ]
 
 # WSGI
-WSGI_APPLICATION = 'gensokyo.wsgi.application'
+WSGI_APPLICATION = 'hexchan.wsgi.application'
 
 # Database
 DATABASES = {

@@ -3,7 +3,7 @@ from django.db.models import Count
 from django.conf import settings
 
 from ..models import Board
-from gensokyo import config
+from hexchan import config
 
 
 @admin.register(Board)

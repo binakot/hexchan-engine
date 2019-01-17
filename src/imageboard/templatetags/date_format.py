@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django import template
 
-from gensokyo import config
+from hexchan import config
 
 
 register = template.Library()

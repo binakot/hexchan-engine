@@ -17,7 +17,7 @@ TODO: lists
 import re
 from typing import Callable, Union, List, Tuple
 
-from gensokyo import config
+from hexchan import config
 from imageboard.models import Board, Thread, Post
 
 

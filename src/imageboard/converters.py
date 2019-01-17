@@ -1,4 +1,4 @@
-from gensokyo import config
+from hexchan import config
 
 
 class ThreadHidConverter:

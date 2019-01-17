@@ -5,7 +5,7 @@ from django.db.models import Count
 from django.conf import settings
 
 from ..models import Thread, Post
-from gensokyo import config
+from hexchan import config
 
 
 class OpPostInlineAdmin(admin.StackedInline):

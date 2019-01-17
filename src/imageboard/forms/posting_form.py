@@ -1,6 +1,6 @@
 from django import forms
 
-from gensokyo import config
+from hexchan import config
 from captcha.widget import CaptchaField
 
 
