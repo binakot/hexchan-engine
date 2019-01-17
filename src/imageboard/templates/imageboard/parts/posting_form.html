@@ -1,5 +1,15 @@
 <form action="{% url 'posting_view' %}" method="post" class="posting-form" enctype="multipart/form-data">
     <div class="posting-form__inner">
+        <div class="posting-form__header">
+            {% if form_type == 'new_thread' %}
+                Создать новый тред
+            {% elif form_type == 'new_post' %}
+                Ответить в тред
+                {% if thread %}
+                    {{thread.hid2hex}}
+                {% endif %}
+            {% endif %}
+        </div>
 
         {% for hidden_field in form.hidden_fields %}
             {{ hidden_field }}
@@ -18,13 +28,7 @@
         {% endfor %}
 
         <div class="posting-form__buttons">
-            <button type="submit" class="posting-form__submit">
-                {% if form_type == 'new_thread' %}
-                    Создать новый тред
-                {% elif form_type == 'new_post' %}
-                    Ответить в тред
-                {% endif %}
-            </button>
+            <button type="submit" class="posting-form__submit">Отправить</button>
         </div>
     </div>
 </form>
