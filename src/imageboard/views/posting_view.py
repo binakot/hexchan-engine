@@ -253,6 +253,7 @@ def create_post(request, board: Board, thread: Thread, cleaned_data: dict, is_op
         created_by=get_user(request) if request.user.is_authenticated else None,
 
         ip_address=get_client_ip(request),
+        session_id=request.session.session_key,
     )
     post.save()
     return post

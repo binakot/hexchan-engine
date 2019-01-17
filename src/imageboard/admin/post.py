@@ -79,6 +79,7 @@ class PostAdmin(admin.ModelAdmin):
         'created_by',
         'ip_address',
         'is_op',
+        'session_id',
     )
 
     save_on_top = True
@@ -88,7 +89,7 @@ class PostAdmin(admin.ModelAdmin):
             'fields': (
                 ('id', 'admin_board_hid', 'admin_thread_hid', 'admin_post_hid', 'is_op'),
                 ('created_at', 'updated_at',),
-                ('created_by', 'ip_address',),
+                ('created_by', 'ip_address', 'session_id'),
             ),
         }),
 

@@ -167,6 +167,7 @@ def make_post(bnum, tnum, pnum):
             "user_was_warned": fake.boolean(5),
             "user_was_banned": fake.boolean(1),
             "ip_address": fake.ipv4(),
+            "session_id": ('0' * 32),
             "created_by": None,
             "is_deleted": 0 if is_op else fake.boolean(5),
             "refs": refs,

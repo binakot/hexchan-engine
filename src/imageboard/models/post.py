@@ -31,6 +31,7 @@ class Post(models.Model):
     refs = models.ManyToManyField('self', editable=False, db_index=True, symmetrical=False)
 
     ip_address = models.CharField(max_length=16, editable=False, db_index=True)
+    session_id = models.CharField(max_length=32, editable=False, db_index=True)
 
     class Meta:
         unique_together = ['thread', 'hid']
