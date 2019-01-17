@@ -1,6 +1,7 @@
-Django==2.1.*
-django-debug-toolbar==1.11.*
-Faker==1.0.*
-Pillow==5.4.*
-bleach==3.1.*
-Markdown==3.0.*
+bleach==3.1.0
+Django==2.1.5
+django-debug-toolbar==1.11
+Faker==1.0.1
+Markdown==3.0.1
+Pillow==5.4.1
+psycopg2-binary==2.7.6.1
