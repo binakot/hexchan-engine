@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 from django.conf import settings
+from django.db.models import Prefetch
 
 from ..models import Post, Image
 from hexchan import config
@@ -40,15 +41,15 @@ class PostAdmin(admin.ModelAdmin):
 
     # List options
     # ==================================================================================================================
-    list_display = ('id', 'admin_board_hid', 'admin_thread_hid', 'admin_post_hid',
-                    'author', 'images_num', 'replies_num', 'ip_address',
+    list_display = ('id', 'admin_board_hid', 'admin_thread_hid', 'admin_post_hid', 'is_op',
+                    'author', 'images_num', 'ip_address',
                     'user_was_warned', 'user_was_banned', 'is_deleted',
                     'created_at', 'updated_at',
                     )
 
     list_editable = ('user_was_warned', 'user_was_banned', 'is_deleted',)
 
-    list_filter = ('is_deleted', 'created_at', 'thread__board')
+    list_filter = ('is_deleted', 'created_at', 'thread__board', 'is_op', 'created_by')
 
     list_display_links = (
         # 'admin_full_hid',
@@ -77,6 +78,7 @@ class PostAdmin(admin.ModelAdmin):
         'id',
         'created_by',
         'ip_address',
+        'is_op',
     )
 
     save_on_top = True
@@ -84,7 +86,7 @@ class PostAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                ('id', 'admin_board_hid', 'admin_thread_hid', 'admin_post_hid',),
+                ('id', 'admin_board_hid', 'admin_thread_hid', 'admin_post_hid', 'is_op'),
                 ('created_at', 'updated_at',),
                 ('created_by', 'ip_address',),
             ),
@@ -114,7 +116,7 @@ class PostAdmin(admin.ModelAdmin):
     # Modified main queryset (prefetch some related stuff)
     # ==================================================================================================================
     def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related('thread', 'thread__board', 'images', 'replies')
+        return super().get_queryset(request).prefetch_related('thread', 'thread__board', 'images')
 
     # Custom fields
     # ==================================================================================================================
@@ -144,10 +146,6 @@ class PostAdmin(admin.ModelAdmin):
     def images_num(self, obj):
         return obj.images.count()
     images_num.short_description = 'Images'
-
-    def replies_num(self, obj):
-        return obj.replies.count()
-    replies_num.short_description = 'Replies'
 
     def post_modified(self, obj):
         return obj.updated_at and obj.updated_at != obj.created_at
