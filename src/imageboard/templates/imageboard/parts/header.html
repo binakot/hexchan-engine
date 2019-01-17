@@ -5,9 +5,10 @@
         {% if board %}
             <div class="header__board-selector">
                 <div class="board-selector">
-                    <a href="{% url 'board_page' board_hid=board.hid %}" class="board-selector__button">
-                        /{{ board.hid }}/
-                    </a>
+{#                    <a href="{% url 'board_page' board_hid=board.hid %}" class="board-selector__button">#}
+{#                        /{{ board.hid }}/#}
+{#                    </a>#}
+                    <span class="board-selector__button">/{{ board.hid }}/</span>
                     <div class="board-selector__list">
                         {% for a_board in boards %}
                             {% if not a_board.is_hidden and not a_board.is_deleted %}
@@ -26,7 +27,15 @@
                 </div>
             </div>
 
-            <a class="header__catalog-link" href="{% url 'catalog_page' board_hid=board.hid %}">Каталог тредов</a>
+            {% if thread %}
+                <span class="header__thread-hid" >{{ thread.hid2hex }}</span>
+            {% endif %}
+
+            <span class="header__spacer"></span>
+
+            <a class="header__catalog-link" href="{% url 'catalog_page' board_hid=board.hid %}">
+                Каталог тредов
+            </a>
         {% endif %}
 
     </div>

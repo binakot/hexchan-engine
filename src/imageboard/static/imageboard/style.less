@@ -252,7 +252,7 @@ a {
 
   &__logo {
     display: inline-block;
-    padding: 0 20px 0 50px;
+    padding: 0 10px 0 50px;
     border-right: 1px solid @separator-bg;
     font-size: 24px;
     background: url('hexchan.svg') 10px center no-repeat;
@@ -269,11 +269,26 @@ a {
   }
 
   &__catalog-link {
-    border-right: 1px solid @separator-bg;
-    padding: 0 20px;
+    //border-right: 1px solid @separator-bg;
+    padding: 0 10px 0 34px;
+    position: relative;
 
     &:hover {
       box-shadow: inset 0 0 0 2px @accent-color;
+    }
+
+    &::after {
+      font-family: 'Material Icons';
+      font-size: 24px;
+      content: 'view_list';
+      text-decoration: none;
+      position: absolute;
+      left: 4px;
+      top: 8px;
+      width: 24px;
+      height: 24px;
+      line-height: 1;
+      //text-align: center;
     }
   }
 
@@ -282,26 +297,10 @@ a {
     border-right: 1px solid @separator-bg;
   }
 
-  &__show-form {
-    padding: 0 20px;
-    cursor: pointer;
-
-    &:hover {
-      box-shadow: inset 0 0 0 2px @accent-color;
-    }
-  }
-
-  &__show-form-label {
-    //border-bottom: 1px dotted;
-    vertical-align: middle;
-    //padding: 2px 0;
-  }
-
-  &__show-form-icon {
-    vertical-align: middle;
-    font-size: 32px;
-    font-weight: bold;
-    margin-right: 5px;
+  &__thread-hid {
+    font-size: 24px;
+    padding: 0 10px;
+    border-right: 1px solid @separator-bg;
   }
 }
 
@@ -312,7 +311,7 @@ a {
   color: @header-color;
 
   &__button {
-    padding: 0 20px;
+    padding: 0 10px;
     font-size: 24px;
     position: relative;
     text-decoration: none;
@@ -561,10 +560,12 @@ a {
 
   &__images {
     flex: 0 0 auto;
+    margin-right: 10px;
 
     &--multiple {
       width: 100%;
       margin-bottom: 10px;
+      margin-right: 0;
       display: flex;
       align-items: flex-start;
     }
@@ -1152,6 +1153,14 @@ a {
     &__inner {
       width: 100%;
     }
+
+    &__catalog-link {
+      font-size: 0;
+      //padding: 0 6px;
+      padding: 0;
+      width: 34px;
+      text-align: center;
+    }
   }
 
   .footer {
@@ -1194,7 +1203,7 @@ a {
     }
 
     &__image {
-      margin-bottom: 10px;
+      //margin-bottom: 10px;
       max-width: 100px;
       width: 100%;
       height: auto;
@@ -1210,6 +1219,10 @@ a {
 
     &__image-wrap {
       margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 
