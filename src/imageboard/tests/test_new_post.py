@@ -1,12 +1,13 @@
 # Standard imports
-import datetime
+import os.path
 
 # Django imports
 from django.test import TestCase
 from django.test import Client
+from django.conf import settings
 
 # App imports
-from imageboard.models import Board, Thread, Post
+from imageboard.models import Board, Thread, Post, Image
 from captcha.models import Captcha
 
 
@@ -52,7 +53,13 @@ class NewPostTestCase(TestCase):
             'email': '',
             'text': 'Test test test test',
             'password': 'swordfish',
+            'images': [],
         }
+
+        # Prepare upload dirs
+        (settings.STORAGE_DIR / 'test').mkdir(parents=True, exist_ok=True)
+        (settings.STORAGE_DIR / 'test' / 'images').mkdir(parents=True, exist_ok=True)
+        (settings.STORAGE_DIR / 'test' / 'thumbs').mkdir(parents=True, exist_ok=True)
 
     def check_redirect(self, response, url):
         # Check for handled exceptions
@@ -64,13 +71,18 @@ class NewPostTestCase(TestCase):
         self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
     def check_post_created(self, post_hid=0):
-        post = Post.objects.get(thread__board__hid='t', hid=post_hid)
+        post = Post.objects.get(thread__board__id=1, hid=post_hid)
         self.assertNotEqual(post, None)
         self.assertEqual(post.title, self.base_post_content['title'])
         self.assertEqual(post.author, self.base_post_content['author'])
         self.assertEqual(post.email, self.base_post_content['email'])
         self.assertEqual(post.text, self.base_post_content['text'])
         self.assertEqual(post.password, self.base_post_content['password'])
+
+    def check_image_created(self, image_id, filename):
+        image = Image.objects.get(id=image_id)
+        self.assertNotEqual(image, None)
+        self.assertEqual(image.original_name, os.path.basename(filename))
 
     def test_new_post_with_text(self):
         post_data = self.base_post_content.copy()
@@ -81,22 +93,31 @@ class NewPostTestCase(TestCase):
         self.check_post_created()
 
     def test_new_post_with_image(self):
-        post_data = self.base_post_content.copy()
-        post_data.update({})
-        response = self.client.post('/create/', post_data)
+        filename = os.path.join(os.path.dirname(__file__), 'noise.png')
 
-        self.check_redirect(response, '/t/0x000000/')
-        self.check_post_created()
-        # TODO: check images
+        with self.settings(MEDIA_ROOT=str(settings.STORAGE_DIR / 'test')):
+            with open(filename, 'rb') as fp:
+                post_data = self.base_post_content.copy()
+                post_data.update({'images': fp})
+                response = self.client.post('/create/', post_data)
+
+                self.check_redirect(response, '/t/0x000000/')
+                self.check_post_created()
+                self.check_image_created(1, filename)
 
     def test_new_post_many_images(self):
-        post_data = self.base_post_content.copy()
-        post_data.update({})
-        response = self.client.post('/create/', post_data)
+        filename = os.path.join(os.path.dirname(__file__), 'noise.png')
 
-        self.check_redirect(response, '/t/0x000000/')
-        self.check_post_created()
-        # TODO: check images
+        with self.settings(MEDIA_ROOT=str(settings.STORAGE_DIR / 'test')):
+            with open(filename, 'rb') as fp1, open(filename, 'rb') as fp2:
+                post_data = self.base_post_content.copy()
+                post_data.update({'images': [fp1, fp2]})
+                response = self.client.post('/create/', post_data)
+
+                self.check_redirect(response, '/t/0x000000/')
+                self.check_post_created()
+                self.check_image_created(1, filename)
+                self.check_image_created(2, filename)
 
     def test_lock_thread_after_reaching_limit(self):
         little_thread = Thread.objects.create(

@@ -1,6 +1,10 @@
+# Standard imports
+import os.path
+
 # Django imports
 from django.test import TestCase
 from django.test import Client
+from django.conf import settings
 
 # App imports
 from imageboard.models import Board, Thread, Post
@@ -51,6 +55,11 @@ class PostingExceptionsTestCase(TestCase):
             'text': 'Test test test test',
             'password': 'swordfish',
         }
+
+        # Prepare upload dirs
+        (settings.STORAGE_DIR / 'test').mkdir(parents=True, exist_ok=True)
+        (settings.STORAGE_DIR / 'test' / 'images').mkdir(parents=True, exist_ok=True)
+        (settings.STORAGE_DIR / 'test' / 'thumbs').mkdir(parents=True, exist_ok=True)
 
     def make_bad_request(self, post_content_mixin, exception):
         post_data = self.base_post_content.copy()
@@ -112,3 +121,21 @@ class PostingExceptionsTestCase(TestCase):
         # Get exception from context
         e = response.context.get('exception')
         self.assertIsInstance(e, i_ex.BadRequestType)
+
+    def test_attached_non_image(self):
+        filename = os.path.join(os.path.dirname(__file__), 'not_image.txt')
+        with self.settings(MEDIA_ROOT=str(settings.STORAGE_DIR / 'test')):
+            with open(filename, 'rb') as fp:
+                self.make_bad_request({'images': fp}, i_ex.BadFileType)
+
+    def test_attached_large_image(self):
+        filename = os.path.join(os.path.dirname(__file__), 'noise_big.png')
+        with self.settings(MEDIA_ROOT=str(settings.STORAGE_DIR / 'test')):
+            with open(filename, 'rb') as fp:
+                self.make_bad_request({'images': fp}, i_ex.FileIsTooLarge)
+
+    def test_attached_too_many_images(self):
+        filename = os.path.join(os.path.dirname(__file__), 'noise.png')
+        with self.settings(MEDIA_ROOT=str(settings.STORAGE_DIR / 'test')):
+            with open(filename, 'rb') as fp1, open(filename, 'rb') as fp2, open(filename, 'rb') as fp3, open(filename, 'rb') as fp4, open(filename, 'rb') as fp5, open(filename, 'rb') as fp6, open(filename, 'rb') as fp7, open(filename, 'rb') as fp8:
+                self.make_bad_request({'images': [fp1, fp2, fp3, fp4, fp5, fp6, fp7, fp8]}, i_ex.TooManyFiles)
