@@ -58,8 +58,8 @@ class PostingExceptionsTestCase(TestCase):
         response = self.client.post('/create/', post_data)
 
         # Error template will be used with 403 status code
-        self.assertTemplateUsed(response, 'imageboard/posting_error_page.html')
         self.assertEqual(response.status_code, 403)
+        self.assertTemplateUsed(response, 'imageboard/posting_error_page.html')
 
         # Get exception from context
         e = response.context.get('exception')
@@ -75,3 +75,28 @@ class PostingExceptionsTestCase(TestCase):
 
     def test_thread_not_found(self):
         self.make_bad_request({'thread_id': '100500'}, i_ex.ThreadNotFound)
+
+    def test_board_is_locked(self):
+        locked_board = Board.objects.create(
+            hid='b',
+            name='random',
+            url='b',
+            default_max_posts_num=100,
+            is_locked=True,
+        )
+        locked_thread = Thread.objects.create(
+            hid=1,
+            board=self.board,
+            max_posts_num=1,
+            is_locked=True,
+        )
+        self.make_bad_request({'board_id': '2', 'thread_id': '2'}, i_ex.BoardIsLocked)
+
+    def test_thread_is_locked(self):
+        locked_thread = Thread.objects.create(
+            hid=1,
+            board=self.board,
+            max_posts_num=1,
+            is_locked=True,
+        )
+        self.make_bad_request({'thread_id': '2'}, i_ex.ThreadIsLocked)
