@@ -100,3 +100,15 @@ class PostingExceptionsTestCase(TestCase):
             is_locked=True,
         )
         self.make_bad_request({'thread_id': '2'}, i_ex.ThreadIsLocked)
+
+    def test_make_get_request(self):
+        post_data = self.base_post_content.copy()
+        response = self.client.get('/create/', post_data)
+
+        # Error template will be used with 403 status code
+        self.assertEqual(response.status_code, 403)
+        self.assertTemplateUsed(response, 'imageboard/posting_error_page.html')
+
+        # Get exception from context
+        e = response.context.get('exception')
+        self.assertIsInstance(e, i_ex.BadRequestType)
