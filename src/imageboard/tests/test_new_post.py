@@ -54,17 +54,17 @@ class NewPostTestCase(TestCase):
             'password': 'swordfish',
         }
 
-    def check_redirect(self, response):
+    def check_redirect(self, response, url):
         # Check for handled exceptions
         if response.status_code != 302:
             e = response.context.get('exception')
             self.assertEqual(e, None)
 
         # Check for correct redirect
-        self.assertRedirects(response, '/t/0x000000/', status_code=302, target_status_code=200)
+        self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
-    def check_post_created(self):
-        post = Post.objects.get(thread__board__hid='t', hid=0)
+    def check_post_created(self, post_hid=0):
+        post = Post.objects.get(thread__board__hid='t', hid=post_hid)
         self.assertNotEqual(post, None)
         self.assertEqual(post.title, self.base_post_content['title'])
         self.assertEqual(post.author, self.base_post_content['author'])
@@ -77,7 +77,7 @@ class NewPostTestCase(TestCase):
         post_data.update({})
         response = self.client.post('/create/', post_data)
 
-        self.check_redirect(response)
+        self.check_redirect(response, '/t/0x000000/')
         self.check_post_created()
 
     def test_new_post_with_image(self):
@@ -85,7 +85,7 @@ class NewPostTestCase(TestCase):
         post_data.update({})
         response = self.client.post('/create/', post_data)
 
-        self.check_redirect(response)
+        self.check_redirect(response, '/t/0x000000/')
         self.check_post_created()
         # TODO: check images
 
@@ -94,13 +94,25 @@ class NewPostTestCase(TestCase):
         post_data.update({})
         response = self.client.post('/create/', post_data)
 
-        self.check_redirect(response)
+        self.check_redirect(response, '/t/0x000000/')
         self.check_post_created()
         # TODO: check images
 
     def test_lock_thread_after_reaching_limit(self):
-        # TODO
-        pass
+        little_thread = Thread.objects.create(
+            hid=1,
+            board=self.board,
+            max_posts_num=1,
+        )
+
+        # First post should pass
+        post_data = self.base_post_content.copy()
+        post_data.update({'thread_id': '2'})
+        response = self.client.post('/create/', post_data)
+        self.check_redirect(response, '/t/0x000001/')
+
+        little_thread_updated = Thread.objects.get(hid=1, board=self.board)
+        self.assertEqual(little_thread_updated.is_locked, True)
 
     def test_new_session_info(self):
         # TODO
