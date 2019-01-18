@@ -145,22 +145,22 @@ def get_thread(thread_id: int) -> Thread:
 def check_message_content(cleaned_data, images):
     # Check honeypot. Yes, the email field is a honeypot!
     if len(cleaned_data['email']) > 0:
-        raise i_ex.BadMessageContent('content is invalid')
+        raise i_ex.BadMessageContent
 
     # Check if empty message
     if not cleaned_data['text'] and not images:
-        raise i_ex.BadMessageContent('empty message')
+        raise i_ex.MessageIsEmpty
 
     # Check number of files
     if len(images) > config.FILE_MAX_NUM:
-        raise i_ex.BadMessageContent('too many files')
+        raise i_ex.TooManyFiles
 
     # Check file(s) for field 'file'
     for file_object in images:
         if file_object.size > config.FILE_MAX_SIZE:
-            raise i_ex.BadMessageContent('file is too large')
+            raise i_ex.FileIsTooLarge
         if file_object.content_type not in config.FILE_MIME_TYPES:
-            raise i_ex.BadMessageContent('invalid file type')
+            raise i_ex.BadFileType
 
     # TODO: remember to check password with regex when saving it
 
