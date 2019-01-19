@@ -1,6 +1,7 @@
 from django import forms
 
 from hexchan import config
+from imageboard.forms.textarea_widget import TextareaWidget
 from captcha.widget import CaptchaField
 
 
@@ -35,7 +36,7 @@ class PostingForm(forms.Form):
 
     text = forms.CharField(
         max_length=2048, required=False, label='Текст',
-        widget=forms.Textarea
+        widget=TextareaWidget
     )
 
     password = forms.CharField(
