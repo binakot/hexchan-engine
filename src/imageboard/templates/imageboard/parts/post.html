@@ -6,7 +6,7 @@
         <div class="post__anchor" id="{{ post.hid2hex }}"></div>
 
         <div class="post__deleted-label">
-            <span class="post__hid js-post-hid" data-id="{{ post.id }}" >
+            <span class="post__hid hid js-post-hid" data-id="{{ post.id }}" >
                 {{ post.hid2hex }}
             </span>
             Пост  удален.
@@ -18,7 +18,7 @@
 
         <div class="post__header">
             <div class="post__header-inner">
-                <a class="post__hid js-post-hid" data-id="{{ post.id }}" >{{ post.hid2hex }}</a>
+                <a class="post__hid hid js-post-hid" data-id="{{ post.id }}" >{{ post.hid2hex }}</a>
 
                 <span class="post__date">
                     {{ post.created_at|date:config.DATE_TIME_FORMAT }}

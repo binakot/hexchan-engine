@@ -38,48 +38,6 @@
   box-shadow: 1px 2px 3px rgba(0,0,0, 0.3);
 }
 
-.hid {
-  height: 20px;
-  display: inline-block;
-  border: 1px solid;
-  line-height: 18px;
-  padding: 0 5px;
-  font-weight: bold;
-  border-radius: 3px;
-  margin-right: 10px;
-  color: inherit;
-  text-decoration: none;
-
-  width: 75px;
-  text-align: center;
-}
-
-.hid--user {
-  border-radius: 3px 0 0 3px;
-  border-right: none;
-  margin-right: 30px;
-  position: relative;
-}
-
-.hid-icon {
-  font-family: 'Material Icons', 'sans-serif';
-  width: 20px;
-  height: 20px;
-  font-size: 18px;
-  line-height: 18px;
-  display: block;
-  position: absolute;
-  left: 100%;
-  background: @accent-color;
-  //color: @main-bg;
-  border-radius: 0 3px 3px 0;
-  border-width: 1px 1px 1px 0;
-  border-style: solid;
-  box-sizing: border-box;
-  top: -1px;
-  text-align: center;
-}
-
 .clearfix {
   &::after {
     content: "";
@@ -152,8 +110,51 @@ a {
 }
 
 
+.hid {
+  height: 20px;
+  display: inline-block;
+  border: 1px solid;
+  line-height: 18px;
+  padding: 0 5px;
+  font-weight: bold;
+  border-radius: 3px;
+  margin-right: 10px;
+  color: inherit;
+  text-decoration: none;
+  width: 75px;
+  text-align: center;
+
+  &[data-user="true"] {
+    border-radius: 3px 0 0 3px;
+    border-right: none;
+    margin-right: 30px;
+    position: relative;
+
+    &:after {
+      font-family: 'Material Icons', 'sans-serif';
+      width: 20px;
+      height: 20px;
+      font-size: 18px;
+      line-height: 18px;
+      display: block;
+      position: absolute;
+      left: 100%;
+      background: @accent-color;
+      border-radius: 0 3px 3px 0;
+      border-width: 1px 1px 1px 0;
+      border-style: solid;
+      box-sizing: border-box;
+      top: -1px;
+      text-align: center;
+
+      content: 'person';
+    }
+  }
+}
+
+
 .icon {
-  font-family: 'Material Icons';
+  font-family: 'Material Icons', sans-serif;
   font-weight: normal;
   font-style: normal;
   //font-size: 24px;  /* Preferred icon size */
@@ -387,16 +388,6 @@ a {
   }
 
   &__hid {
-    .hid;
-
-    &[data-user="true"] {
-      .hid--user;
-
-      &:after {
-        .hid-icon;
-        content: 'person';
-      }
-    }
   }
 
   &__skipped {
@@ -467,16 +458,6 @@ a {
   }
 
   &__hid {
-    .hid;
-
-    &[data-user="true"] {
-      .hid--user;
-
-      &:after {
-        .hid-icon;
-        content: 'person';
-      }
-    }
   }
 
   &__date {
@@ -726,17 +707,6 @@ a {
   //}
 
   &__hid {
-    .hid;
-    width: 70px;
-
-    &[data-user="true"] {
-      .hid--user;
-
-      &:after {
-        .hid-icon;
-        content: 'person';
-      }
-    }
   }
 
   &__image {
@@ -942,16 +912,6 @@ a {
   &__deleted-label {}
 
   &__hid {
-    .hid;
-
-    &[data-user="true"] {
-      .hid--user;
-
-      &:after {
-        .hid-icon;
-        content: 'person';
-      }
-    }
   }
 
   &__text {
@@ -1145,6 +1105,16 @@ a {
     //background: @page-bg;
   }
 
+  .hid {
+    width: 65px;
+    margin-right: 0;
+    padding: 0 2px;
+
+    &[data-user="true"] {
+      margin-right: 20px;
+    }
+  }
+
   .app {
     width: 100%;
   }
@@ -1195,12 +1165,6 @@ a {
 
   .post {
     padding: 10px;
-
-    &__hid {
-      padding: 0;
-      width: 65px;
-      margin-right: 0;
-    }
 
     &__header-inner {
     }
@@ -1258,12 +1222,6 @@ a {
     border-radius: 0;
     padding-right: 10px;
 
-    &__hid {
-      margin-right: 0;
-      padding: 0;
-      width: 65px;
-    }
-
     &__meta {
       font-size: 11px;
     }
@@ -1280,12 +1238,6 @@ a {
 
     &--thread {
       border-radius: 0;
-    }
-
-    &__hid {
-      margin-right: 0;
-      padding: 0;
-      width: 65px;
     }
 
     &__text {
