@@ -91,29 +91,27 @@
 
 // Fonts
 // =====================================================================================================================
-//@font-face {
-//  font-family: 'PT Sans';
-//  src: url('fonts/PTS55F_W.woff');
-//}
-//
-//@font-face {
-//  font-family: 'PT Sans';
-//  src: url('fonts/PTS56F_W.woff');
-//  font-style: italic;
-//}
-//
-//@font-face {
-//  font-family: 'PT Sans';
-//  src: url('fonts/PTS75F_W.woff');
-//  font-weight: bold;
-//}
-//
-//@font-face {
-//  font-family: 'PT Sans';
-//  src: url('fonts/PTS76F_W.woff');
-//  font-style: italic;
-//  font-weight: bold;
-//}
+@font-face {
+  font-family: 'Ubuntu';
+  font-weight: normal;
+  font-style: normal;
+  src: local('Ubuntu Regular'), local('Ubuntu-Regular'), url('fonts/Ubuntu-R.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: normal;
+  src: local('Ubuntu Italic'), local('Ubuntu-Italic'), url('fonts/Ubuntu-RI.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-weight: bold;
+  font-style: normal;
+  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url('fonts/Ubuntu-B.woff') format('woff');
+}
+
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
@@ -121,7 +119,7 @@
   src:
     local('Material Icons'),
     local('MaterialIcons-Regular'),
-    url(../assets/MaterialIcons-Regular.woff) format('woff');
+    url('../assets/MaterialIcons-Regular.woff') format('woff');
 }
 
 
@@ -139,7 +137,7 @@ html {
 
 
 body {
-  font: 14px/20px 'PT Sans', 'Trebuchet MS', 'Arial', sans-serif;
+  font: 14px/20px 'Ubuntu', 'Trebuchet MS', sans-serif;
   background: @page-bg  url("squared_metal.png") fixed;
   color: @main-color;
   position: relative;
