@@ -8,11 +8,11 @@
 
     <title>{% block page_title %}Hexchan{% endblock %}</title>
 
-    <link rel="icon" href="{% static "imageboard/favicon.png" %}">
-    <link rel="stylesheet" href="{% static 'imageboard/style.css' %}">
+    <link rel="icon" href="{% static "favicon.png" %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 
     {# Lightbox #}
-    <link rel="stylesheet" href="{% static "assets/lightbox/css/lightbox.css" %}">
+    <link rel="stylesheet" href="{% static "libs/lightbox/css/lightbox.css" %}">
     {% block page_style %}{% endblock %}
 </head>
 <body>
@@ -42,20 +42,12 @@
     </div>
 
     <div id="scripts">
-        <script src="{% static "assets/underscore/underscore-min.js" %}"></script>
-        <script src="{% static "assets/jquery/jquery.min.js" %}"></script>
-        <script src="{% static "assets/lightbox/js/lightbox.min.js" %}"></script>
-        <script src="{% static "assets/js.cookie.js" %}"></script>
+        <script src="{% static "libs/underscore-min.js" %}"></script>
+        <script src="{% static "libs/jquery.min.js" %}"></script>
+        <script src="{% static "libs/js.cookie.js" %}"></script>
+        <script src="{% static "libs/lightbox/js/lightbox.min.js" %}"></script>
 
-        <script src="{% static "client_errors/client_errors.js" %}"></script>
-        <script src="{% static "captcha/captcha.js" %}"></script>
-
-        <script src="{% static "imageboard/localCollection.js" %}"></script>
-        <script src="{% static "imageboard/hider.js" %}"></script>
-        <script src="{% static "imageboard/ref_popup.js" %}"></script>
-        <script src="{% static "imageboard/highlighter.js" %}"></script>
-
-        <script src="{% static "imageboard/main.js" %}"></script>
+        <script src="{% static "scripts.js" %}"></script>
 
         {% block page_script %}{% endblock %}
     </div>

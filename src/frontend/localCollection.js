@@ -118,3 +118,6 @@ var LocalCollection = function(props) {
         concat: concatLists
     };
 };
+
+
+export default LocalCollection;

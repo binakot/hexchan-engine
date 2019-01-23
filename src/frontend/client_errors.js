@@ -1,4 +1,7 @@
-window.onerror = function (msg, url, line, column, error) {
+import Cookies from 'js-cookie';
+
+
+function globalErrorHandler(msg, url, line, column, error) {
     // Get CSRF token
     var csrfToken = Cookies.get('csrftoken');
 
@@ -35,3 +38,6 @@ window.onerror = function (msg, url, line, column, error) {
     // 'False' result here means 'propagate error to other handlers'
     return false;
 };
+
+
+export default globalErrorHandler;

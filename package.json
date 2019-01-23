@@ -4,14 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scripts": "npx rollup -cm",
+    "styles": "npx lessc --source-map src/frontend/style.less dev/frontend/style.css"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "jquery": "^3.3.1",
     "js-cookie": "^2.2.0",
+    "less": "^3.9.0",
     "lightbox2": "^2.10.0",
+    "rollup": "^1.1.2",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
     "underscore": "^1.9.1"
   }
 }

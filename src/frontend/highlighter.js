@@ -1,3 +1,6 @@
+import LocalCollection from './localCollection';
+
+
 var Highlighter = function(props) {
     var localCollection = new LocalCollection({
         key: props.storageKey
@@ -29,3 +32,6 @@ var Highlighter = function(props) {
         destroy: destroy
     };
 };
+
+
+export default Highlighter;

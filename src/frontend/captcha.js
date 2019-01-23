@@ -1,4 +1,4 @@
-function Captcha() {
+var Captcha = function() {
     function init() {
         document.addEventListener('click', onRefreshButtonClick);
         window.addEventListener('pageshow', onPageShow);
@@ -83,4 +83,4 @@ function Captcha() {
 }
 
 
-window.captcha = new Captcha();
+export default Captcha;

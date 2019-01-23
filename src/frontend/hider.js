@@ -1,3 +1,9 @@
+import $ from 'jquery';
+// import template from 'lodash.template';
+import _ from 'underscore';
+import LocalCollection from './localCollection';
+
+
 var Hider = function(props) {
     var hiddenClass = props.type + '--hidden';
     var toggleSelector = '.js-toggle-' + props.type;
@@ -79,3 +85,6 @@ var Hider = function(props) {
         destroy: destroy
     };
 };
+
+
+export default Hider;

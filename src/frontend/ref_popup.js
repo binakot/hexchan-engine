@@ -1,3 +1,6 @@
+import $ from 'jquery';
+
+
 var RefPopup = function(props) {
     var POPUP_VERTICAL_OFFSET = 5;
 
@@ -78,3 +81,6 @@ var RefPopup = function(props) {
         destroy: destroy,
     };
 };
+
+
+export default RefPopup;

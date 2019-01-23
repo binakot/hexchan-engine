@@ -27,7 +27,6 @@ INSTALLED_APPS = [
 
     # Project apps
     'imageboard',
-    'assets',
     'captcha',
     'client_errors',
 
@@ -111,6 +110,9 @@ USE_TZ = True
 # Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = str(STORAGE_DIR / 'static')
+STATICFILES_DIRS = [
+    str(STORAGE_DIR / 'frontend')
+]
 
 # Uploads
 MEDIA_URL = '/media/'
