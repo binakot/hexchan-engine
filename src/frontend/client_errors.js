@@ -4,6 +4,10 @@ import Cookies from 'js-cookie';
 function globalErrorHandler(msg, url, line, column, error) {
     // Get CSRF token
     var csrfToken = Cookies.get('csrftoken');
+    if (!csrfToken) {
+        console.error('Couldn\'t get CSRF token. Aborted.');
+        return;
+    }
 
     // Create new XHR
     var xhr = new XMLHttpRequest();
@@ -37,7 +41,7 @@ function globalErrorHandler(msg, url, line, column, error) {
 
     // 'False' result here means 'propagate error to other handlers'
     return false;
-};
+}
 
 
 export default globalErrorHandler;
