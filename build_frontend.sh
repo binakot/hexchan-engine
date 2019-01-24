@@ -2,6 +2,8 @@
 
 set -e
 
+echo Build started at: $(date)
+
 echo "Prepare output folder"
 rm -rf dev/fronted
 mkdir -p dev/frontend
