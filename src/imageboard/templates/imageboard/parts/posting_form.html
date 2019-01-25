@@ -1,14 +1,20 @@
-<form action="{% url 'posting_view' %}" method="post" class="posting-form" enctype="multipart/form-data">
+{% load markdown %}
+
+<form action="{% url 'posting_view' %}" method="post" class="posting-form js-posting-form" enctype="multipart/form-data">
     <div class="posting-form__inner">
         <div class="posting-form__header">
-            {% if form_type == 'new_thread' %}
-                Создать новый тред
-            {% elif form_type == 'new_post' %}
-                Ответить в тред
-                {% if thread %}
-                    {{thread.hid2hex}}
+            <span class="posting-form__title">
+                {% if form_type == 'new_thread' %}
+                    Создать новый тред
+                {% elif form_type == 'new_post' %}
+                    Ответить в тред
+                    {% if thread %}
+                        {{thread.hid2hex}}
+                    {% endif %}
                 {% endif %}
-            {% endif %}
+            </span>
+
+            <button type="submit" class="posting-form__submit">Отправить</button>
         </div>
 
         {% for hidden_field in form.hidden_fields %}
@@ -26,9 +32,11 @@
                 {{ field.label_tag }} {{ field }}
             </div>
         {% endfor %}
-
-        <div class="posting-form__buttons">
-            <button type="submit" class="posting-form__submit">Отправить</button>
+    </div>
+    <div class="posting-form__rules">
+        <div class="posting-form__rules-header">
+            Правила доски
         </div>
+        {{ board.rules|markdown|safe }}
     </div>
 </form>

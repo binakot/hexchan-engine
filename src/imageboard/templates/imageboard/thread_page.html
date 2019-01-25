@@ -12,8 +12,6 @@
 {% block content %}
     {% include 'imageboard/parts/board_header.html' %}
 
-    {% include 'imageboard/parts/rules.html' %}
-
     {% if board.is_locked %}
         {% include 'imageboard/parts/lockdown.html' with type='board' %}
     {% elif thread.is_locked %}
