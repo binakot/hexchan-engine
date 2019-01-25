@@ -1,137 +1,124 @@
 {% load date_format %}
 {% load markup %}
 
-{% if post.is_deleted %}
-    <div class="post post--deleted js-post" id="post-{{ post.id }}" data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}">
-        <div class="post__anchor" id="{{ post.hid2hex }}"></div>
+<div class="post js-post" id="post-{{ post.id }}" data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}">
+    <div class="post__anchor" id="{{ post.hid2hex }}"></div>
 
-        <div class="post__deleted-label">
-            <span class="post__hid hid js-post-hid" data-id="{{ post.id }}" >
-                {{ post.hid2hex }}
+    <div class="post__header">
+        <div class="post__header-inner">
+            <a class="post__hid hid js-post-hid" data-id="{{ post.id }}" >{{ post.hid2hex }}</a>
+
+            <span class="post__date">
+                {{ post.created_at|date:config.DATE_TIME_FORMAT }}
             </span>
-            Пост  удален.
-        </div>
-    </div>
-{% else %}
-    <div class="post js-post" id="post-{{ post.id }}" data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}">
-        <div class="post__anchor" id="{{ post.hid2hex }}"></div>
 
-        <div class="post__header">
-            <div class="post__header-inner">
-                <a class="post__hid hid js-post-hid" data-id="{{ post.id }}" >{{ post.hid2hex }}</a>
+            от
 
-                <span class="post__date">
-                    {{ post.created_at|date:config.DATE_TIME_FORMAT }}
-                </span>
-
-                от
-
-                <span class="post__author {% if post.author %}post__author--custom{% endif %} {% if post.created_by %}post__author--admin{% endif %}">
-                    {% if post.created_by %}
-                         {{ post.created_by }}
-                    {% elif post.author %}
-                         {{ post.author }}
-                    {% else %}
-                        {{ board.default_username }}
-                    {% endif %}
-                </span>
-
-                [<a class="post__reply-link" href="{{ post.get_absolute_url }}">Ответ</a>]
-            </div>
-
-
-            <div class="post__icons-and-buttons">
-
-                {% if post.is_op and thread.is_locked %}
-                    <i class="post__icon post__icon--sticky icon" title="Тред закрыт">lock</i>
+            <span class="post__author {% if post.author %}post__author--custom{% endif %} {% if post.created_by %}post__author--admin{% endif %}">
+                {% if post.created_by %}
+                     {{ post.created_by }}
+                {% elif post.author %}
+                     {{ post.author }}
+                {% else %}
+                    {{ board.default_username }}
                 {% endif %}
+            </span>
 
-                {% if post.is_op and thread.is_sticky %}
-                    <i class="post__icon post__icon--sticky icon" title="Тред закреплен">bookmark</i>
+            [<a class="post__reply-link" href="{{ post.get_absolute_url }}">Ответ</a>]
+        </div>
+
+
+        <div class="post__icons-and-buttons">
+
+            {% if post.is_op and thread.is_locked %}
+                <i class="post__icon post__icon--sticky icon" title="Тред закрыт">lock</i>
+            {% endif %}
+
+            {% if post.is_op and thread.is_sticky %}
+                <i class="post__icon post__icon--sticky icon" title="Тред закреплен">bookmark</i>
+            {% endif %}
+
+            {% if not is_popup %}
+                {% if post.is_op %}
+                    <button
+                        class="post__button post__button--toggle icon js-toggle-thread"
+                        data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="Скрыть тред"
+                    >close</button>
+                {% else %}
+                    <button
+                        class="post__button post__button--toggle icon js-toggle-post"
+                        data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}" title="Скрыть пост"
+                    >close</button>
                 {% endif %}
-
-                {% if not is_popup %}
-                    {% if post.is_op %}
-                        <button
-                            class="post__button post__button--toggle icon js-toggle-thread"
-                            data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="Скрыть тред"
-                        >close</button>
-                    {% else %}
-                        <button
-                            class="post__button post__button--toggle icon js-toggle-post"
-                            data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}" title="Скрыть пост"
-                        >close</button>
-                    {% endif %}
-                {% endif %}
-            </div>
-
-            {% if post.title %}
-                <div class="post__title">{{ post.title }}</div>
             {% endif %}
         </div>
 
-
-        <div class="post__body {% if post.images.count == 1 %}post__body--flexible{% endif %}">
-            {% if post.images.count > 0 %}
-                <div class="post__images {% if post.images.count > 1 %}post__images--multiple{% endif %}">
-                    {% for image in post.images.all %}
-                        <a
-                            class="post__image-wrap"
-                            href="{{MEDIA_URL}}{{image.path}}"
-                            target="_blank"
-                            data-lightbox="{{ post.id }}"
-                            data-alt="{{ image.original_name }}"
-                            data-title="{{ image.original_name }} :: {{ image.width }}x{{ image.height }} :: {{ image.size|filesizeformat }}"
-                        >
-                            <img
-                                class="post__image"
-                                src="{{MEDIA_URL}}{{image.thumb_path}}"
-                                alt="{{ image.original_name }}"
-                                width="{{ image.thumb_width }}"
-                                height="{{ image.thumb_height }}"
-                                title="{{ image.original_name }} :: {{ image.width }}x{{ image.height }} :: {{ image.size|filesizeformat }}"
-                            />
-                        </a>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            {% if post.text %}
-                <div class="post__text">
-                    {% markup text=post.text board=board thread=thread post=post %}
-                </div>
-            {% endif %}
-        </div>
-
-        <div class="post__footer">
-            {% if post.user_was_banned %}
-                <div class="post__admin-message">Пользователь был забанен.</div>
-            {% endif %}
-
-            {% if post.user_was_warned %}
-                <div class="post__admin-message">Пользователь был предупрежден.</div>
-            {% endif %}
-
-            {% if post.replies %}
-                <div class="post__replies">
-                    Ответы:
-                    {% for reply in post.replies %}
-                        <a
-                            class="post__reply js-ref"
-                            href="{{ reply.get_absolute_url }}"
-                        >&gt;&gt;{{ reply.hid2hex }}</a>{% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-
-
-        {% if not is_popup and request.user.is_superuser %}
-            {% if post.is_op %}
-                <a class="post__admin" href="{% url 'admin:imageboard_thread_change' object_id=thread.id %}">T</a>
-            {% else %}
-                <a class="post__admin" href="{% url 'admin:imageboard_post_change' object_id=post.id %}">P</a>
-            {% endif %}
+        {% if post.title %}
+            <div class="post__title">{{ post.title }}</div>
         {% endif %}
     </div>
-{% endif %}
+
+
+    <div class="post__body {% if post.images.count == 1 %}post__body--flexible{% endif %}">
+        {% if post.images.count > 0 %}
+            <div class="post__images {% if post.images.count > 1 %}post__images--multiple{% endif %}">
+                {% for image in post.images.all %}
+                    <a
+                        class="post__image-wrap"
+                        href="{{MEDIA_URL}}{{image.path}}"
+                        target="_blank"
+                        data-lightbox="{{ post.id }}"
+                        data-alt="{{ image.original_name }}"
+                        data-title="{{ image.original_name }} :: {{ image.width }}x{{ image.height }} :: {{ image.size|filesizeformat }}"
+                    >
+                        <img
+                            class="post__image"
+                            src="{{MEDIA_URL}}{{image.thumb_path}}"
+                            alt="{{ image.original_name }}"
+                            width="{{ image.thumb_width }}"
+                            height="{{ image.thumb_height }}"
+                            title="{{ image.original_name }} :: {{ image.width }}x{{ image.height }} :: {{ image.size|filesizeformat }}"
+                        />
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if post.text %}
+            <div class="post__text">
+                {% markup text=post.text board=board thread=thread post=post %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="post__footer">
+        {% if post.user_was_banned %}
+            <div class="post__admin-message">Пользователь был забанен.</div>
+        {% endif %}
+
+        {% if post.user_was_warned %}
+            <div class="post__admin-message">Пользователь был предупрежден.</div>
+        {% endif %}
+
+        {% if post.replies %}
+            <div class="post__replies">
+                Ответы:
+                {% for reply in post.replies %}
+                    <a
+                        class="post__reply js-ref"
+                        href="{{ reply.get_absolute_url }}"
+                    >&gt;&gt;{{ reply.hid2hex }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+
+    {% if not is_popup and request.user.is_superuser %}
+        {% if post.is_op %}
+            <a class="post__admin" href="{% url 'admin:imageboard_thread_change' object_id=thread.id %}">T</a>
+        {% else %}
+            <a class="post__admin" href="{% url 'admin:imageboard_post_change' object_id=post.id %}">P</a>
+        {% endif %}
+    {% endif %}
+</div>
