@@ -189,3 +189,9 @@ LOGGING = {
         }
     },
 }
+
+
+# Generated fixtures
+FIXTURE_DIRS = [
+    str(STORAGE_DIR / 'fixtures')
+]
