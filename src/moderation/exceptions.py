@@ -15,6 +15,6 @@ class BadImage(ModerationError):
 
 
 class Banned(ModerationError):
-    def __init__(self, reason):
-        self.message = 'You were banned for {}'.format(reason)
+    def __init__(self, reason, active_until):
+        self.message = 'You were banned for {} until {}'.format(reason, active_until)
         super().__init__(self.message)

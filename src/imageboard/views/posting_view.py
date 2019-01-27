@@ -16,13 +16,19 @@ import bleach
 
 # App imports
 from hexchan import config
+
 from imageboard.models import Board, Thread, Post, Image
 from imageboard.forms import PostingForm
 from imageboard.views.parts import push_to_session_list
 from imageboard import exceptions as i_ex
 from imageboard.wakabamark import extract_refs
+from imageboard.utils import get_client_ip
+
 from captcha.interface import check_captcha, set_captcha
 from captcha import exceptions as c_ex
+
+from moderation.interface import check_bans, check_text, check_image
+from moderation import exceptions as m_ex
 
 
 @csrf_exempt
@@ -34,6 +40,9 @@ def posting_view(request):
         # Check request type
         if not request.POST:
             raise i_ex.BadRequestType
+
+        # Check for bans
+        check_bans(request)
 
         # Get form data
         form = PostingForm(request.POST)
@@ -59,12 +68,12 @@ def posting_view(request):
             thread = None
 
         # Get list of uploaded image objects
-        images = request.FILES.getlist('images')
+        images_and_checksums = get_images(request.FILES.getlist('images'))
 
         # Check message
-        check_message_content(cleaned_data=form.cleaned_data, images=images)
+        check_message_content(cleaned_data=form.cleaned_data, images=images_and_checksums)
 
-    except (i_ex.ImageboardError, c_ex.CaptchaError) as e:
+    except (i_ex.ImageboardError, c_ex.CaptchaError, m_ex.ModerationError) as e:
         # Render error page if something went wrong
         response = render(request, 'imageboard/posting_error_page.html', context={'exception': e}, status=403)
 
@@ -79,7 +88,7 @@ def posting_view(request):
             if form_type == 'new_thread':
                 thread = create_thread(request, board)
                 post = create_post(request, board, thread, form.cleaned_data, is_op=True)
-                create_images(post, images)
+                create_images(post, images_and_checksums)
                 create_refs(request, board, thread, post)
                 thread.op = post
                 thread.save()
@@ -88,7 +97,7 @@ def posting_view(request):
                 push_to_session_list(request, 'user_threads', thread.id)
             else:
                 post = create_post(request, board, thread, form.cleaned_data)
-                create_images(post, images)
+                create_images(post, images_and_checksums)
                 create_refs(request, board, thread, post)
 
                 # Close thread if post limit is reached
@@ -143,6 +152,9 @@ def get_thread(thread_id: int) -> Thread:
 
 
 def check_message_content(cleaned_data, images):
+    # Check with wordfilters
+    check_text(cleaned_data['text'])
+
     # Check honeypot. Yes, the email field is a honeypot!
     if len(cleaned_data['email']) > 0:
         raise i_ex.BadMessageContent
@@ -151,33 +163,41 @@ def check_message_content(cleaned_data, images):
     if not cleaned_data['text'] and not images:
         raise i_ex.MessageIsEmpty
 
-    # Check number of files
-    if len(images) > config.FILE_MAX_NUM:
-        raise i_ex.TooManyFiles
-
-    # Check file(s) for field 'file'
-    for file_object in images:
-        if file_object.size > config.FILE_MAX_SIZE:
-            raise i_ex.FileIsTooLarge
-        if file_object.content_type not in config.FILE_MIME_TYPES:
-            raise i_ex.BadFileType
-
     # TODO: remember to check password with regex when saving it
 
 
-def get_client_ip(request) -> str:
-    """Get real client IP address."""
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
+def get_images(raw_images):
+    images_and_checksums = []
+
+    # Check number of files
+    if len(raw_images) > config.FILE_MAX_NUM:
+        raise i_ex.TooManyFiles
+
+    # Check file(s) for field 'file'
+    for image_file in raw_images:
+        if image_file.size > config.FILE_MAX_SIZE:
+            raise i_ex.FileIsTooLarge
+
+        if image_file.content_type not in config.FILE_MIME_TYPES:
+            raise i_ex.BadFileType
+
+        # Calculate checksum
+        checksum_obj = hashlib.md5()
+        for chunk in image_file.chunks(config.IMAGE_CHUNK_SIZE):
+            checksum_obj.update(chunk)
+        checksum = checksum_obj.hexdigest()
+
+        # Look for banned images
+        check_image(checksum, image_file.size)
+
+        images_and_checksums.append((image_file, checksum,))
+
+    return images_and_checksums
 
 
-def create_images(post: Post, images) -> None:
+def create_images(post: Post, images_and_checksums) -> None:
     """Save all images in request."""
-    for image_file in images:
+    for image_file, checksum in images_and_checksums:
         # Load image with PIL library
         image_pil_object = PIL.Image.open(image_file)
 
@@ -185,11 +205,6 @@ def create_images(post: Post, images) -> None:
         # Convert image to RGBA format when needed (for example, if image has indexed pallette 8bit per pixel mode)
         thumbnail_pil_object = image_pil_object.convert('RGBA')
         thumbnail_pil_object.thumbnail(config.IMAGE_THUMB_SIZE)
-
-        # Calculate checksum
-        checksum = hashlib.md5()
-        for chunk in image_file.chunks(config.IMAGE_CHUNK_SIZE):
-            checksum.update(chunk)
 
         # Create Django image object
         image = Image(
@@ -201,7 +216,7 @@ def create_images(post: Post, images) -> None:
             width=image_pil_object.width,
             height=image_pil_object.height,
 
-            checksum=checksum.hexdigest(),
+            checksum=checksum,
 
             thumb_width=thumbnail_pil_object.width,
             thumb_height=thumbnail_pil_object.height,

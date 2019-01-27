@@ -4,12 +4,12 @@ from django.conf import settings
 
 class Ban(models.Model):
     BAN_TYPE_IP = 'ip'
-    BAN_TYPE_SUBNET = 'subnet'
+    BAN_TYPE_NET = 'network'
     BAN_TYPE_SESSION = 'session'
 
     BAN_TYPES = (
         (BAN_TYPE_IP, 'IP address'),
-        (BAN_TYPE_SUBNET, 'Subnet'),
+        (BAN_TYPE_NET, 'Network'),
         (BAN_TYPE_SESSION, 'Session'),
     )
 
