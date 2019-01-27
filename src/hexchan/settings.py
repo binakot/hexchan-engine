@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'imageboard',
     'captcha',
     'client_errors',
+    'moderation',
 
     # Third party
     'debug_toolbar',
