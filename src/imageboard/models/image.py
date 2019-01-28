@@ -1,29 +1,83 @@
 from django.db import models
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 from hexchan import config
 
 
 class Image(models.Model):
-    """docstring for Image"""
-    post = models.ForeignKey('Post', related_name='images', on_delete=models.CASCADE, db_index=True)
+    post = models.ForeignKey(
+        'Post',
+        verbose_name=_('Post'),
+        related_name='images',
+        on_delete=models.CASCADE,
+        db_index=True
+    )
 
-    original_name = models.CharField(max_length=128, editable=False)
-    mimetype = models.CharField(max_length=16, editable=False)
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    size = models.IntegerField(editable=False)
-    width = models.IntegerField(editable=False)
-    height = models.IntegerField(editable=False)
+    original_name = models.CharField(
+        _('Original name'),
+        max_length=128,
+        editable=False
+    )
 
-    is_spoiler = models.BooleanField(default=False)
-    is_deleted = models.BooleanField(default=False, db_index=True)
+    mimetype = models.CharField(
+        _('MIME type'),
+        max_length=16,
+        editable=False
+    )
 
-    checksum = models.CharField(max_length=32, editable=False, blank=True)
+    created_at = models.DateTimeField(
+        _('Created at'),
+        auto_now_add=True,
+        editable=False
+    )
 
-    thumb_width = models.IntegerField(editable=False)
-    thumb_height = models.IntegerField(editable=False)
+    size = models.IntegerField(
+        _('Size'),
+        editable=False
+    )
+
+    width = models.IntegerField(
+        _('Width'),
+        editable=False
+    )
+
+    height = models.IntegerField(
+        _('Height'),
+        editable=False
+    )
+
+    is_spoiler = models.BooleanField(
+        _('Is spoiler'),
+        default=False
+    )
+
+    is_deleted = models.BooleanField(
+        _('Is deleted'),
+        default=False,
+        db_index=True
+    )
+
+    checksum = models.CharField(
+        _('Checksum'),
+        max_length=32,
+        editable=False,
+        blank=True
+    )
+
+    thumb_width = models.IntegerField(
+        _('Thumb width'),
+        editable=False
+    )
+
+    thumb_height = models.IntegerField(
+        _('Thumb height'),
+        editable=False
+    )
 
     class Meta:
+        verbose_name = _('Image')
+        verbose_name_plural = _('Images')
         unique_together = []
         indexes = []
 
