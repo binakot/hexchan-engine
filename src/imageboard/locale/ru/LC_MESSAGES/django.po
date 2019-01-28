@@ -1,0 +1,281 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Hexchan <hexchan16@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-01-28 13:00+0000\n"
+"PO-Revision-Date: 2019-01-28 13:26+0300\n"
+"Last-Translator: Hexchan <hexchan16@gmail.com>\n"
+"Language-Team: русский <>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Gtranslator 2.91.7\n"
+
+#: imageboard/apps.py:10
+msgid "Imageboard"
+msgstr "Имиджборд"
+
+#: imageboard/models/board.py:8 imageboard/models/post.py:11
+#: imageboard/models/thread.py:11
+msgid "HID"
+msgstr "HID"
+
+#: imageboard/models/board.py:14
+msgid "Name"
+msgstr "Название"
+
+#: imageboard/models/board.py:19
+msgid "URL"
+msgstr "URL"
+
+#: imageboard/models/board.py:24
+msgid "Description"
+msgstr "Описание"
+
+#: imageboard/models/board.py:25
+msgid "Short board description"
+msgstr "Краткое описание доски."
+
+#: imageboard/models/board.py:30
+msgid "Rules"
+msgstr "Правила"
+
+#: imageboard/models/board.py:31
+msgid "Board rules will be displayed next to posting form."
+msgstr "Правила доски будут показаны рядом с формой поста."
+
+#: imageboard/models/board.py:36
+msgid "Custom style"
+msgstr "Дополнительный стиль"
+
+#: imageboard/models/board.py:37
+msgid "Custom CSS that would be applied only on this board's pages"
+msgstr ""
+"Дополнительные правила CSS, которые будет применены только к этой доске."
+
+#: imageboard/models/board.py:42
+msgid "Default username"
+msgstr "Имя пользователя по умолчанию"
+
+#: imageboard/models/board.py:43
+msgid "Default username will be saved, if post's author field was empty."
+msgstr ""
+"Имя по умолчанию будет сохранено, если поле \"автор\" не было заполнено. "
+
+#: imageboard/models/board.py:48
+msgid "Default maximum posts number"
+msgstr "Максимальное число постов по умолчанию"
+
+#: imageboard/models/board.py:49
+msgid ""
+"Maximum number of posts for new threads by default. Can be overridden in "
+"thread's properties."
+msgstr ""
+"Максимальное число постов в новых тредах по умолчанию. Может быть "
+"переопределено в свойствах треда."
+
+#: imageboard/models/board.py:53
+msgid "Posts per thread per page"
+msgstr "Число постов в треде на странице"
+
+#: imageboard/models/board.py:54
+msgid ""
+"Number of thread's posts visible on board's pages, not counting OP post."
+msgstr "Число постов в тредах на странице доски, не считая ОП."
+
+#: imageboard/models/board.py:59
+msgid "Threads per page"
+msgstr "Тредов на странице"
+
+#: imageboard/models/board.py:60
+msgid "Number of threads on board's page"
+msgstr "Число тредов на одной странице доски."
+
+#: imageboard/models/board.py:65
+msgid "Maximum threads number"
+msgstr "Максимальное число тредов"
+
+#: imageboard/models/board.py:66
+msgid ""
+"Maximum number of threads on this boards. When reaching this level older "
+"threads will be deleted."
+msgstr ""
+"Максимальное число тредов на доске. При достижении максимума более старые "
+"треды будут удалены."
+
+#: imageboard/models/board.py:71
+msgid "Is hidden"
+msgstr "Скрыто?"
+
+#: imageboard/models/board.py:72
+msgid ""
+"Is this board hidden from boards list. Can still be accessed by direct URL."
+msgstr "Эта доска скрыта из списка. Она все еще доступна по прямой ссылке."
+
+#: imageboard/models/board.py:77 imageboard/models/thread.py:42
+msgid "Is locked"
+msgstr "Заблокировано?"
+
+#: imageboard/models/board.py:78
+msgid "New posts and threads can't be created on locked board."
+msgstr "Новые посты и треды не могут быть созданы на заблокированной доске."
+
+#: imageboard/models/board.py:83 imageboard/models/image.py:56
+#: imageboard/models/post.py:85 imageboard/models/thread.py:48
+msgid "Is deleted"
+msgstr "Удалено?"
+
+#: imageboard/models/board.py:84
+msgid "Boards is removed from boards list and can't be accessed by direct URL."
+msgstr "Доска удалена из списка и недоступна по прямой ссылке."
+
+#: imageboard/models/board.py:89
+msgid "Last post HID"
+msgstr "Последний HID поста"
+
+#: imageboard/models/board.py:94 imageboard/models/image.py:30
+#: imageboard/models/post.py:26 imageboard/models/thread.py:58
+msgid "Created at"
+msgstr "Дата создания"
+
+#: imageboard/models/board.py:100 imageboard/models/post.py:33
+#: imageboard/models/thread.py:65
+msgid "Updated at"
+msgstr "Дата обновления"
+
+#: imageboard/models/board.py:106 imageboard/models/thread.py:18
+msgid "Board"
+msgstr "Доска"
+
+#: imageboard/models/board.py:107
+msgid "Boards"
+msgstr "Доски"
+
+#: imageboard/models/image.py:11 imageboard/models/post.py:121
+msgid "Post"
+msgstr "Пост"
+
+#: imageboard/models/image.py:18
+msgid "Original name"
+msgstr "Имя файла"
+
+#: imageboard/models/image.py:24
+msgid "MIME type"
+msgstr "MIME-тип"
+
+#: imageboard/models/image.py:36
+msgid "Size"
+msgstr "Размер"
+
+#: imageboard/models/image.py:41
+msgid "Width"
+msgstr "Ширина"
+
+#: imageboard/models/image.py:46
+msgid "Height"
+msgstr "Высота"
+
+#: imageboard/models/image.py:51
+msgid "Is spoiler"
+msgstr "Спойлер?"
+
+#: imageboard/models/image.py:62
+msgid "Checksum"
+msgstr "Контрольная сумма"
+
+#: imageboard/models/image.py:69
+msgid "Thumb width"
+msgstr "Ширина превью"
+
+#: imageboard/models/image.py:74
+msgid "Thumb height"
+msgstr "Высота превью"
+
+#: imageboard/models/image.py:79
+msgid "Image"
+msgstr "Изображение"
+
+#: imageboard/models/image.py:80
+msgid "Images"
+msgstr "Изображения"
+
+#: imageboard/models/post.py:18 imageboard/models/thread.py:72
+msgid "Thread"
+msgstr "Тред"
+
+#: imageboard/models/post.py:40
+msgid "Text"
+msgstr "Текст"
+
+#: imageboard/models/post.py:46
+msgid "Title"
+msgstr "Тема"
+
+#: imageboard/models/post.py:52
+msgid "Author"
+msgstr "Автор"
+
+#: imageboard/models/post.py:58
+msgid "E-mail"
+msgstr "E-mail"
+
+#: imageboard/models/post.py:64
+msgid "Password"
+msgstr "Пароль"
+
+#: imageboard/models/post.py:70
+msgid "Is OP"
+msgstr "ОП?"
+
+#: imageboard/models/post.py:75
+msgid "User was warned"
+msgstr "Пользователь предупрежден"
+
+#: imageboard/models/post.py:80
+msgid "User was banned"
+msgstr "Пользователь забанен"
+
+#: imageboard/models/post.py:92
+msgid "Created by"
+msgstr "Создано пользователем"
+
+#: imageboard/models/post.py:100
+msgid "Refs"
+msgstr "Ссылки"
+
+#: imageboard/models/post.py:107
+msgid "IP address"
+msgstr "IP-адрес"
+
+#: imageboard/models/post.py:114
+msgid "Session ID"
+msgstr "ID сессии"
+
+#: imageboard/models/post.py:122
+msgid "Posts"
+msgstr "Посты"
+
+#: imageboard/models/thread.py:28
+msgid "OP"
+msgstr "ОП"
+
+#: imageboard/models/thread.py:36
+msgid "Is sticky"
+msgstr "Закреплено?"
+
+#: imageboard/models/thread.py:54
+msgid "Maximum posts number"
+msgstr "Максимальное число постов"
+
+#: imageboard/models/thread.py:73
+msgid "Threads"
+msgstr "Треды"
