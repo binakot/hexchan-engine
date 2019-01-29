@@ -16,8 +16,8 @@ npx lessc --source-map src/frontend/style.less dev/frontend/style.css
 
 echo "Copy assets"
 cp src/frontend/favicon.png dev/frontend/favicon.png
-cp -r src/frontend/fonts dev/frontend/fonts
-cp -r src/frontend/images dev/frontend/images
+cp -r src/frontend/fonts dev/frontend/
+cp -r src/frontend/images dev/frontend/
 
 echo "Copy libraries"
 mkdir -p dev/frontend/libs
