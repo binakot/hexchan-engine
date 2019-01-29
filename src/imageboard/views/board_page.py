@@ -75,9 +75,7 @@ def board_page(request, board_hid, page_num=1):
 
     # Add extra data
     for thread in paginated_threads:
-        # Count skipped posts
-        skipped = thread.posts_count - (board.posts_per_thread_per_page + 1)
-        thread.skipped = max(skipped, 0)
+        thread.replies_count = thread.posts.count() - 1
 
         thread.latest_posts = []
         for post in thread.posts.all():

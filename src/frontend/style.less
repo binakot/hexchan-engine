@@ -1,3 +1,7 @@
+// Variables
+// =====================================================================================================================
+@base-width: 1024px;
+
 // Colors
 // =====================================================================================================================
 @page-bg: #ccc;
@@ -5,8 +9,8 @@
 @main-color: #333;
 @main-bg: #eee;
 
-@header-bg: #333;
-@header-bg-2: #444;
+@header-bg: #555;
+@header-bg-2: #5d5d5d;
 @header-color: #eee;
 
 @accent-color: orangered;
@@ -17,15 +21,16 @@
 @field-bg: #fff;
 @field-focus: royalblue;
 @field-border: #ccc;
-@button-bg: #333;
-@button-color: #eee;
+@button-bg: #555;
+@button-color: #fff;
 
-@disabled-color: #666;
+@dimmed-color: #777;
 
 @block-border-radius: 3px;
 @input-border-radius: 2px;
 
 @ref-color: yellowgreen;
+@title-color: royalblue;
 
 @admin-color: firebrick;
 
@@ -101,7 +106,7 @@ body {
   position: relative;
   padding: 0;
   margin: 0;
-  min-width: 1024px;
+  min-width: @base-width;
 }
 
 
@@ -118,7 +123,7 @@ a {
   padding: 0 5px;
   font-weight: bold;
   border-radius: 3px;
-  margin-right: 10px;
+  margin-right: 5px;
   color: inherit;
   text-decoration: none;
   width: 75px;
@@ -127,7 +132,7 @@ a {
   &[data-user="true"] {
     border-radius: 3px 0 0 3px;
     border-right: none;
-    margin-right: 30px;
+    margin-right: 25px;
     position: relative;
 
     &:after {
@@ -165,6 +170,7 @@ a {
   word-wrap: normal;
   white-space: nowrap;
   direction: ltr;
+  text-decoration: none;
 
   /* Support for all WebKit browsers. */
   -webkit-font-smoothing: antialiased;
@@ -180,8 +186,7 @@ a {
 
 
 .app {
-  //width: 1280px;
-  width: 960px;
+  width: @base-width;
   margin: 0 auto;
   position: relative;
   padding: 40px 0 20px;
@@ -238,9 +243,8 @@ a {
     color: @header-color;
     background: @header-bg;
     margin: 0 auto;
-    width: 960px;
+    width: @base-width;
     height: 40px;
-    //border-radius: 0 0 @block-border-radius @block-border-radius;
     line-height: 40px;
     display: flex;
   }
@@ -256,7 +260,6 @@ a {
     font-size: 24px;
     background: url('images/hexchan.svg') 10px center no-repeat;
     text-decoration: none;
-    //border-radius: 0 0 0 @block-border-radius;
 
     &:hover {
       box-shadow: inset 0 0 0 2px orangered;
@@ -268,7 +271,6 @@ a {
   }
 
   &__catalog-link {
-    //border-right: 1px solid @separator-bg;
     padding: 0 10px 0 34px;
     position: relative;
 
@@ -287,7 +289,6 @@ a {
       width: 24px;
       height: 24px;
       line-height: 1;
-      //text-align: center;
     }
   }
 
@@ -360,7 +361,6 @@ a {
 
 
 .threads {
-  //padding-right: 320px;
 }
 
 
@@ -369,14 +369,13 @@ a {
   margin: 20px 0;
   border-radius: @block-border-radius;
   .item-shadow;
-  //padding: 10px 0;
 
   &--hidden {
     display: none;
   }
 
   &--deleted {
-    color: @disabled-color;
+    color: @dimmed-color;
   }
 
   &:first-child {
@@ -388,19 +387,6 @@ a {
   }
 
   &__hid {
-  }
-
-  &__skipped {
-    height: 30px;
-    width: 100%;
-    padding: 5px 20px;
-    border-top: 1px dotted @separator-bg;
-    border-bottom: 1px dotted @separator-bg;
-    text-align: center;
-    font-size: 12px;
-    font-style: italic;
-    color: #666;
-    //background: rgba(0,0,0, 0.1);
   }
 
   &__op-separator {
@@ -418,6 +404,35 @@ a {
   &__deleted-label {
     padding: 0 20px;
   }
+
+  &__info {
+    padding: 5px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    border-top: 1px dotted @separator-bg;
+    color: @dimmed-color;
+  }
+
+  &__info-item {
+    margin-right: 10px;
+  }
+
+  &__info-icon {
+    vertical-align: middle;
+  }
+
+  &__reply-link {
+    margin-right: 10px;
+    padding-left: 15px;
+    position: relative;
+  }
+
+  &__reply-icon {
+    vertical-align: middle;
+    position: absolute;
+    left: 0;
+    top: 3px;
+  }
 }
 
 
@@ -430,7 +445,7 @@ a {
   }
 
   &--deleted {
-    color: @disabled-color;
+    color: @dimmed-color;
   }
 
   &[data-user="true"] {
@@ -444,7 +459,6 @@ a {
   }
 
   &__header {
-    position: relative;
   }
 
   &__header-inner {}
@@ -461,14 +475,11 @@ a {
   }
 
   &__date {
+    margin-right: 5px;
   }
 
   &__author {
-    margin-right: 10px;
-
-    &--custom {
-      font-weight: bold;
-    }
+    margin-right: 5px;
 
     &--admin {
       font-weight: bold;
@@ -485,47 +496,61 @@ a {
   }
 
   &__icons-and-buttons {
-    display: flex;
-    position: absolute;
-    right: 0;
-    top: 0;
+    margin-right: 5px;
   }
 
   &__button {
     display: inline-block;
-    background: #999;
-    width: 20px;
-    height: 20px;
+    background: @button-bg;
+    width: 16px;
+    height: 16px;
     padding: 0;
     border: 0;
-    margin: 0 5px 0 0;
-    font-size: 18px;
-    line-height: 20px;
+    font-size: 14px;
+    line-height: 16px;
     cursor: pointer;
     border-radius: @input-border-radius;
-    color: #fff;
-
-    &:last-child {
-      margin-right: 0;
-    }
+    color: @button-color;
+    vertical-align: text-bottom;
 
     &:hover {
-      background: #333;
+      background: @accent-color;
     }
+
+    &--admin {
+      background: @admin-color;
+      text-align: center;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  }
+
+  &__button-reply {
+    display: inline-block;
+    background: @button-bg;
+    height: 16px;
+    font-size: 12px;
+    line-height: 16px;
+    cursor: pointer;
+    border-radius: @input-border-radius;
+    color: @button-color;
+    vertical-align: text-bottom;
+    padding: 0 5px;
+    text-decoration: none;
   }
 
   &__icon {
     cursor: default;
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    font-size: 18px;
-    line-height: 20px;
+    width: 16px;
+    height: 16px;
+    font-size: 14px;
+    line-height: 14px;
     text-align: center;
-    margin: 0 5px 0 0;
-    box-shadow: inset 0 0 0 1px #999;
+    border: 1px solid @button-bg;
     border-radius: @input-border-radius;
-    color: #999;
+    color: @button-bg;
+    vertical-align: text-bottom;
 
     &:last-child {
       margin-right: 0;
@@ -534,7 +559,8 @@ a {
 
   &__title {
     font-weight: bold;
-    margin-top: 5px;
+    margin-right: 5px;
+    color: @title-color;
   }
 
   &__images {
@@ -565,7 +591,6 @@ a {
   }
 
   &__footer {
-    //margin-top: 10px;
   }
 
   &__admin-message {
@@ -646,42 +671,6 @@ a {
 }
 
 
-.sidebar {
-  width: 300px;
-  position: absolute;
-  right: 0;
-
-  &__thread {
-    text-decoration: none;
-    color: inherit;
-    position: relative;
-    height: 50px;
-
-    margin: 10px 0;
-    display: flex;
-
-    font-size: 12px;
-    line-height: 15px;
-    background: @main-bg;
-    border-radius: @block-border-radius;
-    .item-shadow;
-    overflow: hidden;
-  }
-
-  &__thread-image {
-    width: 50px;
-    height: 50px;
-
-    border-radius: @block-border-radius 0 0 @block-border-radius;
-    background-size: cover;
-  }
-
-  &__thread-text {
-    padding: 0 10px;
-  }
-}
-
-
 .catalog {
   &__items {
   }
@@ -702,10 +691,6 @@ a {
   position: relative;
   font-size: 12px;
 
-  //&:hover {
-  //  box-shadow: inset 0 0 0 2px @accent-color, 1px 2px 3px rgba(0,0,0, 0.3);
-  //}
-
   &__hid {
   }
 
@@ -723,7 +708,7 @@ a {
 
     &--empty {
       text-align: center;
-      color: @disabled-color;
+      color: @dimmed-color;
       font-weight: bold;
       padding: 5px;
     }
@@ -840,7 +825,6 @@ a {
     display: block;
     text-align: right;
     width: 80px;
-    //padding-right: 10px;
     font-size: inherit;
     height: 20px;
     line-height: 16px;
@@ -920,9 +904,8 @@ a {
     padding: 0 20px;
 
     margin: 0 auto;
-    width: 960px;
+    width: @base-width;
     height: 40px;
-    //border-radius: @block-border-radius @block-border-radius 0 0;
   }
 
   a {
@@ -945,7 +928,7 @@ a {
 
 .placeholder-item {
   padding: 10px 20px;
-  color: @disabled-color;
+  color: @dimmed-color;
 
   &--thread {
     background: @main-bg;
@@ -1096,7 +1079,7 @@ a {
 
   &__input {
     margin-right: 10px;
-    width: 100px;
+    width: 150px;
   }
 
   &__button {
@@ -1140,7 +1123,7 @@ a {
 }
 
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: @base-width) {
   html {
     height: 100%;
     width: 100%;
@@ -1152,16 +1135,14 @@ a {
     min-width: initial;
     font-size: 12px;
     font-family: 'Roboto', 'sans-serif';
-    //background: @page-bg;
   }
 
   .hid {
     width: 65px;
-    margin-right: 0;
     padding: 0 2px;
 
     &[data-user="true"] {
-      margin-right: 20px;
+      margin-right: 25px;
     }
   }
 
@@ -1183,7 +1164,6 @@ a {
 
     &__catalog-link {
       font-size: 0;
-      //padding: 0 6px;
       padding: 0;
       width: 34px;
       text-align: center;
@@ -1210,28 +1190,22 @@ a {
 
   .thread {
     border-radius: 0;
-    //margin: 10px 0;
+
+    &__info {
+      padding: 0px 10px;
+    }
   }
 
   .post {
     padding: 10px;
 
-    &__header-inner {
-    }
-
-    &__author {
-      margin-right: 0;
-    }
-
     &__image {
-      //margin-bottom: 10px;
       max-width: 100px;
       width: 100%;
       height: auto;
     }
 
     &__body {
-      //display: block;
     }
 
     &__images {
@@ -1251,9 +1225,34 @@ a {
     border-radius: 0;
     padding: 10px;
     margin: 10px 0;
+    flex-wrap: wrap;
 
     label {
       width: 60px;
+    }
+
+    &__title {
+      padding-left: 60px;
+    }
+
+    &__inner {
+      order: 1;
+      width: 100%;
+    }
+
+    &__rules {
+      order: 0;
+      width: 100%;
+      margin: 0 0 10px;
+      padding: 0 0 5px;
+
+      border-style: dotted;
+      border-color: @separator-bg;
+      border-width: 0 0 1px 0;
+    }
+
+    ul {
+      padding-left: 1.5em;
     }
   }
 
@@ -1283,7 +1282,7 @@ a {
 
   .placeholder-item {
     padding: 10px;
-    color: @disabled-color;
+    color: @dimmed-color;
     border-radius: 0;
 
     &--thread {

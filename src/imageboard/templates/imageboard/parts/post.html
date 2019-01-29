@@ -1,42 +1,37 @@
 {% load date_format %}
 {% load markup %}
 
-<div class="post js-post" id="post-{{ post.id }}" data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}">
+<div class="post {% if post.is_op %}post--op{% endif %} js-post" id="post-{{ post.id }}" data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}">
     <div class="post__anchor" id="{{ post.hid2hex }}"></div>
 
     <div class="post__header">
-        <div class="post__header-inner">
-            <a class="post__hid hid js-post-hid" data-id="{{ post.id }}" >{{ post.hid2hex }}</a>
+        {# HID #}
+        <a class="post__hid hid js-post-hid" data-id="{{ post.id }}" href="{{ post.get_absolute_url }}" >{{ post.hid2hex }}</a>
 
-            <span class="post__date">
-                {{ post.created_at|date:config.DATE_TIME_FORMAT }}
-            </span>
+        {# Тема #}
+        {% if post.title %}
+            <span class="post__title">{{ post.title }}</span>
+        {% endif %}
 
-            от
-
-            <span class="post__author {% if post.author %}post__author--custom{% endif %} {% if post.created_by %}post__author--admin{% endif %}">
-                {% if post.created_by %}
-                     {{ post.created_by }}
-                {% elif post.author %}
-                     {{ post.author }}
-                {% else %}
-                    {{ board.default_username }}
-                {% endif %}
-            </span>
-
-            [<a class="post__reply-link" href="{{ post.get_absolute_url }}">Ответ</a>]
-        </div>
-
-
-        <div class="post__icons-and-buttons">
-
-            {% if post.is_op and thread.is_locked %}
-                <i class="post__icon post__icon--sticky icon" title="Тред закрыт">lock</i>
+        {# Автор #}
+        <span class="post__author {% if post.created_by %}post__author--admin{% endif %}">
+            {% if post.created_by %}
+                 {{ post.created_by }}
+            {% elif post.author %}
+                 {{ post.author }}
+            {% else %}
+                {{ board.default_username }}
             {% endif %}
+        </span>
 
-            {% if post.is_op and thread.is_sticky %}
-                <i class="post__icon post__icon--sticky icon" title="Тред закреплен">bookmark</i>
-            {% endif %}
+        {# Дата #}
+        <span class="post__date">
+            {{ post.created_at|date:config.DATE_TIME_FORMAT }}
+        </span>
+
+        {# Кнопки и иконки #}
+        <span class="post__icons-and-buttons">
+
 
             {% if not is_popup %}
                 {% if post.is_op %}
@@ -44,18 +39,25 @@
                         class="post__button post__button--toggle icon js-toggle-thread"
                         data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="Скрыть тред"
                     >close</button>
+
+                    {% if request.user.is_superuser %}
+                        <a class="post__button post__button--admin" href="{% url 'admin:imageboard_thread_change' object_id=thread.id %}">T</a>
+                    {% endif %}
                 {% else %}
                     <button
                         class="post__button post__button--toggle icon js-toggle-post"
                         data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}" title="Скрыть пост"
                     >close</button>
+
+                    {% if request.user.is_superuser %}
+                        <a class="post__button post__button--admin" href="{% url 'admin:imageboard_post_change' object_id=post.id %}">P</a>
+                    {% endif %}
                 {% endif %}
             {% endif %}
-        </div>
+        </span>
 
-        {% if post.title %}
-            <div class="post__title">{{ post.title }}</div>
-        {% endif %}
+        {# Ответ #}
+{#        [<a class="post__reply-link" href="{{ post.get_absolute_url }}">Ответ</a>]#}
     </div>
 
 
@@ -113,12 +115,4 @@
         {% endif %}
     </div>
 
-
-    {% if not is_popup and request.user.is_superuser %}
-        {% if post.is_op %}
-            <a class="post__admin" href="{% url 'admin:imageboard_thread_change' object_id=thread.id %}">T</a>
-        {% else %}
-            <a class="post__admin" href="{% url 'admin:imageboard_post_change' object_id=post.id %}">P</a>
-        {% endif %}
-    {% endif %}
 </div>

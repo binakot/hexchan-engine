@@ -3,15 +3,31 @@
         {% include 'imageboard/parts/post.html' with post=thread.op %}
     </div>
 
-    {% if thread.posts.count > 1 %}
-        {% if thread.skipped %}
-            <div class="thread__skipped">
-                Пропущено {{ thread.skipped }} пост(ов).
-                <a href="{% url 'thread_page' board_hid=thread.board.hid thread_hid=thread.hid %}">Перейти к треду</a>
-            </div>
-        {% else %}
-            <div class="thread__op-separator"></div>
+    <div class="thread__info">
+        <a class="thread__reply-link" href="{{ thread.get_absolute_url }}">
+            <span class="thread__reply-icon icon">subdirectory_arrow_right</span>
+            Перейти к треду
+        </a>
+
+        <span class="thread__info-item">
+            <i class="thread__info-icon icon">message</i> Ответов: {{ thread.replies_count }}
+        </span>
+
+        {% if thread.is_sticky %}
+            <span class="thread__info-item">
+                <i class="thread__info-icon icon">bookmark</i> Закреплен
+            </span>
         {% endif %}
+
+        {% if thread.is_locked %}
+            <span class="thread__info-item">
+                <i class="thread__info-icon icon">lock</i> Закрыт
+            </span>
+        {% endif %}
+    </div>
+
+    {% if thread.posts.count > 1 %}
+        <div class="thread__op-separator"></div>
 
         <div class="thread__posts">
             {% for post in posts %}
