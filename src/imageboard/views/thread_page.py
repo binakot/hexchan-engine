@@ -1,6 +1,6 @@
 # Django imports
 from django.template.loader import render_to_string
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Count
 from django.http import HttpResponse
 
 # App imports
@@ -59,12 +59,14 @@ def thread_page(request, board_hid, thread_hid):
     thread = Thread.objects\
         .select_related('board')\
         .prefetch_related(*prefetch_args) \
+        .annotate(posts_count=Count('posts')) \
         .get(board__hid=board_hid, hid=thread_hid, is_deleted=False)
 
     # Add extra data
     all_posts = thread.posts.all()
     thread.op = all_posts[0]
     thread.other_posts = all_posts[1:]
+    thread.replies_count = thread.posts_count - 1
 
     # Init post creation form
     form = PostingForm(
@@ -82,6 +84,7 @@ def thread_page(request, board_hid, thread_hid):
     rendered_template = render_to_string(
         'imageboard/thread_page.html',
         {
+            'page_type': 'thread_page',
             'form': form,
             'board': board,
             'boards': boards,

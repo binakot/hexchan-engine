@@ -4,10 +4,12 @@
     </div>
 
     <div class="thread__info">
-        <a class="thread__reply-link" href="{{ thread.get_absolute_url }}">
-            <span class="thread__reply-icon icon">subdirectory_arrow_right</span>
-            Перейти к треду
-        </a>
+        {% if page_type == 'board_page' %}
+            <a class="thread__reply-link" href="{{ thread.get_absolute_url }}">
+                <span class="thread__reply-icon icon">subdirectory_arrow_right</span>
+                Перейти к треду
+            </a>
+        {% endif %}
 
         <span class="thread__info-item">
             <i class="thread__info-icon icon">message</i> Ответов: {{ thread.replies_count }}

@@ -75,7 +75,7 @@ def board_page(request, board_hid, page_num=1):
 
     # Add extra data
     for thread in paginated_threads:
-        thread.replies_count = thread.posts.count() - 1
+        thread.replies_count = thread.posts_count - 1
 
         thread.latest_posts = []
         for post in thread.posts.all():
@@ -99,6 +99,7 @@ def board_page(request, board_hid, page_num=1):
     rendered_template = render_to_string(
         'imageboard/board_page.html',
         {
+            'page_type': 'board_page',
             'form': form,
             'board': board,
             'boards': boards,
