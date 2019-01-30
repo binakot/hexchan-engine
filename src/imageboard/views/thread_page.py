@@ -63,10 +63,12 @@ def thread_page(request, board_hid, thread_hid):
         .get(board__hid=board_hid, hid=thread_hid, is_deleted=False)
 
     # Add extra data
-    all_posts = thread.posts.all()
-    thread.op = all_posts[0]
-    thread.other_posts = all_posts[1:]
-    thread.replies_count = thread.posts_count - 1
+    thread.other_posts = []
+    for post in thread.posts.all():
+        if post.is_op:
+            thread.op = post
+        else:
+            thread.other_posts.append(post)
 
     # Init post creation form
     form = PostingForm(

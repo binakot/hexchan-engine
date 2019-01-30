@@ -75,8 +75,6 @@ def board_page(request, board_hid, page_num=1):
 
     # Add extra data
     for thread in paginated_threads:
-        thread.replies_count = thread.posts_count - 1
-
         thread.latest_posts = []
         for post in thread.posts.all():
             if post.is_op:
