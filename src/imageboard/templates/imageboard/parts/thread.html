@@ -12,7 +12,8 @@
         {% endif %}
 
         <span class="thread__info-item">
-            <i class="thread__info-icon icon">message</i> Ответов: {{ thread.replies_count }}
+            <i class="thread__info-icon icon">message</i>
+            Сообщений: {{ thread.posts_count }} / {{ thread.max_posts_num }}
         </span>
 
         {% if thread.is_sticky %}
