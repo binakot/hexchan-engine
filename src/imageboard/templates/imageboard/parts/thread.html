@@ -3,31 +3,6 @@
         {% include 'imageboard/parts/post.html' with post=thread.op %}
     </div>
 
-    <div class="thread__info">
-        {% if page_type == 'board_page' %}
-            <a class="thread__reply-link" href="{{ thread.get_absolute_url }}">
-                <span class="thread__reply-icon icon">subdirectory_arrow_right</span>
-                Перейти к треду
-            </a>
-        {% endif %}
-
-        <span class="thread__info-item">
-            <i class="thread__info-icon icon">message</i>
-            Сообщений: {{ thread.posts_count }} / {{ thread.max_posts_num }}
-        </span>
-
-        {% if thread.is_sticky %}
-            <span class="thread__info-item">
-                <i class="thread__info-icon icon">bookmark</i> Закреплен
-            </span>
-        {% endif %}
-
-        {% if thread.is_locked %}
-            <span class="thread__info-item">
-                <i class="thread__info-icon icon">lock</i> Закрыт
-            </span>
-        {% endif %}
-    </div>
 
     {% if thread.posts.count > 1 %}
         <div class="thread__op-separator"></div>

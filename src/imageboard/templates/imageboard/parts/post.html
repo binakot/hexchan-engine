@@ -115,4 +115,32 @@
         {% endif %}
     </div>
 
+    {% if post.is_op %}
+        <div class="thread-info">
+            {% if page_type == 'board_page' %}
+                <a class="thread-info__reply-link" href="{{ thread.get_absolute_url }}">
+                    <span class="thread-info__reply-icon icon">subdirectory_arrow_right</span>
+                    Перейти к треду
+                </a>
+            {% endif %}
+
+            <span class="thread-info__item">
+                <i class="thread-info__icon icon">message</i>
+                Сообщений: {{ thread.posts_count }} / {{ thread.max_posts_num }}
+            </span>
+
+            {% if thread.is_sticky %}
+                <span class="thread-info__item">
+                    <i class="thread-info__icon icon">bookmark</i> Закреплен
+                </span>
+            {% endif %}
+
+            {% if thread.is_locked %}
+                <span class="thread-info__item">
+                    <i class="thread-info__icon icon">lock</i> Закрыт
+                </span>
+            {% endif %}
+        </div>
+    {% endif %}
+
 </div>

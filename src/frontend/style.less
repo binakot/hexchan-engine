@@ -262,7 +262,7 @@ a {
     text-decoration: none;
 
     &:hover {
-      box-shadow: inset 0 0 0 2px orangered;
+      box-shadow: inset 0 0 0 2px @accent-color;
     }
   }
 
@@ -361,14 +361,13 @@ a {
 
 
 .threads {
+  &__thread-separator {
+  }
 }
 
 
 .thread {
-  background: @main-bg;
-  margin: 20px 0;
-  border-radius: @block-border-radius;
-  .item-shadow;
+  margin: 40px 0;
 
   &--hidden {
     display: none;
@@ -378,46 +377,40 @@ a {
     color: @dimmed-color;
   }
 
-  &:first-child {
-    margin-top: 20px;
-  }
-
-  &:last-child {
-    margin-bottom: 20px;
-  }
+  //&:first-child {
+  //  margin-top: 20px;
+  //}
+  //
+  //&:last-child {
+  //  margin-bottom: 20px;
+  //}
 
   &__hid {
   }
 
-  &__op-separator {
-    height: 1px;
-    width: 100%;
-    border-top: 1px dotted @separator-bg;
-  }
-
-  &__post-separator {
-    height: 1px;
-    width: 100%;
-    border-top: 1px dotted @separator-bg;
+  &__op-separator, &__post-separator {
+    height: 20px;
   }
 
   &__deleted-label {
     padding: 0 20px;
   }
+}
 
-  &__info {
-    padding: 5px 20px;
-    display: flex;
-    flex-wrap: wrap;
-    border-top: 1px dotted @separator-bg;
-    color: @dimmed-color;
-  }
 
-  &__info-item {
+.thread-info {
+  padding: 5px 20px;
+  margin: 10px -20px -10px;
+  display: flex;
+  flex-wrap: wrap;
+  border-top: 1px dotted @separator-bg;
+  color: @dimmed-color;
+
+  &__item {
     margin-right: 10px;
   }
 
-  &__info-icon {
+  &__icon {
     vertical-align: middle;
   }
 
@@ -439,6 +432,9 @@ a {
 .post {
   padding: 10px 20px;
   position: relative;
+  background: @main-bg;
+  border-radius: @block-border-radius;
+  .item-shadow;
 
   &--hidden {
     display: none;
@@ -448,14 +444,9 @@ a {
     color: @dimmed-color;
   }
 
-  &[data-user="true"] {
-    border-left: 2px solid @accent-color;
-    padding-left: 18px;
-  }
-
-  &[data-to-user="true"] {
-    border-left: 2px dotted @accent-color;
-    padding-left: 18px;
+  &--op {
+    padding-top: 8px;
+    border-top: 2px solid @accent-color;
   }
 
   &__header {
@@ -560,7 +551,7 @@ a {
   &__title {
     font-weight: bold;
     margin-right: 5px;
-    color: @title-color;
+    //color: @title-color;
   }
 
   &__images {
@@ -929,12 +920,13 @@ a {
 .placeholder-item {
   padding: 10px 20px;
   color: @dimmed-color;
+  background: @main-bg;
+
+  border-radius: @block-border-radius;
+  .item-shadow;
 
   &--thread {
-    background: @main-bg;
     margin: 20px 0;
-    border-radius: @block-border-radius;
-    .item-shadow;
   }
 
   &__deleted-label {}
@@ -1135,6 +1127,7 @@ a {
     min-width: initial;
     font-size: 12px;
     font-family: 'Roboto', 'sans-serif';
+    background: @page-bg;
   }
 
   .hid {
@@ -1188,16 +1181,28 @@ a {
     padding: 10px;
   }
 
-  .thread {
-    border-radius: 0;
+  .threads {
+  }
 
-    &__info {
-      padding: 0px 10px;
+  .thread {
+    margin: 20px 0;
+
+    &__post-separator, &__op-separator {
+      height: 1px;
+      border-top: 1px dotted @separator-bg;
+      background: @main-bg;
     }
+  }
+
+  .thread-info {
+    padding: 0px 10px;
+    margin: 0 -10px -10px;
   }
 
   .post {
     padding: 10px;
+    border-radius: 0;
+    box-shadow: none;
 
     &__image {
       max-width: 100px;
@@ -1284,6 +1289,7 @@ a {
     padding: 10px;
     color: @dimmed-color;
     border-radius: 0;
+    box-shadow: none;
 
     &--thread {
       border-radius: 0;
