@@ -2,20 +2,23 @@ from pathlib import Path
 
 module_path = Path(__file__).resolve()
 module_dir = module_path.parent
+dev_dir = module_dir / '..' / 'dev'
 
 # Paths
-dev_dir = module_dir / '..' / 'dev'
-upload_dir = dev_dir / 'upload'
-upload_fake_dir = dev_dir / 'upload_fakes'
-session_dir = dev_dir / 'session'
-cache_dir = dev_dir / 'cache'
-log_dir = dev_dir / 'log'
-fixtures_dir = dev_dir / 'log'
+dev_paths = [
+    dev_dir / 'upload',
+    dev_dir / 'upload' / 'images',
+    dev_dir / 'upload' / 'thumbs',
+    dev_dir / 'upload_fakes',
+    dev_dir / 'upload_fakes' / 'images',
+    dev_dir / 'upload_fakes' / 'thumbs',
+    dev_dir / 'session',
+    dev_dir / 'cache',
+    dev_dir / 'static',
+    dev_dir / 'log',
+    dev_dir / 'fixtures',
+    dev_dir / 'frontend',
+]
 
-# Create dirs
-upload_dir.mkdir(parents=True, exist_ok=True)
-upload_fake_dir.mkdir(parents=True, exist_ok=True)
-session_dir.mkdir(parents=True, exist_ok=True)
-cache_dir.mkdir(parents=True, exist_ok=True)
-log_dir.mkdir(parents=True, exist_ok=True)
-fixtures_dir.mkdir(parents=True, exist_ok=True)
+for dev_path in dev_paths:
+    dev_path.mkdir(parents=True, exist_ok=True)
