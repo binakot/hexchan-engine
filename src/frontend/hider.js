@@ -1,12 +1,10 @@
-import $ from 'jquery';
-// import template from 'lodash.template';
 import _ from 'underscore';
 import LocalCollection from './localCollection';
 
 
 var Hider = function(props) {
     var hiddenClass = props.type + '--hidden';
-    var toggleSelector = '.js-toggle-' + props.type;
+    var toggleClass = 'js-toggle-' + props.type;
     var multiSelector = '.' + props.type;
 
     var localCollection = new LocalCollection({
@@ -20,67 +18,83 @@ var Hider = function(props) {
     if (!placeholderItem) {
         throw 'Placeholder template not found';
     }
-    var placeholderItemTemplate = _.template(placeholderItem.innerHTML);
+    var placeholderItemTemplate = _.template(placeholderItem.innerHTML.trim());
 
 
     function setItemState(itemId, itemHid, isHidden) {
-        var $item = $('#' + props.type + '-' + itemId);
+        var item = document.querySelector('#' + props.type + '-' + itemId);
 
-        if ($item.hasClass(hiddenClass) === isHidden) {
+        if (item && item.classList.contains(hiddenClass) === isHidden) {
             return;
         }
 
-        $item.toggleClass(hiddenClass, isHidden);
+        // Do not change this to classlist.toggle, because of IE 11 compability
+        isHidden ? item.classList.add(hiddenClass) : item.classList.remove(hiddenClass);
 
-        var $placeholderItem;
+        var placeholderItem;
         if (isHidden) {
-            $placeholderItem = $(placeholderItemTemplate({
+            var placeholderTempContainer = document.createElement('div');
+            placeholderTempContainer.innerHTML = placeholderItemTemplate({
                 id: itemId,
                 hid: itemHid,
                 label: props.placeholderLabel,
                 type: props.type
-            }));
-            $placeholderItem.insertAfter($item);
+            });
+            placeholderItem = placeholderTempContainer.firstChild;
+            item.parentNode.insertBefore(placeholderItem, item.nextSibling);
         }
         else {
-            $placeholderItem = $('#placeholder-' + props.type + '-' + itemId);
-            $placeholderItem.remove();
+            placeholderItem = document.querySelector('#placeholder-' + props.type + '-' + itemId);
+            placeholderItem && placeholderItem.remove();
         }
     }
 
 
     function applyLocalCollectionState() {
-        $(multiSelector).each(function(){
-            var $item = $(this);
-            var itemId = $item.attr('data-id');
-            var itemHid = $item.attr('data-hid');
+        var items = document.querySelectorAll(multiSelector);
+        var item;
+
+        for (var i = 0; i < items.length; i++) {
+            item = items[i];
+
+            var itemId = item.getAttribute('data-id');
+            var itemHid = item.getAttribute('data-hid');
             var isHidden = localCollection.check(itemId);
 
             setItemState(itemId, itemHid, isHidden);
-        });
+        }
+    }
+
+
+    function onGlobalClick(ev) {
+        if (ev.target.classList.contains(toggleClass)) {
+            onToggleClick(ev);
+        }
     }
 
 
     function onToggleClick(ev) {
-        var $toggler = $(ev.target);
-        var itemId = $toggler.attr('data-id');
-        var itemHid = $toggler.attr('data-hid');
+        var toggler = ev.target;
+        var itemId = toggler.getAttribute('data-id');
+        var itemHid = toggler.getAttribute('data-hid');
         var isHidden = localCollection.toggle(itemId);
 
         setItemState(itemId, itemHid, isHidden);
     }
 
 
-    function destroy() {
-        localCollection.destroy();
-        $(document).off('.' + props.storageKey);
+    function init() {
+        applyLocalCollectionState();
+        document.addEventListener('click', onGlobalClick);
     }
 
 
-    // Initialize
-    applyLocalCollectionState();
-    $(document).on('click.' + props.storageKey, toggleSelector, onToggleClick);
+    function destroy() {
+        localCollection.destroy();
+        document.removeEventListener('click', onGlobalClick);
+    }
 
+    init();
     return {
         destroy: destroy
     };

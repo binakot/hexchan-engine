@@ -1,6 +1,3 @@
-import $ from 'jquery';
-
-
 var RefPopup = function(props) {
     var POPUP_VERTICAL_OFFSET = 5;
 
@@ -30,13 +27,18 @@ var RefPopup = function(props) {
             if (postEl) {
                 showPopup(ev.target, hid, postEl.cloneNode(true));
             } else {
-                $.get(url)
-                    .done(function (res) {
-                        showPopup(ev.target, hid, res);
-                    })
-                    .fail(function (err) {
-                        console.error(err);
-                    });
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onreadystatechange = function () { // (3)
+                    if (xhr.readyState !== 4) return;
+
+                    if (xhr.status !== 200) {
+                        console.error('Error occured when requesting post', xhr.status, xhr.statusText);
+                    } else {
+                        showPopup(ev.target, hid, xhr.responseText);
+                    }
+                };
+                xhr.send();
             }
         }
     }
@@ -52,18 +54,28 @@ var RefPopup = function(props) {
         if (popupIsVisible) {
             var targetBox = target.getBoundingClientRect();
 
-            var popupEl = $('<div>')
-                .html(content)
-                .addClass('ref-popup js-ref-popup')
-                .attr('data-hid', hid)
-                .css({
-                    top: targetBox.top + targetBox.height + POPUP_VERTICAL_OFFSET + window.pageYOffset,
-                    left: 0
-                });
+            var popupEl = document.createElement('div');
 
-            popupEl.find('.js-toggle-thread, .js-toggle-post').remove();
+            if (typeof content === 'string') {
+                popupEl.innerHTML = content;
+            } else if (content instanceof Element) {
+                popupEl.appendChild(content);
+            }
 
-            $('.js-popup-container').append(popupEl);
+            popupEl.className = 'ref-popup js-ref-popup';
+            popupEl.setAttribute('data-hid', hid);
+            popupEl.style.top = targetBox.top + targetBox.height + POPUP_VERTICAL_OFFSET + window.pageYOffset + 'px';
+            popupEl.style.left = 0 + 'px';
+
+            var elementsToRemoveInPopup = popupEl.querySelectorAll('.js-toggle-thread, .js-toggle-post');
+            var elementToRemove;
+            for (var i = 0; i < elementsToRemoveInPopup.length; i++) {
+                elementToRemove = elementsToRemoveInPopup[i];
+                elementToRemove.remove();
+            }
+
+            var popupContainer = document.querySelector('.js-popup-container');
+            popupContainer && popupContainer.appendChild(popupEl);
         }
     }
 
