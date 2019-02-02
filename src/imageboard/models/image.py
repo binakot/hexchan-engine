@@ -80,6 +80,7 @@ class Image(models.Model):
         verbose_name_plural = _('Images')
         unique_together = []
         indexes = []
+        ordering = ['id']
 
     def hid(self):
         return config.IMAGE_HID_FORMAT.format(hid=self.id) if self.id else '<empty>'

@@ -73,6 +73,7 @@ class Thread(models.Model):
         verbose_name_plural = _('Threads')
         unique_together = ['board', 'hid']
         indexes = []
+        ordering = ['-updated_at']
 
     def hid2hex(self):
         return config.THREAD_FULL_HID_FORMAT.format(hid=self.hid)

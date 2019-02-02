@@ -122,6 +122,7 @@ class Post(models.Model):
         verbose_name_plural = _('Posts')
         unique_together = ['thread', 'hid']
         indexes = []
+        ordering = ['id']
 
     def hid2hex(self):
         return config.POST_FULL_HID_FORMAT.format(hid=self.hid)

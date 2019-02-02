@@ -105,6 +105,7 @@ class Board(models.Model):
     class Meta:
         verbose_name = _('Board')
         verbose_name_plural = _('Boards')
+        ordering = ['hid']
 
     def __str__(self):
         return self.hid
