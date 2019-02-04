@@ -118,15 +118,20 @@
     {% if post.is_op %}
         <div class="thread-info">
             {% if page_type == 'board_page' %}
-                <a class="thread-info__reply-link" href="{{ thread.get_absolute_url }}">
-                    <span class="thread-info__reply-icon icon">subdirectory_arrow_right</span>
+                <a class="thread-info__item" href="{{ thread.get_absolute_url }}">
+                    <span class="thread-info__icon icon">subdirectory_arrow_right</span>
                     Перейти к треду
                 </a>
             {% endif %}
 
             <span class="thread-info__item">
                 <i class="thread-info__icon icon">message</i>
-                Сообщений: {{ thread.posts_count }} / {{ thread.max_posts_num }}
+                Постов: {{ thread.posts_count }}
+            </span>
+
+            <span class="thread-info__item">
+                <i class="thread-info__icon icon">arrow_upward</i>
+                Лимит: {{ thread.max_posts_num }}
             </span>
 
             {% if thread.is_sticky %}
