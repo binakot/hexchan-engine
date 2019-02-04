@@ -488,6 +488,7 @@ a {
   }
 
   &__icons-and-buttons {
+    display: inline-flex;
     margin-right: 5px;
   }
 
@@ -503,7 +504,7 @@ a {
     cursor: pointer;
     border-radius: @input-border-radius;
     color: @button-color;
-    vertical-align: text-bottom;
+    margin-right: 5px;
 
     &:hover {
       background: @accent-color;
@@ -514,21 +515,8 @@ a {
       text-align: center;
       font-weight: bold;
       text-decoration: none;
+      //font-size: 12px;
     }
-  }
-
-  &__button-reply {
-    display: inline-block;
-    background: @button-bg;
-    height: 16px;
-    font-size: 12px;
-    line-height: 16px;
-    cursor: pointer;
-    border-radius: @input-border-radius;
-    color: @button-color;
-    vertical-align: text-bottom;
-    padding: 0 5px;
-    text-decoration: none;
   }
 
   &__icon {
@@ -542,7 +530,7 @@ a {
     border: 1px solid @button-bg;
     border-radius: @input-border-radius;
     color: @button-bg;
-    vertical-align: text-bottom;
+    margin-right: 5px;
 
     &:last-child {
       margin-right: 0;
@@ -592,21 +580,6 @@ a {
   }
 
   &__deleted-label {}
-
-  &__admin {
-    position: absolute;
-    right: -22px;
-    top: 9px;
-    background: @admin-color;
-    color: @button-color;
-    text-decoration: none;
-    padding: 0 5px;
-    border: 1px solid #333;
-    width: 22px;
-    transform-origin: 100% 100%;
-    font-weight: bold;
-    text-align: center;
-  }
 
   &__anchor {
     position: absolute;
