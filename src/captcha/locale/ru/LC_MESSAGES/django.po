@@ -1,15 +1,12 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Django application: Captcha
 # Hexchan <hexchan16@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: CAPTCHA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-28 13:00+0000\n"
-"PO-Revision-Date: 2019-01-28 12:43+0300\n"
+"POT-Creation-Date: 2019-02-04 13:01+0000\n"
+"PO-Revision-Date: 2019-02-04 15:55+0300\n"
 "Last-Translator: Hexchan <hexchan16@gmail.com>\n"
 "Language-Team: русский <>\n"
 "Language: \n"
@@ -23,6 +20,22 @@ msgstr ""
 #: captcha/apps.py:7 captcha/models.py:21
 msgid "Captcha"
 msgstr "Капча"
+
+#: captcha/exceptions.py:10
+msgid "Captcha DB is empty"
+msgstr "Таблица капчи в БД не заполнена"
+
+#: captcha/exceptions.py:16
+msgid "Captcha is invalid"
+msgstr "Неверно введена капча"
+
+#: captcha/exceptions.py:22
+msgid "Captcha has expired"
+msgstr "Срок действия капчи истек"
+
+#: captcha/exceptions.py:28
+msgid "Captcha not found"
+msgstr "Капча не найдена в БД"
 
 #: captcha/models.py:7
 msgid "Public ID"

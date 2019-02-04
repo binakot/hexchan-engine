@@ -1,15 +1,12 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Django application: Imageboard
 # Hexchan <hexchan16@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: IMAGEBOARD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-28 13:00+0000\n"
-"PO-Revision-Date: 2019-01-28 13:26+0300\n"
+"POT-Creation-Date: 2019-02-04 13:01+0000\n"
+"PO-Revision-Date: 2019-02-04 16:02+0300\n"
 "Last-Translator: Hexchan <hexchan16@gmail.com>\n"
 "Language-Team: русский <>\n"
 "Language: \n"
@@ -23,6 +20,70 @@ msgstr ""
 #: imageboard/apps.py:10
 msgid "Imageboard"
 msgstr "Имиджборд"
+
+#: imageboard/exceptions.py:11
+msgid "Board not found"
+msgstr "Доска не найдена"
+
+#: imageboard/exceptions.py:17
+msgid "Board is locked"
+msgstr "Доска заблокирована"
+
+#: imageboard/exceptions.py:23
+msgid "Thread not found"
+msgstr "Тред не найден"
+
+#: imageboard/exceptions.py:29
+msgid "Thread is locked"
+msgstr "Тред заблокирован"
+
+#: imageboard/exceptions.py:35
+#, python-format
+msgid "Bad message content: %(reason)s"
+msgstr "Некорректное содержимое: %(reason)s"
+
+#: imageboard/exceptions.py:41
+#, python-format
+msgid "Parameter \"%(name)s\" is missing or has wrong value"
+msgstr "Параметр \"%(name)s\" отсутствует или имеет некорректное значение"
+
+#: imageboard/exceptions.py:47
+msgid "Request should have POST type"
+msgstr "Тип запроса должен быть POST"
+
+#: imageboard/exceptions.py:53
+msgid "Form is invalid"
+msgstr "Форма заполнена некорректно"
+
+#: imageboard/exceptions.py:60
+msgid "Post limit was reached"
+msgstr "Достигнут лимит постов в треде"
+
+#: imageboard/exceptions.py:66
+msgid "Message should not be empty, either write some text or attach an image"
+msgstr ""
+"Сообщение не должно быть пустым, добавьте текст сообщения и/или изображения."
+
+#: imageboard/exceptions.py:73
+#, python-format
+msgid "Too many files attached, up to %(max_files)s file(s) are allowed"
+msgstr ""
+"Прикреплено слишком много изображений, разрешено добавить до %(max_files)s "
+"файлов"
+
+#: imageboard/exceptions.py:82
+#, python-format
+msgid "Attached file size is too large, sizes up to %(file_size)s are allowed"
+msgstr ""
+"Прикреплен слишком большой файл, разрешены файлы размером до %(file_size)s"
+
+#: imageboard/exceptions.py:91
+#, python-format
+#| msgid ""
+#| "Attached file has an unsupported type, only types {types} are supported"
+msgid ""
+"Attached file has an unsupported type, only types %(types)s are supported"
+msgstr "Прикрепленный файл имеет неверный тип, поддерживаемые типы: %(types)s"
 
 #: imageboard/models/board.py:8 imageboard/models/post.py:11
 #: imageboard/models/thread.py:11
