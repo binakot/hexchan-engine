@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IMAGEBOARD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-04 13:01+0000\n"
-"PO-Revision-Date: 2019-02-04 16:02+0300\n"
+"POT-Creation-Date: 2019-02-05 07:28+0000\n"
+"PO-Revision-Date: 2019-02-05 10:34+0300\n"
 "Last-Translator: Hexchan <hexchan16@gmail.com>\n"
 "Language-Team: русский <>\n"
 "Language: \n"
@@ -38,14 +38,14 @@ msgid "Thread is locked"
 msgstr "Тред заблокирован"
 
 #: imageboard/exceptions.py:35
-#, python-format
-msgid "Bad message content: %(reason)s"
-msgstr "Некорректное содержимое: %(reason)s"
+#, python-brace-format
+msgid "Bad message content: {reason}"
+msgstr "Некорректное содержимое: {reason}"
 
 #: imageboard/exceptions.py:41
-#, python-format
-msgid "Parameter \"%(name)s\" is missing or has wrong value"
-msgstr "Параметр \"%(name)s\" отсутствует или имеет некорректное значение"
+#, python-brace-format
+msgid "Parameter \"{name}\" is missing or has wrong value"
+msgstr "Параметр \"{name}\" отсутствует или имеет некорректное значение"
 
 #: imageboard/exceptions.py:47
 msgid "Request should have POST type"
@@ -64,26 +64,23 @@ msgid "Message should not be empty, either write some text or attach an image"
 msgstr ""
 "Сообщение не должно быть пустым, добавьте текст сообщения и/или изображения."
 
-#: imageboard/exceptions.py:73
-#, python-format
-msgid "Too many files attached, up to %(max_files)s file(s) are allowed"
+#: imageboard/exceptions.py:72
+#, python-brace-format
+msgid "Too many files attached, up to {max_files} file(s) are allowed"
 msgstr ""
-"Прикреплено слишком много изображений, разрешено добавить до %(max_files)s "
+"Прикреплено слишком много изображений, разрешено добавить до {max_files} "
 "файлов"
 
-#: imageboard/exceptions.py:82
-#, python-format
-msgid "Attached file size is too large, sizes up to %(file_size)s are allowed"
+#: imageboard/exceptions.py:80
+#, python-brace-format
+msgid "Attached file size is too large, sizes up to {file_size} are allowed"
 msgstr ""
-"Прикреплен слишком большой файл, разрешены файлы размером до %(file_size)s"
+"Прикреплен слишком большой файл, разрешены файлы размером до {file_size}"
 
-#: imageboard/exceptions.py:91
-#, python-format
-#| msgid ""
-#| "Attached file has an unsupported type, only types {types} are supported"
-msgid ""
-"Attached file has an unsupported type, only types %(types)s are supported"
-msgstr "Прикрепленный файл имеет неверный тип, поддерживаемые типы: %(types)s"
+#: imageboard/exceptions.py:88
+#, python-brace-format
+msgid "Attached file has an unsupported type, only types {types} are supported"
+msgstr "Прикрепленный файл имеет неверный тип, поддерживаемые типы: {types}"
 
 #: imageboard/models/board.py:8 imageboard/models/post.py:11
 #: imageboard/models/thread.py:11

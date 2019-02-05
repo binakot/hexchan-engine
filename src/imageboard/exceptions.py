@@ -1,5 +1,7 @@
 from django.utils.translation import gettext_lazy as _
+
 from hexchan import config
+from imageboard.utils import get_pretty_file_size
 
 
 class ImageboardError(Exception):
@@ -32,13 +34,13 @@ class ThreadIsLocked(ImageboardError):
 
 class BadMessageContent(ImageboardError):
     def __init__(self, reason='errors found'):
-        self.message = _('Bad message content: %(reason)s' % {'reason': reason})
+        self.message = _('Bad message content: {reason}').format(reason=reason)
         super().__init__(self.message)
 
 
 class BadParameter(ImageboardError):
     def __init__(self, name):
-        self.message = _('Parameter "%(name)s" is missing or has wrong value' % {'name': name})
+        self.message = _('Parameter "{name}" is missing or has wrong value').format(name=name)
         super().__init__(self.message)
 
 
@@ -69,26 +71,23 @@ class MessageIsEmpty(ImageboardError):
 
 class TooManyFiles(ImageboardError):
     def __init__(self):
-        self.message = _(
-            'Too many files attached, up to %(max_files)s file(s) are allowed' %
-            {'max_files': config.FILE_MAX_NUM}
+        self.message = _('Too many files attached, up to {max_files} file(s) are allowed').format(
+            max_files=config.FILE_MAX_NUM
         )
         super().__init__(self.message)
 
 
 class FileIsTooLarge(ImageboardError):
     def __init__(self):
-        self.message = _(
-            'Attached file size is too large, sizes up to %(file_size)s are allowed' %
-            {'file_size': config.FILE_MAX_SIZE}
+        self.message = _('Attached file size is too large, sizes up to {file_size} are allowed').format(
+            file_size=get_pretty_file_size(config.FILE_MAX_SIZE)
         )
         super().__init__(self.message)
 
 
 class BadFileType(ImageboardError):
     def __init__(self):
-        self.message = _(
-            'Attached file has an unsupported type, only types %(types)s are supported' %
-            {'types': ', '.join(config.FILE_MIME_TYPES)}
+        self.message = _('Attached file has an unsupported type, only types {types} are supported').format(
+            types=', '.join(config.FILE_MIME_TYPES)
         )
         super().__init__(self.message)

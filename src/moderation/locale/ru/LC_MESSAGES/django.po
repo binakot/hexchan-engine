@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MODERATION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-04 12:49+0000\n"
-"PO-Revision-Date: 2019-02-04 16:04+0300\n"
+"POT-Creation-Date: 2019-02-05 07:28+0000\n"
+"PO-Revision-Date: 2019-02-05 10:32+0300\n"
 "Last-Translator: Hexchan <hexchan16@gmail.com>\n"
 "Language-Team: русский <>\n"
 "Language: ru\n"
@@ -29,10 +29,10 @@ msgstr "Ваше сообщение содержит некорректный т
 msgid "Your post contains inappropriate images"
 msgstr "Ваше сообщение содержит некорректные изображения"
 
-#: moderation/exceptions.py:23
-#, python-format
-msgid "You were banned for %(reason)s until %(active_until)s"
-msgstr "Вы забанены за %(reason)s до %(active_until)s"
+#: moderation/exceptions.py:22
+#, python-brace-format
+msgid "You were banned for {reason} until {active_until}"
+msgstr "Вы забанены за {reason} до {active_until}"
 
 #: moderation/models.py:12
 msgid "IP address"
