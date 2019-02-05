@@ -1,8 +1,12 @@
 {% extends 'error_base.html' %}
+{% load i18n %}
+
 
 {% block code %}403{% endblock %}
 
+
 {% block title %}Forbidden{% endblock %}
+
 
 {% block message %}
     {{ exception }}

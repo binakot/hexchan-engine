@@ -1,8 +1,12 @@
 {% extends 'error_base.html' %}
+{% load i18n %}
+
 
 {% block code %}404{% endblock %}
 
+
 {% block title %}Page not found{% endblock %}
+
 
 {% block message %}
     {{ exception }}

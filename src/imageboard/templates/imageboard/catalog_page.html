@@ -2,14 +2,18 @@
 {% load static %}
 {% load date_format %}
 {% load markup %}
+{% load i18n %}
+
 
 {% block page_title %}
     {{ config.SITE_NAME }} :: /{{ board.hid }}/ {{ board.name }} :: Каталог
 {% endblock %}
 
+
 {% block header %}
     {% include 'imageboard/parts/header.html' %}
 {% endblock %}
+
 
 {% block content %}
     {% include 'imageboard/parts/board_header.html' %}
@@ -69,13 +73,16 @@
     </div>
 {% endblock %}
 
+
 {% block footer %}
     {% include 'imageboard/parts/footer.html' %}
 {% endblock %}
 
+
 {% block page_style %}
     <style>{{ board.custom_style }}</style>
 {% endblock %}
+
 
 {% block metadata %}
     {% if cache_data %}

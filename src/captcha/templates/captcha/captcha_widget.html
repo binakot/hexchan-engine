@@ -1,3 +1,6 @@
+{% load i18n %}
+
+
 <span class="captcha-widget">
     <div class="captcha-widget__image-wrapper">
         <img
@@ -13,6 +16,4 @@
     {% for subwidget in widget.subwidgets %}
         {% include subwidget.template_name with widget=subwidget %}
     {% endfor %}
-
-
 </span>

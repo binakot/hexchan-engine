@@ -1,5 +1,7 @@
 {% load date_format %}
 {% load markup %}
+{% load i18n %}
+
 
 <div class="post {% if post.is_op %}post--op{% endif %} js-post" id="post-{{ post.id }}" data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}">
     <div class="post__anchor" id="{{ post.hid2hex }}"></div>

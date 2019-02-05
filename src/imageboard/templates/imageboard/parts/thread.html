@@ -1,3 +1,6 @@
+{% load i18n %}
+
+
 <div class="thread js-thread" id="thread-{{ thread.id }}" data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}">
     <div class="thread__op-post">
         {% include 'imageboard/parts/post.html' with post=thread.op %}

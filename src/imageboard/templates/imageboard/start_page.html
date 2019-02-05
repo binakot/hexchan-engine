@@ -1,13 +1,17 @@
 {% extends 'imageboard/base.html' %}
 {% load static %}
+{% load i18n %}
+
 
 {% block page_title %}
     {{ config.SITE_NAME }}
 {% endblock %}
 
+
 {% block header %}
     {% include 'imageboard/parts/header.html' %}
 {% endblock %}
+
 
 {% block content %}
     {% for board in boards %}
@@ -16,6 +20,7 @@
         {% endif %}
     {% endfor %}
 {% endblock %}
+
 
 {% block page_style %}
     <style>
