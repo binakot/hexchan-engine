@@ -8,10 +8,10 @@
                 <%= hid %>
             </span>
             <span class="placeholder-item__text">
-                <%= label %>
+                <%= type === 'post' ? '{% trans "Post is hidden." %}' : '{% trans "Thread is hidden." %}' %>
             </span>
             <span class="placeholder-item__unhide-link js-toggle-<%= type %>" data-id="<%= id %>" data-hid="<%= hid %>" title="<%= id %>">
-                Показать
+                {% trans "Show" %}
             </span>
         </div>
     </div>

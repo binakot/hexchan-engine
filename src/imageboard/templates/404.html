@@ -5,11 +5,11 @@
 {% block code %}404{% endblock %}
 
 
-{% block title %}Page not found{% endblock %}
+{% block title %}{% trans "Page not found" %}{% endblock %}
 
 
 {% block message %}
     {{ exception }}
     <br>
-    Путь: {{ request_path }}
+    {% trans "Path" %}: {{ request_path }}
 {% endblock %}

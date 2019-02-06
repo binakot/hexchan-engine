@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IMAGEBOARD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-05 07:28+0000\n"
-"PO-Revision-Date: 2019-02-05 10:34+0300\n"
+"POT-Creation-Date: 2019-02-06 07:54+0000\n"
+"PO-Revision-Date: 2019-02-06 10:55+0300\n"
 "Last-Translator: Hexchan <hexchan16@gmail.com>\n"
 "Language-Team: русский <>\n"
 "Language: \n"
@@ -21,66 +21,103 @@ msgstr ""
 msgid "Imageboard"
 msgstr "Имиджборд"
 
-#: imageboard/exceptions.py:11
+#: imageboard/exceptions.py:13
 msgid "Board not found"
 msgstr "Доска не найдена"
 
-#: imageboard/exceptions.py:17
+#: imageboard/exceptions.py:19
 msgid "Board is locked"
 msgstr "Доска заблокирована"
 
-#: imageboard/exceptions.py:23
+#: imageboard/exceptions.py:25
 msgid "Thread not found"
 msgstr "Тред не найден"
 
-#: imageboard/exceptions.py:29
+#: imageboard/exceptions.py:31
 msgid "Thread is locked"
 msgstr "Тред заблокирован"
 
-#: imageboard/exceptions.py:35
+#: imageboard/exceptions.py:37
 #, python-brace-format
 msgid "Bad message content: {reason}"
 msgstr "Некорректное содержимое: {reason}"
 
-#: imageboard/exceptions.py:41
+#: imageboard/exceptions.py:43
 #, python-brace-format
 msgid "Parameter \"{name}\" is missing or has wrong value"
 msgstr "Параметр \"{name}\" отсутствует или имеет некорректное значение"
 
-#: imageboard/exceptions.py:47
+#: imageboard/exceptions.py:49
 msgid "Request should have POST type"
 msgstr "Тип запроса должен быть POST"
 
-#: imageboard/exceptions.py:53
+#: imageboard/exceptions.py:55
 msgid "Form is invalid"
 msgstr "Форма заполнена некорректно"
 
-#: imageboard/exceptions.py:60
+#: imageboard/exceptions.py:62
 msgid "Post limit was reached"
 msgstr "Достигнут лимит постов в треде"
 
-#: imageboard/exceptions.py:66
+#: imageboard/exceptions.py:68
 msgid "Message should not be empty, either write some text or attach an image"
 msgstr ""
 "Сообщение не должно быть пустым, добавьте текст сообщения и/или изображения."
 
-#: imageboard/exceptions.py:72
+#: imageboard/exceptions.py:74
 #, python-brace-format
 msgid "Too many files attached, up to {max_files} file(s) are allowed"
 msgstr ""
 "Прикреплено слишком много изображений, разрешено добавить до {max_files} "
 "файлов"
 
-#: imageboard/exceptions.py:80
+#: imageboard/exceptions.py:82
 #, python-brace-format
 msgid "Attached file size is too large, sizes up to {file_size} are allowed"
 msgstr ""
 "Прикреплен слишком большой файл, разрешены файлы размером до {file_size}"
 
-#: imageboard/exceptions.py:88
+#: imageboard/exceptions.py:90
 #, python-brace-format
 msgid "Attached file has an unsupported type, only types {types} are supported"
 msgstr "Прикрепленный файл имеет неверный тип, поддерживаемые типы: {types}"
+
+#: imageboard/forms/posting_form.py:26 imageboard/models/post.py:46
+msgid "Title"
+msgstr "Тема"
+
+#: imageboard/forms/posting_form.py:30 imageboard/models/post.py:52
+msgid "Author"
+msgstr "Автор"
+
+#: imageboard/forms/posting_form.py:34 imageboard/models/post.py:58
+msgid "E-mail"
+msgstr "E-mail"
+
+#: imageboard/forms/posting_form.py:39 imageboard/models/post.py:40
+msgid "Text"
+msgstr "Текст"
+
+#: imageboard/forms/posting_form.py:44 imageboard/models/post.py:64
+msgid "Password"
+msgstr "Пароль"
+
+#: imageboard/forms/posting_form.py:49
+msgid "Captcha"
+msgstr "Капча"
+
+#: imageboard/forms/posting_form.py:53
+msgctxt "posting form"
+msgid "Images"
+msgstr "Картинки"
+
+#: imageboard/forms/posting_form.py:67
+msgid "Incorrect form type"
+msgstr "Некорректный тип формы"
+
+#: imageboard/forms/posting_form.py:72
+msgid "Thread ID is not specified when creating a new post"
+msgstr "Не указан ID треда при создании поста"
 
 #: imageboard/models/board.py:8 imageboard/models/post.py:11
 #: imageboard/models/thread.py:11
@@ -211,6 +248,9 @@ msgid "Updated at"
 msgstr "Дата обновления"
 
 #: imageboard/models/board.py:106 imageboard/models/thread.py:18
+#: imageboard/templates/imageboard/board_page.html:53
+#: imageboard/templates/imageboard/catalog_page.html:93
+#: imageboard/templates/imageboard/thread_page.html:47
 msgid "Board"
 msgstr "Доска"
 
@@ -267,38 +307,21 @@ msgid "Images"
 msgstr "Изображения"
 
 #: imageboard/models/post.py:18 imageboard/models/thread.py:72
+#: imageboard/templates/imageboard/thread_page.html:48
 msgid "Thread"
 msgstr "Тред"
-
-#: imageboard/models/post.py:40
-msgid "Text"
-msgstr "Текст"
-
-#: imageboard/models/post.py:46
-msgid "Title"
-msgstr "Тема"
-
-#: imageboard/models/post.py:52
-msgid "Author"
-msgstr "Автор"
-
-#: imageboard/models/post.py:58
-msgid "E-mail"
-msgstr "E-mail"
-
-#: imageboard/models/post.py:64
-msgid "Password"
-msgstr "Пароль"
 
 #: imageboard/models/post.py:70
 msgid "Is OP"
 msgstr "ОП?"
 
 #: imageboard/models/post.py:75
+#: imageboard/templates/imageboard/parts/post.html:107
 msgid "User was warned"
 msgstr "Пользователь предупрежден"
 
 #: imageboard/models/post.py:80
+#: imageboard/templates/imageboard/parts/post.html:103
 msgid "User was banned"
 msgstr "Пользователь забанен"
 
@@ -337,3 +360,148 @@ msgstr "Максимальное число постов"
 #: imageboard/models/thread.py:73
 msgid "Threads"
 msgstr "Треды"
+
+#: imageboard/templates/400.html:8
+msgid "Bad request"
+msgstr "Некорректный запрос"
+
+#: imageboard/templates/403.html:8
+msgid "Forbidden"
+msgstr "Ошибка доступа"
+
+#: imageboard/templates/404.html:8
+msgid "Page not found"
+msgstr "Страница не найдена"
+
+#: imageboard/templates/404.html:14
+msgid "Path"
+msgstr "Путь"
+
+#: imageboard/templates/500.html:8
+msgid "Server error"
+msgstr "Ошибка сервера"
+
+#: imageboard/templates/imageboard/board_page.html:52
+#: imageboard/templates/imageboard/catalog_page.html:92
+#: imageboard/templates/imageboard/thread_page.html:46
+msgid "Page generated at"
+msgstr "Страница сгенерирована"
+
+#: imageboard/templates/imageboard/board_page.html:53
+#: imageboard/templates/imageboard/catalog_page.html:93
+msgctxt "board"
+msgid "updated at"
+msgstr "обновлена"
+
+#: imageboard/templates/imageboard/board_page.html:54
+msgid "Board page"
+msgstr "Страница доски"
+
+#: imageboard/templates/imageboard/catalog_page.html:39
+msgid "No image available"
+msgstr "Изображение отсутствует"
+
+#: imageboard/templates/imageboard/catalog_page.html:57
+msgid "Created"
+msgstr "Создан"
+
+#: imageboard/templates/imageboard/catalog_page.html:62
+msgid "Updated"
+msgstr "Обновлен"
+
+#: imageboard/templates/imageboard/catalog_page.html:67
+#: imageboard/templates/imageboard/parts/post.html:134
+msgctxt "number of posts"
+msgid "Posts"
+msgstr "Постов"
+
+#: imageboard/templates/imageboard/parts/footer.html:8
+msgid "Pages"
+msgstr "Страницы"
+
+#: imageboard/templates/imageboard/parts/header.html:40
+msgid "Thread catalog"
+msgstr "Каталог тредов"
+
+#: imageboard/templates/imageboard/parts/js_templates.html:11
+msgid "Post is hidden."
+msgstr "Пост скрыт."
+
+#: imageboard/templates/imageboard/parts/js_templates.html:11
+msgid "Thread is hidden."
+msgstr "Тред скрыт."
+
+#: imageboard/templates/imageboard/parts/js_templates.html:14
+msgid "Show"
+msgstr "Показать"
+
+#: imageboard/templates/imageboard/parts/lockdown.html:6
+msgid "Thread is closed for new posts"
+msgstr "Тред закрыт для новых постов"
+
+#: imageboard/templates/imageboard/parts/lockdown.html:8
+msgid "Board is closed for new threads and posts"
+msgstr "Доска закрыта для новых тредов и постов"
+
+#: imageboard/templates/imageboard/parts/post.html:40
+msgid "Hide thread"
+msgstr "Скрыть тред"
+
+#: imageboard/templates/imageboard/parts/post.html:47
+#: imageboard/templates/imageboard/parts/post.html:60
+msgid "Open admin panel"
+msgstr "Открыть админ-панель"
+
+#: imageboard/templates/imageboard/parts/post.html:53
+msgid "Hide post"
+msgstr "Скрыть пост"
+
+#: imageboard/templates/imageboard/parts/post.html:112
+msgid "Replies"
+msgstr "Ответы"
+
+#: imageboard/templates/imageboard/parts/post.html:128
+msgid "Open thread"
+msgstr "Перейти к треду"
+
+#: imageboard/templates/imageboard/parts/post.html:139
+msgid "Limit"
+msgstr "Лимит"
+
+#: imageboard/templates/imageboard/parts/post.html:145
+msgid "Sticky"
+msgstr "Закреплен"
+
+#: imageboard/templates/imageboard/parts/post.html:152
+msgid "Locked"
+msgstr "Закрыт"
+
+#: imageboard/templates/imageboard/parts/posting_form.html:10
+msgid "Create a new thread"
+msgstr "Создать новый тред"
+
+#: imageboard/templates/imageboard/parts/posting_form.html:12
+msgid "Reply to the thread"
+msgstr "Ответить в тред"
+
+#: imageboard/templates/imageboard/parts/posting_form.html:20
+msgid "Submit"
+msgstr "Отправить"
+
+#: imageboard/templates/imageboard/parts/posting_form.html:43
+#: imageboard/templates/imageboard/parts/rules.html:6
+msgid "Board rules"
+msgstr "Правила доски"
+
+#: imageboard/templates/imageboard/post_popup.html:7
+msgid "Post not found."
+msgstr "Пост не найден."
+
+#: imageboard/templates/imageboard/posting_error_page.html:6
+msgid "Error"
+msgstr "Ошибка"
+
+#: imageboard/templates/imageboard/thread_page.html:48
+msgctxt "thread"
+msgid "updated at"
+msgstr "обновлен"

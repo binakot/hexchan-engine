@@ -10,12 +10,12 @@
         {# HID #}
         <a class="post__hid hid js-post-hid" data-id="{{ post.id }}" href="{{ post.get_absolute_url }}" >{{ post.hid2hex }}</a>
 
-        {# Тема #}
+        {# Title #}
         {% if post.title %}
             <span class="post__title">{{ post.title }}</span>
         {% endif %}
 
-        {# Автор #}
+        {# Author #}
         <span class="post__author {% if post.created_by %}post__author--admin{% endif %}">
             {% if post.created_by %}
                  {{ post.created_by }}
@@ -26,40 +26,43 @@
             {% endif %}
         </span>
 
-        {# Дата #}
+        {# Created at #}
         <span class="post__date">
             {{ post.created_at|date:config.DATE_TIME_FORMAT }}
         </span>
 
-        {# Кнопки и иконки #}
+        {# Buttons and icons #}
         <span class="post__icons-and-buttons">
-
-
             {% if not is_popup %}
                 {% if post.is_op %}
                     <button
                         class="post__button post__button--toggle icon js-toggle-thread"
-                        data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="Скрыть тред"
+                        data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="{% trans "Hide thread" %}"
                     >close</button>
 
                     {% if request.user.is_superuser %}
-                        <a class="post__button post__button--admin" href="{% url 'admin:imageboard_thread_change' object_id=thread.id %}">T</a>
+                        <a
+                            class="post__button post__button--admin"
+                            href="{% url 'admin:imageboard_thread_change' object_id=thread.id %}"
+                            title="{% trans "Open admin panel" %}"
+                        >T</a>
                     {% endif %}
                 {% else %}
                     <button
                         class="post__button post__button--toggle icon js-toggle-post"
-                        data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}" title="Скрыть пост"
+                        data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}" title="{% trans "Hide post" %}"
                     >close</button>
 
                     {% if request.user.is_superuser %}
-                        <a class="post__button post__button--admin" href="{% url 'admin:imageboard_post_change' object_id=post.id %}">P</a>
+                        <a
+                            class="post__button post__button--admin"
+                            href="{% url 'admin:imageboard_post_change' object_id=post.id %}"
+                            title="{% trans "Open admin panel" %}"
+                        >P</a>
                     {% endif %}
                 {% endif %}
             {% endif %}
         </span>
-
-        {# Ответ #}
-{#        [<a class="post__reply-link" href="{{ post.get_absolute_url }}">Ответ</a>]#}
     </div>
 
 
@@ -97,16 +100,16 @@
 
     <div class="post__footer">
         {% if post.user_was_banned %}
-            <div class="post__admin-message">Пользователь был забанен.</div>
+            <div class="post__admin-message">{% trans "User was banned" %}</div>
         {% endif %}
 
         {% if post.user_was_warned %}
-            <div class="post__admin-message">Пользователь был предупрежден.</div>
+            <div class="post__admin-message">{% trans "User was warned" %}</div>
         {% endif %}
 
         {% if post.replies %}
             <div class="post__replies">
-                Ответы:
+                {% trans "Replies" %}:
                 {% for reply in post.replies %}
                     <a
                         class="post__reply js-ref"
@@ -122,29 +125,31 @@
             {% if page_type == 'board_page' %}
                 <a class="thread-info__item" href="{{ thread.get_absolute_url }}">
                     <span class="thread-info__icon icon">subdirectory_arrow_right</span>
-                    Перейти к треду
+                    {% trans "Open thread" %}
                 </a>
             {% endif %}
 
             <span class="thread-info__item">
                 <i class="thread-info__icon icon">message</i>
-                Постов: {{ thread.posts_count }}
+                {% trans "Posts" context "number of posts" %}: {{ thread.posts_count }}
             </span>
 
             <span class="thread-info__item">
                 <i class="thread-info__icon icon">arrow_upward</i>
-                Лимит: {{ thread.max_posts_num }}
+                {% trans "Limit" %}: {{ thread.max_posts_num }}
             </span>
 
             {% if thread.is_sticky %}
                 <span class="thread-info__item">
-                    <i class="thread-info__icon icon">bookmark</i> Закреплен
+                    <i class="thread-info__icon icon">bookmark</i>
+                    {% trans "Sticky" %}
                 </span>
             {% endif %}
 
             {% if thread.is_locked %}
                 <span class="thread-info__item">
-                    <i class="thread-info__icon icon">lock</i> Закрыт
+                    <i class="thread-info__icon icon">lock</i>
+                    {% trans "Locked" %}
                 </span>
             {% endif %}
         </div>

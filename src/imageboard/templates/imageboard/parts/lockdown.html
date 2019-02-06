@@ -3,8 +3,8 @@
 
 <div class="lockdown lockdown--{{ type }}">
     {% if type == 'thread' %}
-        Тред закрыт для новых постов.
+        {% trans "Thread is closed for new posts" %}
     {% elif type == 'board' %}
-        Доска закрыта для новых тредов и постов.
+        {% trans "Board is closed for new threads and posts" %}
     {% endif %}
 </div>

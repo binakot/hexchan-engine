@@ -7,16 +7,18 @@
         <div class="posting-form__header">
             <span class="posting-form__title">
                 {% if form_type == 'new_thread' %}
-                    Создать новый тред
+                    {% trans "Create a new thread" %}
                 {% elif form_type == 'new_post' %}
-                    Ответить в тред
+                    {% trans "Reply to the thread" %}
                     {% if thread %}
                         {{thread.hid2hex}}
                     {% endif %}
                 {% endif %}
             </span>
 
-            <button type="submit" class="posting-form__submit">Отправить</button>
+            <button type="submit" class="posting-form__submit">
+                {% trans "Submit" %}
+            </button>
         </div>
 
         {% for hidden_field in form.hidden_fields %}
@@ -35,9 +37,10 @@
             </div>
         {% endfor %}
     </div>
+
     <div class="posting-form__rules">
         <div class="posting-form__rules-header">
-            Правила доски
+            {% trans "Board rules" %}
         </div>
         {{ board.rules|markdown|safe }}
     </div>

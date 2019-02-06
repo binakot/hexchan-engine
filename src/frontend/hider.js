@@ -37,7 +37,6 @@ var Hider = function(props) {
             placeholderTempContainer.innerHTML = placeholderItemTemplate({
                 id: itemId,
                 hid: itemHid,
-                label: props.placeholderLabel,
                 type: props.type
             });
             placeholderItem = placeholderTempContainer.firstChild;

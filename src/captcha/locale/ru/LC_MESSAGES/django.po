@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CAPTCHA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-05 07:28+0000\n"
-"PO-Revision-Date: 2019-02-04 15:55+0300\n"
+"POT-Creation-Date: 2019-02-06 07:54+0000\n"
+"PO-Revision-Date: 2019-02-06 10:50+0300\n"
 "Last-Translator: Hexchan <hexchan16@gmail.com>\n"
 "Language-Team: русский <>\n"
 "Language: \n"
@@ -52,3 +52,7 @@ msgstr "Кодированное изображение"
 #: captcha/models.py:22
 msgid "Captchas"
 msgstr "Капчи"
+
+#: captcha/templates/captcha/captcha_widget.html:9
+msgid "Captcha code"
+msgstr "Капча"

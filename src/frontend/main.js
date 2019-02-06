@@ -23,13 +23,11 @@ var lb = lightbox.option({
 var threadHider = new Hider({
     type: 'thread',
     storageKey: 'hiddenThreads',
-    placeholderLabel: 'Тред скрыт.'
 });
 
 var postHider = new Hider({
     type: 'post',
     storageKey: 'hiddenPosts',
-    placeholderLabel: 'Пост скрыт.'
 });
 
 

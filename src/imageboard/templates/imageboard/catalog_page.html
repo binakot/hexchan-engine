@@ -22,7 +22,11 @@
         <div class="catalog__items">
             {% for thread in threads %}
                 {% with op_post=thread.op  %}
-                    <a class="catalog-item js-thread" href="{% url 'thread_page' board_hid=thread.board.hid thread_hid=thread.hid %}" data-id="{{ thread.id }}">
+                    <a
+                        class="catalog-item js-thread"
+                        href="{% url 'thread_page' board_hid=thread.board.hid thread_hid=thread.hid %}"
+                        data-id="{{ thread.id }}"
+                    >
                         <div class="catalog-item__image-wrap">
                             {% with image=op_post.images.all|first  %}
                                 {% if image %}
@@ -32,9 +36,7 @@
                                     ></div>
                                 {% else %}
                                     <div class="catalog-item__image catalog-item__image--empty">
-                                        No image
-                                        <br/>
-                                        available
+                                        {% trans "No image available" %}
                                     </div>
                                 {% endif %}
                             {% endwith %}
@@ -52,17 +54,17 @@
 
                         {% spaceless %}
                         <div class="catalog-item__meta">
-                            <span class="catalog-item__meta-label">Создан: </span>
+                            <span class="catalog-item__meta-label">{% trans "Created" %}: </span>
                             <span class="catalog-item__meta-value">{{ thread.created_at|date:config.DATE_TIME_FORMAT }}</span>
 
                             <span class="catalog-item__meta-separator"></span>
 
-                            <span class="catalog-item__meta-label">Обновлен: </span>
+                            <span class="catalog-item__meta-label">{% trans "Updated" %}: </span>
                             <span class="catalog-item__meta-value">{{ thread.updated_at|date:config.DATE_TIME_FORMAT }}</span>
 
                             <span class="catalog-item__meta-separator"></span>
 
-                            <span class="catalog-item__meta-label">Постов: </span>
+                            <span class="catalog-item__meta-label">{% trans "Posts" context "number of posts" %}: </span>
                             <span class="catalog-item__meta-value">{{ thread.posts_count }}</span>
                         </div>
                         {% endspaceless %}
@@ -87,8 +89,8 @@
 {% block metadata %}
     {% if cache_data %}
         <div class="cache-data">
-            Page generated at {{ cache_data.generated_at|date:config.DATE_TIME_FORMAT }}.
-            Board {{ cache_data.board.hid }} updated at {{ cache_data.updated_at|date:config.DATE_TIME_FORMAT }}.
+            {% trans "Page generated at" %} {{ cache_data.generated_at|date:config.DATE_TIME_FORMAT }}.
+            {% trans "Board" %} {{ cache_data.board }} {% trans "updated at" context "board" %} {{ cache_data.updated_at|date:config.DATE_TIME_FORMAT }}.
         </div>
     {% endif %}
 {% endblock %}
