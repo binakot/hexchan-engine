@@ -27,7 +27,6 @@ class PostingExceptionsTestCase(TestCase):
         self.board = Board.objects.create(
             hid='t',
             name='testing',
-            url='t',
             default_max_posts_num=100,
         )
 
@@ -95,7 +94,6 @@ class PostingExceptionsTestCase(TestCase):
         locked_board = Board.objects.create(
             hid='b',
             name='random',
-            url='b',
             default_max_posts_num=100,
             is_locked=True,
         )

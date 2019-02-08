@@ -20,7 +20,6 @@ class NewPostTestCase(TestCase):
         self.board = Board.objects.create(
             hid='t',
             name='testing',
-            url='t',
             default_max_posts_num=100,
         )
 
