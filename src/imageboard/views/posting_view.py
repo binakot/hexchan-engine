@@ -259,7 +259,7 @@ def create_post(request, board: Board, thread: Thread, cleaned_data: dict, is_op
 
         text=text,
         title=title,
-        author=author,
+        author=author if author else board.default_username,
         email=email,  # TODO: save emails
         password=password,  # TODO: save passwords
 
