@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 from django.conf import settings
-from django.db.models import Prefetch
 
 from ..models import Post, Image
 from hexchan import config
@@ -22,16 +21,19 @@ class ImageInlineAdmin(admin.TabularInline):
         'hid', 'thumbnail', 'original_name', 'path', 'mimetype', 'created_at', 'size', 'width', 'height', 'checksum',
     )
 
+    show_change_link = True
+
     # Custom fields
     # ==================================================================================================================
     def thumbnail(self, obj):
         return format_html(
             '<a href="{}">'
-            '<img src={} alt={} style="max-width: 100px; max-height: 100px;" />'
+            '<img src={} alt={} title={} style="max-width: 100px; max-height: 100px;" />'
             '</a>',
             ''.join([settings.MEDIA_URL, obj.path()]),
             ''.join([settings.MEDIA_URL, obj.thumb_path()]),
             obj.hid(),
+            obj.original_name,
         )
     thumbnail.short_description = 'Thumbnail'
 
@@ -59,7 +61,7 @@ class PostAdmin(admin.ModelAdmin):
 
     list_per_page = 100
 
-    ordering = ()
+    ordering = ('-id',)
 
     preserve_filters = True
 
