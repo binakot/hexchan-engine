@@ -926,14 +926,10 @@ a {
     line-height: 40px;
     font-size: 40px;
     font-weight: bold;
+    margin-right: 10px;
   }
 
   &__description {
-    margin-top: 10px;
-  }
-
-  p {
-    margin: 0;
   }
 }
 
@@ -1143,8 +1139,17 @@ a {
 
   .board-header {
     border-radius: 0;
-    margin: 0 0 10px;
+    margin: 0;
     padding: 10px;
+
+    &__title {
+      display: block;
+    }
+
+    &__description {
+      margin-top: 5px;
+      display: block;
+    }
   }
 
   .rules {
@@ -1201,7 +1206,7 @@ a {
   .posting-form {
     border-radius: 0;
     padding: 10px;
-    margin: 10px 0;
+    margin: 0 0 10px;
     flex-wrap: wrap;
 
     label {

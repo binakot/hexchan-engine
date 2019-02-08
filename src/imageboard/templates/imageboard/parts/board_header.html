@@ -3,11 +3,10 @@
 
 
 <a class="board-header" href="{{ board.get_absolute_url }}" data-hid="{{ board.hid }}">
-    <div class="board-header__title">
-        {{ board.name }}
-    </div>
-
-    <div class="board-header__description">
-        {{ board.description|markdown|safe }}
-    </div>
+    <span class="board-header__title">
+        /{{ board.hid }}/ :: {{ board.name }}
+    </span>
+    <span class="board-header__description">
+        {{ board.description}}
+    </span>
 </a>
