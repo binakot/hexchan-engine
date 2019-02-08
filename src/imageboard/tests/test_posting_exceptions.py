@@ -1,6 +1,7 @@
 # Standard imports
 import os.path
 import datetime
+import time
 
 # Django imports
 from django.test import TestCase
@@ -200,3 +201,8 @@ class PostingExceptionsTestCase(TestCase):
         Ban.objects.create(type=Ban.BAN_TYPE_NET, value=banned_network, reason=reason, active_until=tomorrow)
 
         self.make_bad_request({}, m_ex.ModerationError, REMOTE_ADDR=banned_ip)
+
+    def test_rapid_posting(self):
+        post_data = self.base_post_content.copy()
+        self.client.post('/create/', post_data)
+        self.make_bad_request({}, i_ex.NotSoFast)

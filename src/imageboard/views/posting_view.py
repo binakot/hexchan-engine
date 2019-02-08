@@ -1,6 +1,7 @@
 # Standard library imports
 import os
 import hashlib
+import datetime
 
 # Django imports
 from django.shortcuts import redirect, render
@@ -9,6 +10,7 @@ from django.contrib.auth import get_user
 from django.db import transaction, DatabaseError
 from django.db.models import F, Subquery
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 # Third party imports
 import PIL.Image
@@ -43,6 +45,9 @@ def posting_view(request):
 
         # Check for bans
         check_bans(request)
+
+        # Check posting limit
+        check_posting_limit(request)
 
         # Get form data
         form = PostingForm(request.POST)
@@ -107,6 +112,9 @@ def posting_view(request):
                 thread.save()
                 push_to_session_list(request, 'user_posts', post.id)
                 push_to_session_list(request, 'user_thread_replies', thread.id)
+
+            # Write latest posting time to the session
+            request.session['latest_post_at'] = timezone.now().timestamp()
 
         # Redirect to the current thread
         # TODO: make a form checkbox for selecting destination - board or thread
@@ -301,3 +309,13 @@ def flush_old_threads(request, board):
             thread.is_locked = True
             thread.is_deleted = True
             thread.save()
+
+
+def check_posting_limit(request):
+    latest_post_at = request.session.get('latest_post_at')
+    if latest_post_at:
+        latest_post_at_datetime = datetime.datetime.fromtimestamp(latest_post_at, tz=timezone.utc)
+        now = timezone.now()
+        timeout = datetime.timedelta(seconds=config.POSTING_TIMEOUT)
+        if (now - latest_post_at_datetime) < timeout:
+            raise i_ex.NotSoFast

@@ -41,3 +41,7 @@ POST_HID_REGEX = '0x[0-9a-f]{6}'
 POST_FULL_HID_FORMAT = '0x{hid:06x}'
 
 IMAGE_HID_FORMAT = '0x{hid:08x}'
+
+
+# Posting limits
+POSTING_TIMEOUT = 60  # seconds

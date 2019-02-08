@@ -1,12 +1,15 @@
 # Standard imports
 import os.path
+import time
 
 # Django imports
 from django.test import TestCase
 from django.test import Client
+from django.test import tag
 from django.conf import settings
 
 # App imports
+from hexchan import config
 from imageboard.models import Board, Thread, Post, Image
 from captcha.models import Captcha
 
@@ -141,3 +144,15 @@ class NewPostTestCase(TestCase):
     def test_refs(self):
         # TODO
         pass
+
+    @tag('slow')
+    def test_posting_timeout(self):
+        post_data = self.base_post_content.copy()
+
+        response_01 = self.client.post('/create/', post_data)
+        self.check_redirect(response_01, '/t/0x000000/')
+
+        time.sleep(config.POSTING_TIMEOUT)
+
+        response_02 = self.client.post('/create/', post_data)
+        self.check_redirect(response_02, '/t/0x000000/')

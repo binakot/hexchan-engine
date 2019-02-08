@@ -91,3 +91,11 @@ class BadFileType(ImageboardError):
             types=', '.join(config.FILE_MIME_TYPES)
         )
         super().__init__(self.message)
+
+
+class NotSoFast(ImageboardError):
+    def __init__(self):
+        self.message = _('You have to wait for about {timeout} seconds to post again.').format(
+            timeout=config.POSTING_TIMEOUT
+        )
+        super().__init__(self.message)
