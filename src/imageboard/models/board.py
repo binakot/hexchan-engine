@@ -15,14 +15,10 @@ class Board(models.Model):
         max_length=64
     )
 
-    url = models.CharField(
-        _('URL'),
-        max_length=16
-    )
-
-    description = models.TextField(
+    description = models.CharField(
         _('Description'),
         help_text=_('Short board description'),
+        max_length=256,
         blank=True
     )
 
@@ -47,6 +43,7 @@ class Board(models.Model):
     default_max_posts_num = models.IntegerField(
         _('Default maximum posts number'),
         help_text=_('Maximum number of posts for new threads by default. Can be overridden in thread\'s properties.'),
+        default=128
     )
 
     posts_per_thread_per_page = models.IntegerField(

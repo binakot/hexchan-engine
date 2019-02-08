@@ -13,7 +13,7 @@ class BoardAdmin(admin.ModelAdmin):
     # ==================================================================================================================
     list_display = (
         'id', 'hid',
-        'name', 'url', 'threads_num', 'default_username',
+        'name', 'threads_num', 'default_username',
         'default_max_posts_num', 'admin_last_post_hid',
         'is_hidden', 'is_locked', 'is_deleted',
         'created_at', 'updated_at',
@@ -41,7 +41,6 @@ class BoardAdmin(admin.ModelAdmin):
                 'id',
                 'hid',
                 'name',
-                'url',
                 ('created_at', 'updated_at',),
                 ('threads_num', 'admin_last_post_hid',),
             ),
