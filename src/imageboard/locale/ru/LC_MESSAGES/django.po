@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IMAGEBOARD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-06 07:54+0000\n"
-"PO-Revision-Date: 2019-02-06 10:55+0300\n"
+"POT-Creation-Date: 2019-02-08 14:51+0000\n"
+"PO-Revision-Date: 2019-02-08 17:56+0300\n"
 "Last-Translator: Hexchan <hexchan16@gmail.com>\n"
 "Language-Team: русский <>\n"
 "Language: \n"
@@ -62,7 +62,7 @@ msgstr "Достигнут лимит постов в треде"
 #: imageboard/exceptions.py:68
 msgid "Message should not be empty, either write some text or attach an image"
 msgstr ""
-"Сообщение не должно быть пустым, добавьте текст сообщения и/или изображения."
+"Сообщение не должно быть пустым, добавьте текст сообщения и/или изображения"
 
 #: imageboard/exceptions.py:74
 #, python-brace-format
@@ -81,6 +81,13 @@ msgstr ""
 #, python-brace-format
 msgid "Attached file has an unsupported type, only types {types} are supported"
 msgstr "Прикрепленный файл имеет неверный тип, поддерживаемые типы: {types}"
+
+#: imageboard/exceptions.py:98
+#, python-brace-format
+msgid "You have to wait for about {timeout} seconds to post again."
+msgstr ""
+"Вам необходимо подождать около {timeout} секунд чтобы отправить новое "
+"сообщение."
 
 #: imageboard/forms/posting_form.py:26 imageboard/models/post.py:46
 msgid "Title"
@@ -129,48 +136,44 @@ msgid "Name"
 msgstr "Название"
 
 #: imageboard/models/board.py:19
-msgid "URL"
-msgstr "URL"
-
-#: imageboard/models/board.py:24
 msgid "Description"
 msgstr "Описание"
 
-#: imageboard/models/board.py:25
+#: imageboard/models/board.py:20
 msgid "Short board description"
 msgstr "Краткое описание доски."
 
-#: imageboard/models/board.py:30
+#: imageboard/models/board.py:26
 msgid "Rules"
 msgstr "Правила"
 
-#: imageboard/models/board.py:31
+#: imageboard/models/board.py:27
 msgid "Board rules will be displayed next to posting form."
 msgstr "Правила доски будут показаны рядом с формой поста."
 
-#: imageboard/models/board.py:36
+#: imageboard/models/board.py:32
 msgid "Custom style"
 msgstr "Дополнительный стиль"
 
-#: imageboard/models/board.py:37
+#: imageboard/models/board.py:33
 msgid "Custom CSS that would be applied only on this board's pages"
 msgstr ""
 "Дополнительные правила CSS, которые будет применены только к этой доске."
 
-#: imageboard/models/board.py:42
+#: imageboard/models/board.py:38
 msgid "Default username"
 msgstr "Имя пользователя по умолчанию"
 
-#: imageboard/models/board.py:43
+#: imageboard/models/board.py:39
 msgid "Default username will be saved, if post's author field was empty."
 msgstr ""
 "Имя по умолчанию будет сохранено, если поле \"автор\" не было заполнено. "
 
-#: imageboard/models/board.py:48
+#: imageboard/models/board.py:44
 msgid "Default maximum posts number"
 msgstr "Максимальное число постов по умолчанию"
 
-#: imageboard/models/board.py:49
+#: imageboard/models/board.py:45
 msgid ""
 "Maximum number of posts for new threads by default. Can be overridden in "
 "thread's properties."
@@ -178,28 +181,28 @@ msgstr ""
 "Максимальное число постов в новых тредах по умолчанию. Может быть "
 "переопределено в свойствах треда."
 
-#: imageboard/models/board.py:53
+#: imageboard/models/board.py:50
 msgid "Posts per thread per page"
 msgstr "Число постов в треде на странице"
 
-#: imageboard/models/board.py:54
+#: imageboard/models/board.py:51
 msgid ""
 "Number of thread's posts visible on board's pages, not counting OP post."
 msgstr "Число постов в тредах на странице доски, не считая ОП."
 
-#: imageboard/models/board.py:59
+#: imageboard/models/board.py:56
 msgid "Threads per page"
 msgstr "Тредов на странице"
 
-#: imageboard/models/board.py:60
+#: imageboard/models/board.py:57
 msgid "Number of threads on board's page"
 msgstr "Число тредов на одной странице доски."
 
-#: imageboard/models/board.py:65
+#: imageboard/models/board.py:62
 msgid "Maximum threads number"
 msgstr "Максимальное число тредов"
 
-#: imageboard/models/board.py:66
+#: imageboard/models/board.py:63
 msgid ""
 "Maximum number of threads on this boards. When reaching this level older "
 "threads will be deleted."
@@ -207,54 +210,54 @@ msgstr ""
 "Максимальное число тредов на доске. При достижении максимума более старые "
 "треды будут удалены."
 
-#: imageboard/models/board.py:71
+#: imageboard/models/board.py:68
 msgid "Is hidden"
 msgstr "Скрыто?"
 
-#: imageboard/models/board.py:72
+#: imageboard/models/board.py:69
 msgid ""
 "Is this board hidden from boards list. Can still be accessed by direct URL."
 msgstr "Эта доска скрыта из списка. Она все еще доступна по прямой ссылке."
 
-#: imageboard/models/board.py:77 imageboard/models/thread.py:42
+#: imageboard/models/board.py:74 imageboard/models/thread.py:42
 msgid "Is locked"
 msgstr "Заблокировано?"
 
-#: imageboard/models/board.py:78
+#: imageboard/models/board.py:75
 msgid "New posts and threads can't be created on locked board."
 msgstr "Новые посты и треды не могут быть созданы на заблокированной доске."
 
-#: imageboard/models/board.py:83 imageboard/models/image.py:56
+#: imageboard/models/board.py:80 imageboard/models/image.py:56
 #: imageboard/models/post.py:85 imageboard/models/thread.py:48
 msgid "Is deleted"
 msgstr "Удалено?"
 
-#: imageboard/models/board.py:84
+#: imageboard/models/board.py:81
 msgid "Boards is removed from boards list and can't be accessed by direct URL."
 msgstr "Доска удалена из списка и недоступна по прямой ссылке."
 
-#: imageboard/models/board.py:89
+#: imageboard/models/board.py:86
 msgid "Last post HID"
 msgstr "Последний HID поста"
 
-#: imageboard/models/board.py:94 imageboard/models/image.py:30
+#: imageboard/models/board.py:91 imageboard/models/image.py:30
 #: imageboard/models/post.py:26 imageboard/models/thread.py:58
 msgid "Created at"
 msgstr "Дата создания"
 
-#: imageboard/models/board.py:100 imageboard/models/post.py:33
+#: imageboard/models/board.py:97 imageboard/models/post.py:33
 #: imageboard/models/thread.py:65
 msgid "Updated at"
 msgstr "Дата обновления"
 
-#: imageboard/models/board.py:106 imageboard/models/thread.py:18
+#: imageboard/models/board.py:103 imageboard/models/thread.py:18
 #: imageboard/templates/imageboard/board_page.html:53
 #: imageboard/templates/imageboard/catalog_page.html:93
 #: imageboard/templates/imageboard/thread_page.html:47
 msgid "Board"
 msgstr "Доска"
 
-#: imageboard/models/board.py:107
+#: imageboard/models/board.py:104
 msgid "Boards"
 msgstr "Доски"
 
@@ -505,3 +508,6 @@ msgstr "Ошибка"
 msgctxt "thread"
 msgid "updated at"
 msgstr "обновлен"
+
+#~ msgid "URL"
+#~ msgstr "URL"
