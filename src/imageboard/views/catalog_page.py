@@ -6,7 +6,7 @@ from django.http import HttpResponse
 # App imports
 from imageboard.models import Thread
 from imageboard.views import parts
-from imageboard.views.parts import CacheInterface
+from imageboard.views.parts import CacheInterface, prefetch_posts_related_data
 
 
 def catalog_page(request, board_hid):
@@ -37,12 +37,7 @@ def catalog_page(request, board_hid):
         response.write(cached_template)
         return response
 
-    # Combine prefetch args, also prefetch required images
-    prefetch_args = [
-        Prefetch('op'),
-        Prefetch('op__images'),
-        Prefetch('op__created_by'),
-    ]
+    prefetch_args = prefetch_posts_related_data('op')
 
     # Threads queryset
     threads = Thread.objects \

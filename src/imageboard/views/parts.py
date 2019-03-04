@@ -81,27 +81,36 @@ class CacheInterface:
             return cache_data
 
 
-def prefetch_relations(base_name, relations=None):
-    if not relations:
-        return []
+def prefetch_posts_related_data(posts_field=None, posts_queryset=None):
+    """Prefetch related posts with images, authors and replies."""
 
-    result = []
+    # If posts relation field is specified fetch posts with it.
+    # Also set it as prefix for additional object prefetches.
+    if posts_field is not None:
+        prefix = '{}__'.format(posts_field)
+        result = [
+            Prefetch(posts_field, queryset=posts_queryset)
+        ]
+    else:
+        prefix = ''
+        result = []
 
-    # Refs and replies queryset
-    refs_and_replies_queryset = Post.objects\
-        .select_related('thread', 'thread__board')\
+    refs_and_replies_queryset = Post.objects \
+        .select_related('thread', 'thread__board') \
         .only('is_op', 'hid', 'thread__hid', 'thread__board__hid')
 
-    if 'images' in relations:
-        result.append(Prefetch('{}__images'.format(base_name)))
-
-    if 'refs' in relations:
-        result.append(Prefetch('{}__refs'.format(base_name), queryset=refs_and_replies_queryset))
-
-    if 'replies' in relations:
-        result.append(Prefetch('{}__post_set'.format(base_name), queryset=refs_and_replies_queryset, to_attr='replies'))
-
-    if 'created_by' in relations:
-        result.append(Prefetch('{}__created_by'.format(base_name)))
+    result += [
+        Prefetch('{}images'.format(prefix)),
+        Prefetch(
+            '{}refs'.format(prefix),
+            queryset=refs_and_replies_queryset
+        ),
+        Prefetch(
+            '{}post_set'.format(prefix),
+            queryset=refs_and_replies_queryset,
+            to_attr='replies'
+        ),
+        Prefetch('{}created_by'.format(prefix))
+    ]
 
     return result

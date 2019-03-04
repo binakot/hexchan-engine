@@ -5,8 +5,9 @@ from django.http import HttpResponse
 from django.views.decorators.cache import cache_page
 
 # App imports
-from imageboard.models import Board, Post
 from hexchan import config
+from imageboard.models import Board, Post
+from imageboard.views.parts import prefetch_posts_related_data
 
 
 @cache_page(config.CACHE_POST_POPUP)
@@ -17,17 +18,7 @@ def post_popup(request, board_hid, thread_hid, post_hid):
     except Post.DoesNotExist:
         board = None
 
-    # Refs and replies queryset
-    refs_and_replies_queryset = Post.objects\
-        .select_related('thread', 'thread__board')\
-        .only('is_op', 'hid', 'thread__hid', 'thread__board__hid')
-
-    # Combine prefetch args, also prefetch required images
-    prefetch_args = [
-        Prefetch('images'),
-        Prefetch('refs', queryset=refs_and_replies_queryset),
-        Prefetch('post_set', queryset=refs_and_replies_queryset, to_attr='replies'),
-    ]
+    prefetch_args = prefetch_posts_related_data()
 
     # Get current post
     try:

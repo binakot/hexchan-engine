@@ -7,7 +7,7 @@ from django.http import HttpResponse
 # App imports
 from imageboard.models import Thread, Post
 from imageboard.views import parts
-from imageboard.views.parts import CacheInterface
+from imageboard.views.parts import CacheInterface, prefetch_posts_related_data
 from imageboard.forms import PostingForm
 
 
@@ -45,21 +45,9 @@ def board_page(request, board_hid, page_num=1):
         .order_by('-id')\
         .values_list('id', flat=True)[:board.posts_per_thread_per_page]
 
-    # Refs and replies queryset
-    refs_and_replies_queryset = Post.objects\
-        .select_related('thread', 'thread__board')\
-        .only('is_op', 'hid', 'thread__hid', 'thread__board__hid')
+    visible_posts_queryset = Post.objects.filter(Q(id__in=Subquery(latest_posts_queryset)) | Q(is_op=True))
 
-    # Combine prefetch args, also prefetch required images
-    prefetch_args = [
-        Prefetch('posts', queryset=Post.objects.filter(
-            Q(id__in=Subquery(latest_posts_queryset)) | Q(is_op=True))
-        ),
-        Prefetch('posts__images'),
-        Prefetch('posts__refs', queryset=refs_and_replies_queryset),
-        Prefetch('posts__post_set', queryset=refs_and_replies_queryset, to_attr='replies'),
-        Prefetch('posts__created_by'),
-    ]
+    prefetch_args = prefetch_posts_related_data('posts', posts_queryset=visible_posts_queryset)
 
     # Threads queryset
     threads = Thread.objects\
