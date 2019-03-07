@@ -130,7 +130,7 @@
             {% endif %}
 
             <span class="thread-info__item">
-                <i class="thread-info__icon icon">message</i>
+                <i class="thread-info__icon icon">chat_bubble_outline</i>
                 {% trans "Posts" context "number of posts" %}: {{ thread.posts_count }}
             </span>
 
@@ -141,7 +141,7 @@
 
             {% if thread.is_sticky %}
                 <span class="thread-info__item">
-                    <i class="thread-info__icon icon">bookmark</i>
+                    <i class="thread-info__icon icon">bookmark_border</i>
                     {% trans "Sticky" %}
                 </span>
             {% endif %}
