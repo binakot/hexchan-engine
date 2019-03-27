@@ -41,7 +41,9 @@ def thread_page(request, board_hid, thread_hid):
         response.write(cached_template)
         return response
 
-    prefetch_args = prefetch_posts_related_data('posts')
+    posts_queryset = Post.objects.filter(is_deleted=False)
+
+    prefetch_args = prefetch_posts_related_data('posts', posts_queryset=posts_queryset)
 
     # Prefetch stuff for the thread
     thread = Thread.objects\

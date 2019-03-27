@@ -20,7 +20,7 @@ def start_page(request):
 
     # Select some most recently updated threads
     updated_threads_queryset = Thread.objects\
-        .filter(board=OuterRef('board'))\
+        .filter(board=OuterRef('board'), is_deleted=False)\
         .order_by('-is_sticky', '-updated_at')\
         .values_list('id', flat=True)[:5]
 

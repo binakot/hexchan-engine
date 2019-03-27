@@ -41,7 +41,7 @@ def board_page(request, board_hid, page_num=1):
 
     # Queryset for latest posts
     latest_posts_queryset = Post.objects\
-        .filter(thread=OuterRef('thread'), is_op=False)\
+        .filter(thread=OuterRef('thread'), is_deleted=False, is_op=False)\
         .order_by('-id')\
         .values_list('id', flat=True)[:board.posts_per_thread_per_page]
 
