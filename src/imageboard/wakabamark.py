@@ -110,7 +110,7 @@ def make_strike_tags(line: str) -> str:
     )
 
 
-def make_ref_tags(line: str, make_url: Callable) -> str:
+def make_ref_tags(line: str, ref_url_getter: Callable) -> str:
     """Find post refs and replace them with links to those posts."""
 
     search_expression = re.compile(
@@ -119,7 +119,7 @@ def make_ref_tags(line: str, make_url: Callable) -> str:
 
     def replacement_function(matchobj):
         hid = matchobj.group(1)
-        url = make_url(hid)
+        url = ref_url_getter(hid)
 
         if url is not None:
             return '<a class="ref js-ref" href="{url}">&gt;&gt;{hid}</a>'.format(url=url, hid=hid)
@@ -129,24 +129,25 @@ def make_ref_tags(line: str, make_url: Callable) -> str:
     return search_expression.sub(replacement_function, line)
 
 
-def make_all_inline_tags(text_line: str, make_url=None) -> str:
+def make_all_inline_tags(text_line: str, ref_url_getter=None, make_links=True) -> str:
     """Make all inline tags, one after another."""
 
-    text_line = make_url_tags(text_line)
+    if make_links:
+        text_line = make_url_tags(text_line)
     text_line = make_strong_tags(text_line)
     text_line = make_em_tags(text_line)
     text_line = make_strike_tags(text_line)
     text_line = make_spoiler_tags(text_line)
-    text_line = make_ref_tags(text_line, make_url=make_url)
+    text_line = make_ref_tags(text_line, ref_url_getter=ref_url_getter)
     return text_line
 
 
-def parse_text(text: str, board, thread, post, make_refs=True) -> str:
+def parse_text(text: str, board, thread, post, make_refs=True, make_links=True) -> str:
     """Make all text blocks with inline tags."""
 
     refs_dict = {ref.hid: ref for ref in post.refs.all()} if make_refs else {}
 
-    def make_url(hid: str) -> str:
+    def get_ref_url(hid: str) -> str:
         hid_int = int(hid, 16)
         referenced_post = refs_dict.get(hid_int)
 
@@ -166,13 +167,13 @@ def parse_text(text: str, board, thread, post, make_refs=True) -> str:
         # Make quote tags
         elif re.match(r'^&gt;', line):
             html_line = '<blockquote>{line}</blockquote>'.format(
-                line=make_all_inline_tags(line, make_url=make_url)
+                line=make_all_inline_tags(line, ref_url_getter=get_ref_url, make_links=make_links)
             )
 
         # Make paragraphs for other cases
         else:
             html_line = '<p>{line}</p>'.format(
-                line=make_all_inline_tags(line, make_url=make_url)
+                line=make_all_inline_tags(line, ref_url_getter=get_ref_url, make_links=make_links)
             )
 
         if html_line:
