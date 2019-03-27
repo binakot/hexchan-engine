@@ -16,7 +16,17 @@
 {% block content %}
     {% for board in boards %}
         {% if not board.is_hidden and not board.is_deleted %}
-            {% include 'imageboard/parts/board_header.html' %}
+            <div class="board-block">
+                {% include 'imageboard/parts/board_header.html' %}
+
+                <div class="catalog">
+                    <div class="catalog__items">
+                        {% for thread in board.updated_threads %}
+                            {% include 'imageboard/parts/catalog_item.html' with op_post=thread.op %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         {% endif %}
     {% endfor %}
 {% endblock %}

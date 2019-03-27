@@ -22,58 +22,7 @@
     <div class="catalog">
         <div class="catalog__items">
             {% for thread in threads %}
-                {% with op_post=thread.op  %}
-                    <a
-                        class="catalog-item js-thread"
-                        href="{% url 'thread_page' board_hid=thread.board.hid thread_hid=thread.hid %}"
-                        data-id="{{ thread.id }}"
-                    >
-                        <div class="catalog-item__header">
-                            <span class="catalog-item__hid hid js-thread-hid" data-id="{{ thread.id }}">{{ thread.hid2hex }}</span>
-
-                            <span class="catalog-item__info">
-                                {% if thread.is_sticky %}
-                                    <i class="catalog-item__icon icon" title="{% trans "Sticky" %}">bookmark_border</i>
-                                {% endif %}
-
-                                {% if thread.is_locked %}
-                                    <i class="catalog-item__icon icon" title="{% trans "Locked" %}">lock</i>
-                                {% endif %}
-
-                                <span class="catalog-item__posts-count" title="{% trans "Posts" context "number of posts" %}: {{ thread.posts_count }}">
-                                    <i class="catalog-item__posts-count-icon icon">chat_bubble_outline</i>
-                                    {{ thread.posts_count }}
-                                </span>
-                            </span>
-                        </div>
-
-                        <div class="catalog-item__body">
-                            {% with image=op_post.images.all|first  %}
-                                {% if image %}
-                                    <img
-                                        class="catalog-item__image"
-                                        src="{{MEDIA_URL}}{{image.thumb_path}}"
-                                        alt="{{ image.original_name }}"
-                                        width="{{ image.thumb_width|multiply:0.75 }}"
-                                        height="{{ image.thumb_height|multiply:0.75 }}"
-                                    />
-                                {% else %}
-                                    <div class="catalog-item__image catalog-item__image--empty">
-                                        {% trans "No image available" %}
-                                    </div>
-                                {% endif %}
-                            {% endwith %}
-
-                            <div class="catalog-item__text">
-                                <span class="catalog-item__title">
-                                    {{ op_post.title }}
-                                </span>
-                                {% markup text=op_post.text board=board thread=thread post=op_post make_refs=False %}
-                            </div>
-
-                        </div>
-                    </a>
-                {% endwith %}
+                {% include 'imageboard/parts/catalog_item.html' with op_post=thread.op %}
             {% endfor %}
         </div>
     </div>
