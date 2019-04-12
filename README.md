@@ -30,3 +30,12 @@ Also there is no installation manual yet. Stay tuned for our first release!
 * Hidden boards (active, but not displayed in the board list)
 * Sticky threads (always stay at top of the first page)
 * Configurable posts and threads limits
+
+## Docker
+
+To run the app with database inside the docker containers: 
+
+```bash
+docker-compose build
+docker-compose up -d
+```

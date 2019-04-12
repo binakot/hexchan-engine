@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    networks:
+      - net
+    healthcheck:
+      test: ["CMD", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  app:
+    build: .
+    restart: always
+    ports:
+      - 8000:8000
+    networks:
+      - net
+    depends_on:
+      - db
+    links:
+      - db
+
+networks:
+  net:
