@@ -31,11 +31,24 @@ Also there is no installation manual yet. Stay tuned for our first release!
 * Sticky threads (always stay at top of the first page)
 * Configurable posts and threads limits
 
-## Docker
+## Docker 🐳
 
-To run the app with database inside the docker containers: 
+To run the app with database inside docker containers: 
 
 ```bash
 docker-compose build
 docker-compose up -d
+docker exec -it hexchan_app python src/manage.py createsuperuser
+```
+
+Open [http://localhost:8000](http://localhost:8000) in your browser. 
+You can login as superuser at [http://localhost:8000/admin](http://localhost:8000/admin).
+
+Also you can enable the generation of fake content by setting up 
+the env variable `FAKE_CONTENT` to `true` in `docker-compose.yml`.
+
+To stop app with database's volume removing:
+
+```bash
+docker-compose down --volumes
 ```

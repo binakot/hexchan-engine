@@ -158,7 +158,7 @@ def make_post(bnum, tnum, pnum):
             "created_at": cur_date,
             "updated_at": cur_date,
             "text": text,
-            "title": fake.sentence(nb_words=5, variable_nb_words=True) if (
+            "title": fake.sentence(nb_words=4, variable_nb_words=True) if (
                         fake.boolean(20) or is_op) else "",
             "author": fake.user_name() if has_name else "",
             "email": fake.free_email() if has_name else "",

@@ -63,8 +63,8 @@ Development
 12. Run dev server:
     * `cd ~/hexchan-engine/src`
     * `./manage.py runserver`
-    Open https://localhost:8000 in your browser. 
-    You can login as superuser at https://localhost:8000/admin
+    Open http://localhost:8000 in your browser. 
+    You can login as superuser at http://localhost:8000/admin
 
 
 Production
