@@ -84,10 +84,10 @@ WSGI_APPLICATION = 'hexchan.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
+        'NAME': 'hexchan',
+        'USER': 'hexchan',
+        'PASSWORD': 'hexchan',
+        'HOST': 'hexchan_db',
         'PORT': 5432,
     }
 }

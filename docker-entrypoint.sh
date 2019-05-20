@@ -3,7 +3,7 @@
 set -e
 
 echo "Waiting for database..."
-until PGPASSWORD=$POSTGRES_PASSWORD psql -h db -U "postgres" -c '\q'; do
+until PGPASSWORD=$POSTGRES_PASSWORD psql -h hexchan_db -U "hexchan" -c '\q'; do
     sleep 5
 done
 

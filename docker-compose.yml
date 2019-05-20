@@ -4,7 +4,7 @@ networks:
   net:
 
 volumes:
-  postgres_data:
+  hexchan_pg_data:
     driver: local
 
 services:
@@ -13,21 +13,21 @@ services:
     container_name: hexchan_db
     restart: always
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=hexchan
+      - POSTGRES_USER=hexchan
+      - POSTGRES_PASSWORD=hexchan
     networks:
       - net
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - hexchan_pg_data:/var/lib/postgresql/data
 
   app:
     build: .
     container_name: hexchan_app
     restart: always
     environment:
-      - POSTGRES_PASSWORD=postgres
-      - FAKE_CONTENT=true
+      - POSTGRES_PASSWORD=hexchan
+      - FAKE_CONTENT=false
     ports:
       - 8000:8000
     networks:

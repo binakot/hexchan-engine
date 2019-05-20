@@ -46,6 +46,7 @@ You can login as superuser at [http://localhost:8000/admin](http://localhost:800
 
 Also you can enable the generation of fake content by setting up 
 the env variable `FAKE_CONTENT` to `true` in `docker-compose.yml`.
+The operation may take several minutes.
 
 To stop app with database's volume removing:
 
