@@ -69,4 +69,62 @@ Development
 
 Production
 ==========
-TODO
+There is no production-ready installation package yet, you're expected to know about configuring Django applications. 
+Manual assembly is required, batteries are not encluded.
+
+This guide describes configuring Hexchan Engine with Apache and PostgreSQL. 
+Other combinations of web server and database are supported by Django framework.
+
+Useful links:
+* https://docs.djangoproject.com/en/2.2/topics/settings/
+* https://docs.djangoproject.com/en/2.2/howto/deployment/
+* https://docs.djangoproject.com/en/2.2/ref/databases/
+
+1.  Repeat steps 1-5 from the development guide, you may change install directories accordingly.
+    Creating new system user and installing project into it's home directory is recommended.
+2.  Install Apache with mod_wsgi and PostgreSQL:
+    `sudo apt install apache2 libapache2-mod-wsgi-py3 postgresql`
+3.  Create new Postgres user and database:
+    * `sudo -u postgres psql`
+    * `create database hexchan;`
+    * `create user hexuser with password 'password';`
+    * `alter role hexuser set client_encoding to 'utf8';`
+    * `alter role hexuser set default_transaction_isolation to 'read committed';`
+    * `alter role hexuser set timezone to 'utc';`
+    * `grant all privileges on database hexchan to hexuser;`
+    * `\q`
+4.  Create storage dirs and move them to new location:
+    * `cd ~/hexchan-engine/generators`
+    * `python dirmaker.py`
+    * `cd ~`
+    * `mv ~/hexchan-engine/dev ~/hexchan-storage`
+5.  Create copies of config file and WSGI script:
+    * `cd ~/hexchan-engine/src/hexchan`
+    * `cp settings.py settings_prod.py`
+    * `cp wsgi.py wsgi_prod.py`
+6.  Edit `settings.py`:
+    * Change `STORAGE_DIR` to the relative path of your storage dir
+    * Set `DEBUG` to `False`
+    * Set `SECRET_KEY` to a large random sting
+    * Add your domain to `ALLOWED_HOSTS`
+    * Set WSGI_APPLICATION to 'hexchan.wsgi_prod.application'
+    * Setup database:
+      ```
+      DATABASES = {
+          'default': {
+              'ENGINE': 'django.db.backends.postgresql_psycopg2',
+              'NAME': 'hexchan',
+              'USER': 'hexuser',
+              'PASSWORD': 'password',
+              'HOST': 'localhost',
+              'PORT': '',
+          }
+      }
+      ```
+
+# WSGI
+
+
+# Database
+
+
