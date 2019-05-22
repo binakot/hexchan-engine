@@ -2,6 +2,7 @@ version: '3.4'
 
 networks:
   net:
+    driver: overlay
 
 volumes:
   hexchan_pg_data:
@@ -10,8 +11,6 @@ volumes:
 services:
   db:
     image: postgres:11-alpine
-    container_name: hexchan_db
-    restart: always
     environment:
       - POSTGRES_DB=hexchan
       - POSTGRES_USER=hexchan
@@ -22,10 +21,7 @@ services:
       - hexchan_pg_data:/var/lib/postgresql/data
 
   app:
-    build: .
-    image: hexchan
-    container_name: hexchan_app
-    restart: always
+    image: hexchan:latest
     environment:
       - FAKE_CONTENT=False
       - DEBUG=False
@@ -40,6 +36,4 @@ services:
     networks:
       - net
     depends_on:
-      - db
-    links:
       - db

@@ -33,7 +33,9 @@ Also there is no installation manual yet. Stay tuned for our first release!
 
 ## Docker 🐳
 
-To run the app with database inside docker containers: 
+### Docker Compose
+
+To run the app with database inside docker containers via `docker-compose`: 
 
 ```bash
 docker-compose build
@@ -41,8 +43,8 @@ docker-compose up -d
 docker exec -it hexchan_app python src/manage.py createsuperuser
 ```
 
-Open [http://localhost:8000](http://localhost:8000) in your browser. 
-You can login as superuser at [http://localhost:8000/admin](http://localhost:8000/admin).
+Open [http://localhost](http://localhost) in your browser. 
+You can login as superuser at [http://localhost/admin](http://localhost/admin).
 
 Also you can enable the generation of fake content by setting up 
 the env variable `FAKE_CONTENT` to `true` in `docker-compose.yml`.
@@ -52,4 +54,19 @@ To stop app with database's volume removing:
 
 ```bash
 docker-compose down --volumes
+```
+
+### Docker Stack (Swarm)
+
+Run in Docker Swarm cluster do next steps:
+
+```bash
+docker-compose build
+docker stack deploy -c docker-stack.yml hexchan
+```
+
+To stop the stack:
+
+```bash
+docker stack rm hexchan
 ```

@@ -1,23 +1,18 @@
-FROM nikolaik/python-nodejs:python3.7-nodejs10
+FROM tiangolo/uwsgi-nginx:python3.7-alpine3.9
 
-ENV FAKE_CONTENT=false
-
-RUN mkdir /app
 WORKDIR /app
-EXPOSE 8000
 
-RUN apt-get update && \
-    apt-get install -y postgresql-client
+RUN apk add --no-cache \
+        bash \
+        build-base python3-dev musl-dev postgresql-dev zlib-dev jpeg-dev freetype-dev \
+        nodejs nodejs-npm \
+        postgresql-client
 
 COPY requirements.txt /app/
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY package*.json /app/
 RUN npm install
 
 COPY . .
-RUN chmod +x /app/docker-entrypoint.sh
-
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
-CMD ["python3"]
+RUN chmod +x /app/prestart.sh

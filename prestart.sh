@@ -3,7 +3,7 @@
 set -e
 
 echo "Waiting for database..."
-until PGPASSWORD=$POSTGRES_PASSWORD psql -h hexchan_db -U "hexchan" -c '\q'; do
+until PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -c '\q'; do
     sleep 5
 done
 
@@ -19,12 +19,14 @@ python3 src/manage.py makecaptchas 1024
 echo "Build frontend"
 ./build_frontend.sh
 
-if [ $FAKE_CONTENT = "true" ]; then
+if [ $FAKE_CONTENT = "True" ]; then
     echo "Generate fake content (optional)"
     python3 generators/imagemaker.py .
     python3 generators/partymaker.py
     python3 src/manage.py loaddata boards threads posts images
 fi
 
-echo "Starting server"
-python3 src/manage.py runserver 0.0.0.0:8000
+if [ $DEBUG != "True" ]; then
+    echo "Collect static (optional)"
+    python3 src/manage.py collectstatic --noinput
+fi
