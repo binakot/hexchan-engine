@@ -1,4 +1,4 @@
-FROM tiangolo/uwsgi-nginx:python3.7-alpine3.9
+FROM tiangolo/uwsgi-nginx:python3.6-alpine3.9
 
 WORKDIR /app
 
