@@ -1,9 +1,11 @@
 # Standard library imports
+import io
 import os
 import hashlib
 import datetime
 
 # Django imports
+from django.core.files.storage import default_storage
 from django.shortcuts import redirect, render
 from django.conf import settings
 from django.contrib.auth import get_user
@@ -235,13 +237,17 @@ def create_images(post: Post, images_and_checksums) -> None:
 
         # Save image to the disk
         image_full_path = os.path.join(settings.MEDIA_ROOT, image.path())
-        with open(image_full_path, 'wb+') as destination:
-            for chunk in image_file.chunks(config.IMAGE_CHUNK_SIZE):
-                destination.write(chunk)
+        buffer = io.BytesIO()
+        image_pil_object.save(buffer, image_pil_object.format)
+        buffer.seek(0)
+        default_storage.save(image_full_path, buffer)
 
         # Save thumbnail to the disk
         image_thumb_full_path = os.path.join(settings.MEDIA_ROOT, image.thumb_path())
-        thumbnail_pil_object.save(image_thumb_full_path, "PNG")
+        buffer = io.BytesIO()
+        thumbnail_pil_object.save(buffer, 'PNG')
+        buffer.seek(0)
+        default_storage.save(image_thumb_full_path, buffer)
 
 
 def create_thread(request, board: Board) -> Thread:
