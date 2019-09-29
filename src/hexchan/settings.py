@@ -129,7 +129,6 @@ STATICFILES_DIRS = [
 # Uploads
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_REGION = 'eu-west-1'
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
 if AWS_ACCESS_KEY_ID:
@@ -137,8 +136,8 @@ if AWS_ACCESS_KEY_ID:
     MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/upload/'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
-    MEDIA_URL = '/media/'
     MEDIA_ROOT = str(STORAGE_DIR / 'upload')
+    MEDIA_URL = '/media/'
 
 # Cache
 CACHES = {

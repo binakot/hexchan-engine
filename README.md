@@ -33,6 +33,13 @@ Also there is no installation manual yet. Stay tuned for our first release!
 
 ## Docker 🐳
 
+You can enable the generation of fake content by setting up 
+the env variable `FAKE_CONTENT` to `True` in `docker-compose.yml` (the default is `False`).
+**The operation may take several minutes**.
+
+The imageboard will be available on [http://localhost](http://localhost) in your browser. 
+And you can login as superuser in the admin panel on [http://localhost/admin](http://localhost/admin).
+
 ### Docker Compose
 
 To run the app with database inside docker containers via `docker-compose`: 
@@ -42,13 +49,6 @@ docker-compose build
 docker-compose up -d
 docker exec -it hexchan_app python src/manage.py createsuperuser
 ```
-
-Open [http://localhost](http://localhost) in your browser. 
-You can login as superuser at [http://localhost/admin](http://localhost/admin).
-
-Also you can enable the generation of fake content by setting up 
-the env variable `FAKE_CONTENT` to `true` in `docker-compose.yml`.
-The operation may take several minutes.
 
 To stop app with database's volume removing:
 
@@ -70,3 +70,12 @@ To stop the stack:
 ```bash
 docker stack rm hexchan
 ```
+
+### External storage
+
+By default the app stores all media files on local file system. 
+If you want to use external storage such as AWS S3 or another compatible storage,
+you should to set 3 settings: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_STORAGE_BUCKET_NAME`.
+In case of using the docker compose or stack it's already inside yaml files in commended section.
+Also it's done with [django-storages](https://django-storages.readthedocs.io/en/latest/).
+It means you can use any of supported storages with minimal code changes.

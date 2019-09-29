@@ -30,6 +30,9 @@ services:
       - DB_NAME=hexchan
       - DB_USER=hexchan
       - DB_PASSWORD=hexchan
+#      - AWS_ACCESS_KEY_ID=
+#      - AWS_SECRET_ACCESS_KEY=
+#      - AWS_STORAGE_BUCKET_NAME=
     ports:
       - 80:80
       - 443:443
