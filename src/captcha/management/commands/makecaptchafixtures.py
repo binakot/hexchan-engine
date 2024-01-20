@@ -9,7 +9,6 @@ from captcha.captchamaker import make_captcha_create_kwargs
 
 class Command(BaseCommand):
     help = 'Generate captcha fixtures'
-    requires_system_checks = True
     requires_migrations_check = True
 
     def add_arguments(self, parser):
