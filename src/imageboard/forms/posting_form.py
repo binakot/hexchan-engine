@@ -5,6 +5,25 @@ from hexchan import config
 from imageboard.forms.textarea_widget import TextareaWidget
 from captcha.widget import CaptchaField
 
+###
+# https://django.readthedocs.io/en/stable/topics/http/file-uploads.html#uploading-multiple-files
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
+###
 
 class PostingForm(forms.Form):
     # TODO: move constants to config?
@@ -49,10 +68,9 @@ class PostingForm(forms.Form):
         label=_('Captcha'), required=True
     )
 
-    images = forms.FileField(
+    images = MultipleFileField(
         required=False, label=pgettext_lazy('posting form', 'Images'),
-        widget=forms.FileInput(attrs={
-            'multiple': True,
+        widget=MultipleFileInput(attrs={
             'accept': ','.join(config.FILE_MIME_TYPES)
         })
     )
