@@ -1,12 +1,20 @@
-FROM tiangolo/uwsgi-nginx:python3.6-alpine3.9
+FROM tiangolo/uwsgi-nginx:python3.11
 
 WORKDIR /app
 
-RUN apk add --no-cache \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
         bash \
-        build-base python3-dev musl-dev postgresql-dev zlib-dev jpeg-dev freetype-dev \
-        nodejs nodejs-npm \
-        postgresql-client
+        build-essential \
+        python3-dev \
+        libpq-dev \
+        zlib1g-dev \
+        libjpeg-dev \
+        libfreetype6-dev \
+        nodejs \
+        npm \
+        postgresql-client && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt

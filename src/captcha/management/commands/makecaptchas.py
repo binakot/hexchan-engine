@@ -7,7 +7,6 @@ from captcha.captchamaker import make_captcha_create_kwargs
 
 class Command(BaseCommand):
     help = 'Populate captcha database'
-    requires_system_checks = True
     requires_migrations_check = True
 
     def add_arguments(self, parser):

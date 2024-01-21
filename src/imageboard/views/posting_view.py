@@ -320,7 +320,7 @@ def flush_old_threads(request, board):
 def check_posting_limit(request):
     latest_post_at = request.session.get('latest_post_at')
     if latest_post_at:
-        latest_post_at_datetime = datetime.datetime.fromtimestamp(latest_post_at, tz=timezone.utc)
+        latest_post_at_datetime = datetime.datetime.fromtimestamp(latest_post_at, tz=datetime.timezone.utc)
         now = timezone.now()
         timeout = datetime.timedelta(seconds=config.POSTING_TIMEOUT)
         if (now - latest_post_at_datetime) < timeout:
